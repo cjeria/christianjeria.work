@@ -798,9 +798,20 @@ ul {
 }
 
 @media (max-width: 767px) {
+  .project-hero {
+    padding-bottom: 32px;
+    min-height: unset;
+  }
   .project-hero-inner {
     flex-direction: column;
     align-items: flex-start;
+    gap: 20px;
+  }
+  .project-hero-text {
+    flex: 0 1 250px;
+  }
+  .project-back {
+    margin-bottom: 16px;
   }
   .project-hero-img-wrap {
     width: 100%;
@@ -808,7 +819,7 @@ ul {
     justify-content: center;
   }
   .project-hero-img-wrap img {
-    max-height: 240px;
+    max-height: 200px;
   }
 }
 
