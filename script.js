@@ -74,7 +74,134 @@
   });
 
   /* ----------------------------------------------------------
-     4. Lightbox — click project images to view in carousel
+     4. Hero avatar tilt + glare on hover
+     ---------------------------------------------------------- */
+  const avatar = document.querySelector('.hero-avatar');
+  if (avatar) {
+    const glare = document.createElement('div');
+    glare.className = 'avatar-glare';
+    avatar.appendChild(glare);
+
+    let raf;
+    let rotX = 0, rotY = 0;
+    let tRotX = 0, tRotY = 0;
+    let active = false;
+
+    const lerp = (a, b, n) => a + (b - a) * n;
+
+    function animateAvatar() {
+      rotX = lerp(rotX, tRotX, 0.1);
+      rotY = lerp(rotY, tRotY, 0.1);
+
+      avatar.style.transform =
+        `perspective(600px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg) scale(1.10)`;
+
+      const settling =
+        Math.abs(rotX - tRotX) > 0.05 ||
+        Math.abs(rotY - tRotY) > 0.05;
+
+      if (active || settling) {
+        raf = requestAnimationFrame(animateAvatar);
+      } else {
+        avatar.style.transform = '';
+      }
+    }
+
+    avatar.addEventListener('mouseenter', () => {
+      active = true;
+      avatar.style.transition = 'box-shadow 0.3s ease';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(animateAvatar);
+    });
+
+    avatar.addEventListener('mousemove', (e) => {
+      const r = avatar.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top)  / r.height;
+      tRotX = (y - 0.5) * -30;
+      tRotY = (x - 0.5) *  30;
+      glare.style.background =
+        `radial-gradient(circle at ${(x * 100).toFixed(1)}% ${(y * 100).toFixed(1)}%, rgba(255,255,255,0.245) 0%, transparent 65%)`;
+    });
+
+    avatar.addEventListener('mouseleave', () => {
+      active  = false;
+      tRotX   = 0;
+      tRotY   = 0;
+      avatar.style.transition = '';
+      glare.style.background  = '';
+    });
+  }
+
+
+  /* ----------------------------------------------------------
+     5. Project card tilt + glare on hover (Andy Merskin style)
+     ---------------------------------------------------------- */
+  document.querySelectorAll('.project-card').forEach((card) => {
+    // Inject glare overlay
+    const glare = document.createElement('div');
+    glare.className = 'card-glare';
+    card.appendChild(glare);
+
+    let raf;
+    let rotX = 0, rotY = 0, lift = 0;
+    let tRotX = 0, tRotY = 0, tLift = 0;
+    let active = false;
+
+    const lerp = (a, b, n) => a + (b - a) * n;
+
+    function animate() {
+      rotX = lerp(rotX, tRotX, 0.1);
+      rotY = lerp(rotY, tRotY, 0.1);
+      lift = lerp(lift, tLift,  0.1);
+
+      card.style.transform =
+        `perspective(800px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg) translateY(${lift.toFixed(3)}px)`;
+
+      const settling =
+        Math.abs(rotX - tRotX) > 0.05 ||
+        Math.abs(rotY - tRotY) > 0.05 ||
+        Math.abs(lift - tLift)  > 0.05;
+
+      if (active || settling) {
+        raf = requestAnimationFrame(animate);
+      } else {
+        card.style.transform   = '';
+        card.style.transition  = '';
+      }
+    }
+
+    card.addEventListener('mouseenter', () => {
+      active = true;
+      tLift  = -8;
+      // Override the .reveal transition so JS owns the transform
+      card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(animate);
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top)  / r.height;
+      tRotX = (y - 0.5) * -14;
+      tRotY = (x - 0.5) *  14;
+      glare.style.background =
+        `radial-gradient(circle at ${(x * 100).toFixed(1)}% ${(y * 100).toFixed(1)}%, rgba(255,255,255,0.28) 0%, transparent 65%)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      active = false;
+      tRotX  = 0;
+      tRotY  = 0;
+      tLift  = 0;
+      glare.style.background = '';
+    });
+  });
+
+
+  /* ----------------------------------------------------------
+     5. Lightbox — click project images to view in carousel
      ---------------------------------------------------------- */
   const projectImgs = Array.from(document.querySelectorAll('.project-img'));
 
