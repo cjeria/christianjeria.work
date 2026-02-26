@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1200" />
+  <title>OG Preview</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 1200px;
+      height: 630px;
+      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      background: linear-gradient(160deg, #e8f4fd 0%, #f5f5f7 40%, #faf0ff 100%);
+    }
+
+    .card {
+      width: 1200px;
+      height: 630px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      padding: 72px 96px;
+      gap: 72px;
+      overflow: hidden;
+    }
+
+    /* Decorative orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: rgba(0, 113, 227, 0.12);
+      top: -100px;
+      right: 200px;
+    }
+    .orb-2 {
+      width: 300px;
+      height: 300px;
+      background: rgba(175, 82, 222, 0.10);
+      bottom: -80px;
+      right: 80px;
+    }
+
+    /* Avatar */
+    .avatar {
+      flex-shrink: 0;
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      overflow: hidden;
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.14);
+      border: 3px solid rgba(255, 255, 255, 0.9);
+    }
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Text */
+    .text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .eyebrow {
+      font-size: 18px;
+      font-weight: 500;
+      color: #0071e3;
+      letter-spacing: 0.01em;
+    }
+
+    .headline {
+      font-size: 48px;
+      font-weight: 700;
+      color: #1d1d1f;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    .tagline {
+      font-size: 20px;
+      color: #6e6e73;
+      font-weight: 400;
+    }
+
+    /* URL pill */
+    .url-pill {
+      position: absolute;
+      bottom: 44px;
+      right: 96px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      backdrop-filter: blur(12px);
+      border-radius: 100px;
+      padding: 8px 20px;
+      font-size: 15px;
+      font-weight: 500;
+      color: #6e6e73;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+
+    <div class="avatar">
+      <img src="./cjeria-portrait.png" alt="Christian Jeria" />
+    </div>
+
+    <div class="text">
+      <p class="eyebrow">Hi, I'm Christian</p>
+      <h1 class="headline">Product designer helping<br>startups launch world-class<br>experiences.</h1>
+      <p class="tagline">Product Designer & Builder</p>
+    </div>
+
+    <div class="url-pill">christianjeria.work</div>
+  </div>
+</body>
+</html>
