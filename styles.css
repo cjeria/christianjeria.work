@@ -1047,7 +1047,7 @@ ul {
 .project-img {
   display: block;
   width: 100%;
-  border-radius: var(--radius-card);
+  border-radius: 6px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.08);
   margin: 40px 0;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1323,6 +1323,10 @@ ul {
 
   .card-thumbnail {
     height: 180px;
+  }
+
+  .project-img-pair {
+    grid-template-columns: 1fr;
   }
 
   .contact-email-btn {
