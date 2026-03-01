@@ -1137,56 +1137,88 @@ ul {
   letter-spacing: -0.01em;
 }
 
-/* Project prev/next navigation */
+/* Project — more work strip */
 .project-nav {
   border-top: 1px solid var(--glass-border);
   padding: clamp(32px, 5vw, 56px) 0;
   background: rgba(255, 255, 255, 0.5);
 }
 
-.project-nav .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 20px;
+.project-nav-heading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
 }
 
-.project-nav-link {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 20px 24px;
+.project-nav-scroll {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.project-nav-card {
+  display: block;
   background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-card);
+  overflow: hidden;
   box-shadow: var(--shadow-sm);
-  min-width: 180px;
   transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
 }
 
-.project-nav-link:hover {
+.project-nav-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow-md);
   border-color: var(--glass-border-hover);
 }
 
-.project-nav-next {
-  text-align: right;
+.project-nav-card.active {
+  border-color: var(--accent);
+  pointer-events: none;
+  opacity: 0.55;
 }
 
-.project-nav-label {
-  font-size: 11px;
+.project-nav-thumb {
+  height: 88px;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-nav-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-nav-card:hover .project-nav-thumb img {
+  transform: scale(1.06);
+}
+
+.project-nav-info {
+  padding: 12px 14px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.project-nav-name {
+  font-size: 13px;
   font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.25;
 }
 
-.project-nav-title {
-  font-size: clamp(16px, 2vw, 20px);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+.project-nav-info .tag {
+  font-size: 10px;
 }
 
 /* ============================================================
@@ -1327,6 +1359,22 @@ ul {
 
   .project-img-pair {
     grid-template-columns: 1fr;
+  }
+
+  .project-nav-scroll {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 60px));
+    padding: 0 clamp(20px, 5vw, 60px) 8px;
+  }
+  .project-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .project-nav-card {
+    flex: 0 0 160px;
   }
 
   .contact-email-btn {
