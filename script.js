@@ -6,6 +6,22 @@
   'use strict';
 
   /* ----------------------------------------------------------
+     0. Hash scroll offset — correct anchor position on page load
+        so the floating nav doesn't overlap the target section
+     ---------------------------------------------------------- */
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      // Let the browser do its default jump first, then correct
+      requestAnimationFrame(() => {
+        const navHeight = document.getElementById('nav')?.offsetHeight || 0;
+        const targetY = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      });
+    }
+  }
+
+  /* ----------------------------------------------------------
      1. Navigation — add .scrolled class after 40px scroll
      ---------------------------------------------------------- */
   const nav = document.getElementById('nav');
