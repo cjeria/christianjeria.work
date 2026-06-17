@@ -455,8 +455,7 @@ ul {
 .project-card {
   display: block;
   position: relative;
-  aspect-ratio: 1;
-  height: auto;
+  height: 320px;
   border-radius: var(--radius-card);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
@@ -465,12 +464,6 @@ ul {
     opacity 0.28s ease,
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-@media (min-width: 768px) {
-  .project-card {
-    aspect-ratio: auto;
-    height: 320px;
-  }
 }
 .project-card:hover {
   transform: translateY(-6px) scale(1.015);
@@ -498,6 +491,7 @@ ul {
 .card-thumbnail {
   position: absolute;
   inset: 0;
+  height: 100%;
   overflow: hidden;
 }
 .card-large .card-thumbnail {
