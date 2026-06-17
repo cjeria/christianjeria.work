@@ -420,14 +420,15 @@ ul {
 
 .work-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
 }
 
 /* Stagger large card */
 @media (min-width: 768px) {
   .work-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
   }
   .card-large {
     grid-column: span 2;
@@ -454,8 +455,8 @@ ul {
 .project-card {
   display: block;
   position: relative;
-  height: 320px;
-  border-radius: var(--radius-card);
+  height: 200px;
+  border-radius: 16px;
   overflow: hidden;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
@@ -463,6 +464,12 @@ ul {
     opacity 0.28s ease,
     transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
     box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@media (min-width: 768px) {
+  .project-card {
+    height: 320px;
+    border-radius: var(--radius-card);
+  }
 }
 .project-card:hover {
   transform: translateY(-6px) scale(1.015);
@@ -614,15 +621,25 @@ ul {
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 24px 28px 28px;
+  padding: 14px 16px 16px;
   z-index: 2;
+}
+@media (min-width: 768px) {
+  .card-body {
+    padding: 24px 28px 28px;
+  }
 }
 
 .card-meta {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
+  margin-bottom: 6px;
+}
+@media (min-width: 768px) {
+  .card-meta {
+    margin-bottom: 10px;
+  }
 }
 
 .tag {
@@ -667,12 +684,18 @@ ul {
 }
 
 .card-title {
-  font-size: clamp(17px, 2vw, 20px);
+  font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: #fff;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   line-height: 1.25;
+}
+@media (min-width: 768px) {
+  .card-title {
+    font-size: clamp(17px, 2vw, 20px);
+    margin-bottom: 8px;
+  }
 }
 
 .card-desc {
@@ -683,15 +706,26 @@ ul {
 }
 
 .card-subtitle {
+  display: none;
   font-size: 13px;
   color: rgba(255, 255, 255, 0.6);
   font-weight: 400;
   margin-top: 2px;
 }
+@media (min-width: 768px) {
+  .card-subtitle {
+    display: block;
+  }
+}
 
 .project-card .tag {
   background: rgba(255, 255, 255, 0.18);
   color: rgba(255, 255, 255, 0.9);
+}
+@media (max-width: 767px) {
+  .project-card .card-meta {
+    display: none;
+  }
 }
 
 .project-card .year {
