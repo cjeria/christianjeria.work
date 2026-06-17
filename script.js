@@ -25,6 +25,8 @@
      1. Navigation — add .scrolled class after 40px scroll
      ---------------------------------------------------------- */
   const nav = document.getElementById('nav');
+  const navLogo = nav ? nav.querySelector('.nav-logo') : null;
+  const isHomePage = !!document.getElementById('hero');
 
   function onScroll() {
     if (window.scrollY > 40) {
@@ -32,10 +34,47 @@
     } else {
       nav.classList.remove('scrolled');
     }
+
+    // Home icon: full color only when near the top of the landing page
+    if (navLogo) {
+      if (isHomePage && window.scrollY < 80) {
+        navLogo.classList.add('is-home');
+      } else {
+        navLogo.classList.remove('is-home');
+      }
+    }
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // run once on load in case page is already scrolled
+
+  // Section-based active nav highlighting (landing page only)
+  if (isHomePage && 'IntersectionObserver' in window) {
+    const sectionIds = ['work', 'services', 'about', 'contact'];
+    const navLinks = nav ? nav.querySelectorAll('.nav-links a') : [];
+
+    function setActiveLink(id) {
+      navLinks.forEach((link) => {
+        const href = link.getAttribute('href').replace(/^.*#/, '');
+        link.classList.toggle('active', href === id);
+      });
+    }
+
+    const sectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveLink(entry.target.id);
+        }
+      });
+    }, {
+      rootMargin: '-20% 0px -65% 0px',
+    });
+
+    sectionIds.forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) sectionObserver.observe(el);
+    });
+  }
 
 
   /* ----------------------------------------------------------
