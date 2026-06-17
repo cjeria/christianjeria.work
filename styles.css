@@ -469,8 +469,9 @@ ul {
   box-shadow: var(--shadow-lg);
 }
 
-/* External link indicator for apps */
-.project-card[data-category="apps"] .card-title::after {
+/* External link indicator for apps + prototypes */
+.project-card[data-category="apps"] .card-title::after,
+.project-card[data-category="prototypes"] .card-title::after {
   content: '↗';
   font-size: 13px;
   margin-left: 5px;
@@ -479,7 +480,8 @@ ul {
   transition: color 0.2s ease, transform 0.2s ease;
   vertical-align: middle;
 }
-.project-card[data-category="apps"]:hover .card-title::after {
+.project-card[data-category="apps"]:hover .card-title::after,
+.project-card[data-category="prototypes"]:hover .card-title::after {
   color: #fff;
   transform: translate(2px, -2px);
 }
@@ -534,6 +536,12 @@ ul {
 }
 .thumbnail-apple {
   background: linear-gradient(135deg, #e8e8ed 0%, #d1d1d6 100%);
+}
+.thumbnail-steady-hands {
+  background: linear-gradient(135deg, #0d1117 0%, #131c2e 100%);
+}
+.thumbnail-tasklocal {
+  background: #FFF6F1;
 }
 
 /* Apple logo — centered and contained within its thumbnail */
