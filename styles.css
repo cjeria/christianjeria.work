@@ -1116,6 +1116,27 @@ ul {
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
   z-index: 2;
   white-space: nowrap;
+  max-width: calc(100vw - 32px);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+#wb-toolbar::-webkit-scrollbar { display: none; }
+
+@media (max-width: 767px) {
+  #wb-toolbar {
+    left: 16px;
+    right: 16px;
+    transform: none;
+    gap: 5px;
+    padding: 8px 12px;
+    border-radius: 20px;
+  }
+  .wb-color { width: 20px; height: 20px; }
+  .wb-size  { width: 26px; height: 26px; font-size: 10px; }
+  #wb-toolbar button:not(.wb-color):not(.wb-size) {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
 }
 
 .wb-group {
