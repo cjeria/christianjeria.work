@@ -149,7 +149,7 @@
       rotY = lerp(rotY, tRotY, 0.1);
 
       avatar.style.transform =
-        `perspective(600px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg) scale(1.10)`;
+        `perspective(600px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg)`;
 
       const settling =
         Math.abs(rotX - tRotX) > 0.05 ||

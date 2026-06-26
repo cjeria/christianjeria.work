@@ -116,8 +116,11 @@
         <div class="orb orb-3"></div>
       </div>
       <div class="hero-content">
-        <div class="hero-avatar fade-in-up">
-          <img src="./cjeria-portrait.png" alt="Christian Jeria" />
+        <div class="hero-avatar-ring fade-in-up" id="avatar-ring">
+          <div class="avatar-particle-layer" id="particle-layer"></div>
+          <div class="hero-avatar">
+            <img src="./cjeria-portrait.png" alt="Christian Jeria" />
+          </div>
         </div>
         <p class="hero-eyebrow fade-in-up delay-1">Hi, I'm Christian</p>
         <h1 class="hero-headline fade-in-up delay-2">
@@ -913,6 +916,59 @@
             tab.classList.add("active");
             applyFilter(tab.dataset.filter);
           });
+        });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const ring  = document.getElementById('avatar-ring');
+        const layer = document.getElementById('particle-layer');
+        if (!ring || !layer) return;
+
+        const emojis = ['📱', '💻', '🖥️', '⌨️', '🖱️', '✏️', '📐', '🎨', '🔍', '⚙️', '💡', '🖌️', '⌚', '🪄', '🤖'];
+
+        ring.addEventListener('click', function () {
+          const count = Math.floor(Math.random() * 5) + 8;
+
+          for (let i = 0; i < count; i++) {
+            const el = document.createElement('span');
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.cssText = `
+              position:absolute;
+              left:50%;top:50%;
+              font-size:${Math.random() * 18 + 38}px;
+              pointer-events:none;user-select:none;
+              line-height:1;
+              transform:translate(-50%,-50%);
+            `;
+            layer.appendChild(el);
+
+            /* Radiate outward in all directions with gravity arc */
+            const angle   = Math.random() * Math.PI * 2;
+            const dist    = Math.random() * 200 + 900;
+            const dx      = Math.cos(angle) * dist;
+            const dy      = Math.sin(angle) * dist;
+            const gravity = 480; /* downward pull in px over normalized time */
+            const dur     = Math.random() * 400 + 1400;
+            const delay   = Math.random() * 80;
+
+            /* Bake parabolic arc into keyframes — physics: x=dx·t, y=dy·t+g·t² */
+            const steps  = 30;
+            const frames = Array.from({ length: steps + 1 }, (_, s) => {
+              const t  = s / steps;
+              const gx = dx * t;
+              const gy = dy * t + gravity * t * t;
+              return { transform: `translate(-50%,-50%) translate(${gx}px,${gy}px)` };
+            });
+
+            el.animate(frames, {
+              duration: dur,
+              delay,
+              easing: 'linear',
+              fill: 'forwards'
+            }).onfinish = () => el.remove();
+          }
         });
       })();
     </script>
