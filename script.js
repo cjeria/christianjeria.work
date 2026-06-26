@@ -78,6 +78,46 @@
 
 
   /* ----------------------------------------------------------
+     1b. Nav blob — sliding active indicator
+     ---------------------------------------------------------- */
+  if (isHomePage) {
+    const blob     = document.getElementById('nav-blob');
+    const navInner = nav ? nav.querySelector('.nav-inner') : null;
+
+    if (blob && navInner && navLogo) {
+      function positionBlob(el, animate) {
+        if (!animate) blob.style.transition = 'none';
+        const nr = navInner.getBoundingClientRect();
+        const er = el.getBoundingClientRect();
+        blob.style.left   = `${er.left   - nr.left}px`;
+        blob.style.top    = `${er.top    - nr.top}px`;
+        blob.style.width  = `${er.width}px`;
+        blob.style.height = `${er.height}px`;
+        if (!animate) requestAnimationFrame(() => { blob.style.transition = ''; });
+      }
+
+      function syncBlob() {
+        const activeLink = nav.querySelector('.nav-links a.active');
+        if (navLogo.classList.contains('is-home') || !activeLink) {
+          positionBlob(navLogo, true);
+        } else {
+          positionBlob(activeLink, true);
+        }
+      }
+
+      /* Set initial position instantly (no slide-in on load) */
+      requestAnimationFrame(() => positionBlob(navLogo, false));
+
+      /* Watch for class changes on logo and all nav links */
+      const mo = new MutationObserver(syncBlob);
+      mo.observe(navLogo, { attributes: true, attributeFilter: ['class'] });
+      nav.querySelectorAll('.nav-links a').forEach(a => {
+        mo.observe(a, { attributes: true, attributeFilter: ['class'] });
+      });
+    }
+  }
+
+  /* ----------------------------------------------------------
      2. Intersection Observer — reveal elements on scroll
      ---------------------------------------------------------- */
   const revealElements = document.querySelectorAll('.reveal');
@@ -346,5 +386,6 @@
     // Hide initially
     lightbox.style.display = 'none';
   }
+
 
 })();
