@@ -807,6 +807,46 @@
       </div>
     </footer>
 
+    <!-- Easter egg: Whiteboard -->
+    <button id="wb-egg-btn" aria-label="Open whiteboard">🎨</button>
+    <div id="wb-overlay" aria-hidden="true">
+      <canvas id="wb-canvas"></canvas>
+      <div id="wb-toolbar">
+        <div class="wb-group">
+          <button class="wb-color active" data-color="#1d1d1f" style="background:#1d1d1f"></button>
+          <button class="wb-color" data-color="#ef4444" style="background:#ef4444"></button>
+          <button class="wb-color" data-color="#f97316" style="background:#f97316"></button>
+          <button class="wb-color" data-color="#eab308" style="background:#eab308"></button>
+          <button class="wb-color" data-color="#22c55e" style="background:#22c55e"></button>
+          <button class="wb-color" data-color="#3b82f6" style="background:#3b82f6"></button>
+          <button class="wb-color" data-color="#8b5cf6" style="background:#8b5cf6"></button>
+          <button class="wb-color" data-color="#ec4899" style="background:#ec4899"></button>
+        </div>
+        <div class="wb-sep"></div>
+        <div class="wb-group">
+          <button class="wb-size active" data-size="3" title="Small">S</button>
+          <button class="wb-size" data-size="8" title="Medium">M</button>
+          <button class="wb-size" data-size="18" title="Large">L</button>
+        </div>
+        <div class="wb-sep"></div>
+        <div class="wb-group">
+          <button id="wb-eraser" title="Eraser">⌫</button>
+          <button id="wb-clear" title="Clear canvas">🗑</button>
+        </div>
+        <div class="wb-sep"></div>
+        <div class="wb-group">
+          <button id="wb-export" title="Download as PNG">↓ Export</button>
+        </div>
+      </div>
+      <button id="wb-close-btn" title="Close" aria-label="Close whiteboard">✕</button>
+      <div id="wb-hint">
+        <span>✏️</span>
+        <p>Draw something — pick a color and brush size below, then drag to draw.</p>
+        <p class="wb-hint-sub">Press <kbd>Esc</kbd> to exit · Export saves a PNG</p>
+      </div>
+      </div>
+    </div>
+
     <script src="script.js"></script>
     <script>
       (function () {
@@ -971,6 +1011,137 @@
             }).onfinish = () => el.remove();
           }
         });
+      })();
+    </script>
+
+    <script>
+      (function () {
+        const eggBtn  = document.getElementById('wb-egg-btn');
+        const overlay = document.getElementById('wb-overlay');
+        const canvas  = document.getElementById('wb-canvas');
+        const ctx     = canvas.getContext('2d');
+
+        let drawing  = false;
+        let color    = '#1d1d1f';
+        let size     = 3;
+        let erasing  = false;
+
+        function resize() {
+          const img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+          canvas.width  = window.innerWidth;
+          canvas.height = window.innerHeight;
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.putImageData(img, 0, 0);
+          ctx.lineCap   = 'round';
+          ctx.lineJoin  = 'round';
+        }
+
+        function open() {
+          overlay.classList.add('active');
+          resize();
+          document.getElementById('wb-hint').classList.remove('hidden');
+          canvas.addEventListener('mousedown', () => document.getElementById('wb-hint').classList.add('hidden'), { once: true });
+          canvas.addEventListener('touchstart', () => document.getElementById('wb-hint').classList.add('hidden'), { once: true });
+          document.addEventListener('keydown', onKey);
+        }
+
+        function close() {
+          overlay.classList.remove('active');
+          document.removeEventListener('keydown', onKey);
+        }
+
+        function onKey(e) { if (e.key === 'Escape') close(); }
+
+        function pos(e) {
+          const r = canvas.getBoundingClientRect();
+          const src = e.touches ? e.touches[0] : e;
+          return { x: src.clientX - r.left, y: src.clientY - r.top };
+        }
+
+        function startDraw(e) {
+          if (e.target.closest('#wb-toolbar')) return;
+          drawing = true;
+          const p = pos(e);
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          e.preventDefault();
+        }
+
+        function draw(e) {
+          if (!drawing) return;
+          const p = pos(e);
+          ctx.lineWidth   = erasing ? size * 6 : size;
+          ctx.strokeStyle = erasing ? '#fff' : color;
+          ctx.lineCap     = 'round';
+          ctx.lineJoin    = 'round';
+          ctx.lineTo(p.x, p.y);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          e.preventDefault();
+        }
+
+        function endDraw() { drawing = false; ctx.beginPath(); }
+
+        canvas.addEventListener('mousedown',  startDraw);
+        canvas.addEventListener('mousemove',  draw);
+        canvas.addEventListener('mouseup',    endDraw);
+        canvas.addEventListener('mouseleave', endDraw);
+        canvas.addEventListener('touchstart', startDraw, { passive: false });
+        canvas.addEventListener('touchmove',  draw,      { passive: false });
+        canvas.addEventListener('touchend',   endDraw);
+
+        window.addEventListener('resize', resize);
+
+        /* Color swatches */
+        document.querySelectorAll('.wb-color').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.wb-color').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            color   = btn.dataset.color;
+            erasing = false;
+            document.getElementById('wb-eraser').classList.remove('active');
+          });
+        });
+
+        /* Size buttons */
+        document.querySelectorAll('.wb-size').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.wb-size').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            size = Number(btn.dataset.size);
+          });
+        });
+
+        /* Eraser */
+        document.getElementById('wb-eraser').addEventListener('click', function () {
+          erasing = !erasing;
+          this.classList.toggle('active', erasing);
+          document.querySelectorAll('.wb-color').forEach(b => b.classList.toggle('active', !erasing && b.dataset.color === color));
+        });
+
+        /* Clear */
+        document.getElementById('wb-clear').addEventListener('click', () => {
+          ctx.fillStyle = '#fff';
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        /* Hide hint on first stroke */
+        const hint = document.getElementById('wb-hint');
+        canvas.addEventListener('mousedown', () => hint.classList.add('hidden'), { once: true });
+        canvas.addEventListener('touchstart', () => hint.classList.add('hidden'), { once: true });
+
+        /* Export */
+        document.getElementById('wb-export').addEventListener('click', () => {
+          const link    = document.createElement('a');
+          link.download = 'whiteboard.png';
+          link.href     = canvas.toDataURL('image/png');
+          link.click();
+        });
+
+        document.getElementById('wb-close-btn').addEventListener('click', close);
+        eggBtn.addEventListener('click', open);
       })();
     </script>
   </body>
