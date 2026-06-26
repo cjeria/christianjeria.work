@@ -1176,6 +1176,28 @@ ul {
   gap: 40px;
 }
 
+@media (min-width: 1024px) {
+  .project-content {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    grid-template-areas: "overview details";
+    gap: 56px;
+    align-items: start;
+  }
+
+  .project-overview {
+    grid-area: overview;
+    align-self: start;
+  }
+
+  .project-details {
+    grid-area: details;
+    position: static;
+    align-self: start;
+  }
+
+}
+
 .project-section {
   margin-bottom: clamp(40px, 5vw, 60px);
 }
@@ -1258,27 +1280,29 @@ ul {
 
 .project-details dl {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 12px 48px;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .project-details dl > div {
   display: flex;
-  align-items: center;
-  gap: 10px;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 8px;
 }
 
 .project-details dt {
+  flex: 0 0 80px;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-secondary);
+  text-align: left;
 }
 
 .project-details dt::after {
-  content: ':';
+  content: '';
 }
 
 .project-details dd {
@@ -1286,6 +1310,7 @@ ul {
   font-weight: 500;
   color: var(--text-primary);
   letter-spacing: -0.01em;
+  text-align: left;
 }
 
 .project-link {

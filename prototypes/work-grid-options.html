@@ -1,0 +1,632 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work Grid — 3 Layout Options</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #f5f5f7;
+      --surface: #ffffff;
+      --text: #1d1d1f;
+      --text-2: #6e6e73;
+      --accent: #0071e3;
+      --radius: 20px;
+      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --shadow: 0 2px 12px rgba(0,0,0,.07), 0 1px 3px rgba(0,0,0,.04);
+      --shadow-hover: 0 16px 48px rgba(0,0,0,.13), 0 4px 16px rgba(0,0,0,.07);
+      --ease: cubic-bezier(.4,0,.2,1);
+    }
+
+    html { -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Page shell ── */
+    .page-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,245,247,.88);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,.07);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .page-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-2);
+      letter-spacing: .01em;
+    }
+
+    .page-title strong { color: var(--text); }
+
+    /* ── Shared filter ── */
+    .filters {
+      display: flex;
+      gap: 6px;
+    }
+
+    .filter-btn {
+      font-family: var(--font);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-2);
+      background: rgba(0,0,0,.05);
+      border: none;
+      border-radius: 9999px;
+      padding: 6px 16px;
+      cursor: pointer;
+      transition: background .2s var(--ease), color .2s var(--ease);
+    }
+
+    .filter-btn:hover { background: rgba(0,0,0,.09); color: var(--text); }
+    .filter-btn.active { background: var(--text); color: #fff; }
+
+    /* ── Section wrapper ── */
+    .option-section {
+      padding: 56px 40px 72px;
+      border-bottom: 1px solid rgba(0,0,0,.07);
+    }
+
+    .option-section:last-child { border-bottom: none; }
+
+    .option-label {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .option-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,113,227,.08);
+      padding: 3px 10px;
+      border-radius: 9999px;
+    }
+
+    .option-name {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.4px;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: var(--text-2);
+      margin-bottom: 32px;
+      max-width: 560px;
+      line-height: 1.55;
+    }
+
+    /* ── Shared card atoms ── */
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      color: var(--text-2);
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -.3px;
+      margin-bottom: 3px;
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-2);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-2);
+      margin-top: 10px;
+      line-height: 1.55;
+    }
+
+    /* ── Thumbnail shared ── */
+    .thumb {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform .5s var(--ease);
+    }
+
+    .thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,20,.7) 0%, rgba(10,10,20,.15) 50%, transparent 100%);
+    }
+
+    /* ══════════════════════════════════════════════
+       OPTION A — Responsive Grid
+    ══════════════════════════════════════════════ */
+    .grid-a {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card-a {
+      display: block;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+
+    .card-a:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); }
+    .card-a:hover .thumb img { transform: scale(1.04); }
+
+    .card-a .thumb {
+      height: 200px;
+      border-radius: 0;
+    }
+
+    .card-a .body {
+      padding: 18px 20px 20px;
+    }
+
+    @media (max-width: 900px) {
+      .grid-a { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 560px) {
+      .grid-a { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════════════════════
+       OPTION B — Editorial List
+    ══════════════════════════════════════════════ */
+    .grid-b {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .card-b {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+      min-height: 220px;
+    }
+
+    .card-b:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+    .card-b:hover .thumb img { transform: scale(1.04); }
+
+    .card-b .thumb {
+      height: 100%;
+      min-height: 220px;
+      border-radius: 0;
+    }
+
+    .card-b .body {
+      padding: 32px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .card-b .card-title { font-size: 22px; letter-spacing: -.5px; margin-bottom: 6px; }
+    .card-b .card-subtitle { font-size: 15px; }
+    .card-b .card-desc { font-size: 14px; margin-top: 14px; max-width: 420px; }
+
+    @media (max-width: 860px) {
+      .card-b { grid-template-columns: 1fr; }
+      .card-b .thumb { height: 200px; }
+      .card-b .body { padding: 20px 24px 24px; }
+      .card-b .card-title { font-size: 18px; }
+    }
+
+    /* ══════════════════════════════════════════════
+       OPTION C — Bento Grid
+    ══════════════════════════════════════════════ */
+    .grid-c {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-auto-rows: 220px;
+      gap: 16px;
+    }
+
+    .card-c {
+      display: block;
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+    }
+
+    .card-c:hover { transform: translateY(-5px); box-shadow: var(--shadow-hover); }
+    .card-c:hover .thumb img { transform: scale(1.05); }
+
+    /* featured: 2 cols wide, 2 rows tall */
+    .card-c.featured {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    /* wide: 2 cols, 1 row */
+    .card-c.wide {
+      grid-column: span 2;
+    }
+
+    .card-c .thumb {
+      position: absolute;
+      inset: 0;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .card-c .body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 20px 22px;
+      z-index: 2;
+      color: #fff;
+    }
+
+    .card-c .tag { color: rgba(255,255,255,.65); }
+    .card-c .card-title { font-size: 16px; color: #fff; }
+    .card-c .card-subtitle { font-size: 13px; color: rgba(255,255,255,.7); }
+
+    .card-c.featured .card-title { font-size: 22px; letter-spacing: -.5px; }
+    .card-c.featured .card-subtitle { font-size: 15px; }
+
+    @media (max-width: 1000px) {
+      .grid-c { grid-template-columns: repeat(2, 1fr); }
+      .card-c.featured { grid-column: span 2; grid-row: span 1; }
+      .card-c.wide { grid-column: span 2; }
+    }
+
+    @media (max-width: 560px) {
+      .grid-c { grid-template-columns: 1fr; grid-auto-rows: 200px; }
+      .card-c.featured, .card-c.wide { grid-column: span 1; grid-row: span 1; }
+    }
+
+    /* ── Hidden state for filtering ── */
+    .card-hidden {
+      display: none !important;
+    }
+
+    /* ── Empty state ── */
+    .empty-state {
+      display: none;
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-2);
+      font-size: 14px;
+      grid-column: 1 / -1;
+    }
+
+    .empty-state.visible { display: block; }
+
+    @media (max-width: 600px) {
+      .page-header { padding: 12px 20px; }
+      .option-section { padding: 40px 20px 56px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <p class="page-title"><strong>Work Grid</strong> — 3 Layout Options</p>
+  <div class="filters" id="filters">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="client">Showcases</button>
+    <button class="filter-btn" data-filter="apps">Apps</button>
+    <button class="filter-btn" data-filter="prototypes">Prototypes</button>
+  </div>
+</header>
+
+<!-- ─────────────────────────────────────────
+     OPTION A — Responsive Grid
+───────────────────────────────────────── -->
+<section class="option-section">
+  <div class="option-label">
+    <span class="option-num">Option A</span>
+    <h2 class="option-name">Responsive Grid</h2>
+  </div>
+  <p class="option-desc">3 columns on desktop, 2 on tablet, 1 on mobile. Uniform cards with a top thumbnail and body below. Clean, predictable, easy to scan — the standard portfolio pattern.</p>
+  <div class="grid-a" id="grid-a"></div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     OPTION B — Editorial List
+───────────────────────────────────────── -->
+<section class="option-section">
+  <div class="option-label">
+    <span class="option-num">Option B</span>
+    <h2 class="option-name">Editorial List</h2>
+  </div>
+  <p class="option-desc">Full-width horizontal rows — large thumbnail on the left (380px), rich text content on the right. One project per row. More immersive, shows context well. Stacks vertically on mobile.</p>
+  <div class="grid-b" id="grid-b"></div>
+</section>
+
+<!-- ─────────────────────────────────────────
+     OPTION C — Bento Grid
+───────────────────────────────────────── -->
+<section class="option-section">
+  <div class="option-label">
+    <span class="option-num">Option C</span>
+    <h2 class="option-name">Bento Grid</h2>
+  </div>
+  <p class="option-desc">Asymmetric 4-column grid with featured projects spanning 2 columns × 2 rows. Size creates hierarchy — featured work gets more visual weight. Text overlays the thumbnail directly.</p>
+  <div class="grid-c" id="grid-c"></div>
+</section>
+
+<script>
+  const cards = [
+    {
+      id: "intuition",
+      category: "client",
+      href: "../intuition-systems/",
+      bg: "linear-gradient(135deg,#d4ecf5 0%,#c4e2f0 50%,#b9daed 100%)",
+      img: "../intuition-systems/images/hero-decoration.png",
+      imgStyle: "",
+      tag: "Web App",
+      title: "Intuition Systems",
+      subtitle: "Crypto knowledge network",
+      desc: "Unifying a series of scattered experiments into one flagship product for a crypto-powered knowledge network.",
+      external: false,
+      bento: "featured"
+    },
+    {
+      id: "metamask",
+      category: "client",
+      href: "../metamask/",
+      bg: "linear-gradient(135deg,#e4d4f8 0%,#d8c7f4 50%,#cfbcf0 100%)",
+      img: "../metamask/images/hero-decoration.svg",
+      imgStyle: "",
+      tag: "Brand, Web & Mobile App",
+      title: "MetaMask",
+      subtitle: "World-class Web3 wallet",
+      desc: "Shaping the experience of one of the world's most widely used web3 wallets, from onboarding flows to the iconic fox logo.",
+      external: false,
+      bento: "featured"
+    },
+    {
+      id: "origin",
+      category: "client",
+      href: "../origin-labs/",
+      bg: "linear-gradient(135deg,#d4f6e2 0%,#bfead2 50%,#afe2c8 100%)",
+      img: "../origin-labs/images/hero-decoration.png",
+      imgStyle: "",
+      tag: "Embedded UI, Web App",
+      title: "Origin Labs",
+      subtitle: "3D printing fleet management",
+      desc: "Designing the logo, embedded UI, and fleet management app for a manufacturing-grade 3D printing startup acquired by Stratasys.",
+      external: false,
+      bento: ""
+    },
+    {
+      id: "portal",
+      category: "client",
+      href: "../portal/",
+      bg: "linear-gradient(135deg,#f8e2c5 0%,#f4d5b5 50%,#efcba8 100%)",
+      img: "../portal/images/hero-decoration.png",
+      imgStyle: "",
+      tag: "Mobile, Web & Illustration",
+      title: "Portal",
+      subtitle: "Wallet design & illustration",
+      desc: "Bringing wallet service concepts to life through rapid prototyping, product illustrations, and website design.",
+      external: false,
+      bento: ""
+    },
+    {
+      id: "apple",
+      category: "client",
+      href: "../apple/",
+      bg: "linear-gradient(135deg,#e8e8ed 0%,#d1d1d6 100%)",
+      img: "../apple/apple-logo.svg",
+      imgStyle: "object-fit:contain;padding:20%;opacity:.18;",
+      tag: "Web & iOS",
+      title: "Apple",
+      subtitle: "Internal design tooling",
+      desc: "",
+      external: false,
+      bento: "wide"
+    },
+    {
+      id: "gridberry",
+      category: "apps",
+      href: "https://gridberry.app",
+      bg: "linear-gradient(135deg,#d4f6e2 0%,#bfead2 50%,#afe2c8 100%)",
+      img: "../gridberry/gridberry-social.png",
+      imgStyle: "",
+      tag: "Web App",
+      title: "Gridberry",
+      subtitle: "Name badge generator",
+      desc: "Print-ready name badges in 60 seconds. Upload your spreadsheet, pick a template, download a PDF — no Word, no mail merge.",
+      external: true,
+      bento: ""
+    },
+    {
+      id: "maildrop",
+      category: "apps",
+      href: "https://maildrop-pi.vercel.app/",
+      bg: "linear-gradient(135deg,#e4d4f8 0%,#d8c7f4 50%,#cfbcf0 100%)",
+      img: "../maildrop/maildrop_logo.png",
+      imgStyle: "",
+      tag: "Web App",
+      title: "Maildrop",
+      subtitle: "Email idea capture",
+      desc: "A lightweight tool for capturing and organizing email ideas before they slip through the cracks.",
+      external: true,
+      bento: ""
+    },
+    {
+      id: "panodoms",
+      category: "apps",
+      href: "https://panodoms.com",
+      bg: "linear-gradient(135deg,#f8e2c5 0%,#f4d5b5 50%,#efcba8 100%)",
+      img: "../panodoms/panodoms_logo-bw.png",
+      imgStyle: "",
+      tag: "Web App",
+      title: "Panoramic Domains",
+      subtitle: "Visual domain search",
+      desc: "A visual domain search site — Find available domains and preview what's already taken.",
+      external: true,
+      bento: ""
+    },
+    {
+      id: "steady-hands",
+      category: "prototypes",
+      href: "https://steadyhands.app",
+      bg: "linear-gradient(135deg,#0d1117 0%,#131c2e 100%)",
+      img: "../steady-hands/app-mockup.png",
+      imgStyle: "object-position:top center;",
+      tag: "iOS App",
+      title: "Steady Hands",
+      subtitle: "Investing education app",
+      desc: "",
+      external: true,
+      bento: ""
+    },
+    {
+      id: "tasklocal",
+      category: "prototypes",
+      href: "https://tasklocal.co",
+      bg: "#FFF6F1",
+      img: "../tasklocal/illustration.svg",
+      imgStyle: "object-fit:contain;padding:10%;",
+      tag: "Web App",
+      title: "TaskLocal",
+      subtitle: "Trusted neighbors for the little things",
+      desc: "",
+      external: true,
+      bento: ""
+    }
+  ];
+
+  /* ── Render Option A ── */
+  function renderA(card) {
+    const el = document.createElement('a');
+    el.className = 'card-a';
+    el.href = card.href;
+    el.dataset.category = card.category;
+    if (card.external) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    el.innerHTML = `
+      <div class="thumb" style="background:${card.bg}">
+        <img src="${card.img}" alt="${card.title}" ${card.imgStyle ? `style="${card.imgStyle}"` : ''} />
+      </div>
+      <div class="body">
+        <span class="tag">${card.tag}</span>
+        <h3 class="card-title">${card.title}</h3>
+        <p class="card-subtitle">${card.subtitle}</p>
+        ${card.desc ? `<p class="card-desc">${card.desc}</p>` : ''}
+      </div>`;
+    return el;
+  }
+
+  /* ── Render Option B ── */
+  function renderB(card) {
+    const el = document.createElement('a');
+    el.className = 'card-b';
+    el.href = card.href;
+    el.dataset.category = card.category;
+    if (card.external) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    el.innerHTML = `
+      <div class="thumb" style="background:${card.bg}">
+        <img src="${card.img}" alt="${card.title}" ${card.imgStyle ? `style="${card.imgStyle}"` : ''} />
+      </div>
+      <div class="body">
+        <span class="tag">${card.tag}</span>
+        <h3 class="card-title">${card.title}</h3>
+        <p class="card-subtitle">${card.subtitle}</p>
+        ${card.desc ? `<p class="card-desc">${card.desc}</p>` : ''}
+      </div>`;
+    return el;
+  }
+
+  /* ── Render Option C ── */
+  function renderC(card) {
+    const el = document.createElement('a');
+    el.className = 'card-c' + (card.bento ? ` ${card.bento}` : '');
+    el.href = card.href;
+    el.dataset.category = card.category;
+    if (card.external) { el.target = '_blank'; el.rel = 'noopener noreferrer'; }
+    el.innerHTML = `
+      <div class="thumb" style="background:${card.bg}">
+        <img src="${card.img}" alt="${card.title}" ${card.imgStyle ? `style="${card.imgStyle}"` : ''} />
+      </div>
+      <div class="body">
+        <span class="tag">${card.tag}</span>
+        <h3 class="card-title">${card.title}</h3>
+        <p class="card-subtitle">${card.subtitle}</p>
+      </div>`;
+    return el;
+  }
+
+  /* ── Mount all three grids ── */
+  const gridA = document.getElementById('grid-a');
+  const gridB = document.getElementById('grid-b');
+  const gridC = document.getElementById('grid-c');
+
+  cards.forEach(card => {
+    gridA.appendChild(renderA(card));
+    gridB.appendChild(renderB(card));
+    gridC.appendChild(renderC(card));
+  });
+
+  /* ── Shared filter ── */
+  let active = 'all';
+
+  document.getElementById('filters').addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    active = btn.dataset.filter;
+
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b === btn));
+
+    [gridA, gridB, gridC].forEach(grid => {
+      grid.querySelectorAll('[data-category]').forEach(card => {
+        card.classList.toggle('card-hidden', active !== 'all' && card.dataset.category !== active);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
