@@ -538,6 +538,9 @@ ul {
 }
 .thumbnail-apple {
   background: linear-gradient(135deg, #e8e8ed 0%, #d1d1d6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .thumbnail-steady-hands {
   background: linear-gradient(135deg, #0d1117 0%, #131c2e 100%);
@@ -546,15 +549,15 @@ ul {
   background: #FFF6F1;
 }
 
-/* Apple logo — centered and contained within its thumbnail */
-.apple-card-logo {
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: contain !important;
-  padding: 28% !important;
+/* Apple logo — centered via flex on .thumbnail-apple */
+.thumbnail-apple .apple-card-logo {
+  position: static;
+  width: 44%;
+  height: auto;
+  object-fit: contain;
+  padding: 0;
   opacity: 0.18;
+  transform: translateY(-10%);
 }
 .apple-hero-logo {
   object-fit: contain !important;
@@ -1195,7 +1198,7 @@ ul {
 .project-img {
   display: block;
   width: 100%;
-  border-radius: 6px;
+  border-radius: 20px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.08);
   margin: 40px 0;
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
