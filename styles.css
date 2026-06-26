@@ -302,6 +302,45 @@ ul {
   letter-spacing: -0.01em;
 }
 
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 10px 3px 12px;
+  border-radius: 9999px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.brand-pill {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.brand-pill-apple {
+  background: rgba(0, 0, 0, 0.07);
+  color: #1d1d1f;
+}
+
+.brand-pill-apple:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.brand-pill-metamask {
+  background: rgba(246, 133, 27, 0.12);
+  color: #c47210;
+}
+
+.brand-pill-metamask:hover {
+  background: rgba(246, 133, 27, 0.2);
+}
+
+.inline-brand-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
 .hero-cta {
   display: inline-flex;
   align-items: center;
