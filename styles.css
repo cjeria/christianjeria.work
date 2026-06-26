@@ -1723,16 +1723,11 @@ ul {
    ============================================================ */
 @media (max-width: 767px) {
   #nav {
-    top: auto;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    top: 12px;
+    bottom: auto;
     left: 16px;
     right: 16px;
     transform: none;
-  }
-
-  /* Space for the fixed bottom nav */
-  body {
-    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
   }
 
   /* Equal-width items spread across the full pill */
