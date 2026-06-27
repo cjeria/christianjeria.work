@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Easter Egg Prototypes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f5f5f7;
+      color: #1d1d1f;
+      padding: 48px 24px 80px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      font-size: 15px;
+      color: #6e6e73;
+      margin-bottom: 48px;
+    }
+
+    .options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .option-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+
+    .option-preview {
+      height: 260px;
+      position: relative;
+      overflow: hidden;
+      background: #f5f5f7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .option-info {
+      padding: 20px 24px 24px;
+      border-top: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .option-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6e6e73;
+      margin-bottom: 4px;
+    }
+
+    .option-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+
+    .option-desc {
+      font-size: 14px;
+      color: #6e6e73;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    .trigger-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: 9999px;
+      border: none;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .trigger-btn:hover { transform: scale(1.04); }
+    .trigger-btn:active { transform: scale(0.97); }
+
+    /* ── A: MATRIX ─────────────────────────────────────── */
+    #preview-matrix { background: #000; }
+    #preview-matrix canvas { position: absolute; inset: 0; }
+    .matrix-btn { background: #00ff41; color: #000; box-shadow: 0 0 12px rgba(0,255,65,0.5); }
+
+    /* ── B: VAPORWAVE ──────────────────────────────────── */
+    #preview-vapor {
+      background: linear-gradient(160deg, #ff71ce 0%, #b967ff 50%, #01cdfe 100%);
+    }
+    .vapor-scene {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+    .vapor-title {
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: #fff;
+      text-shadow: 0 0 20px #ff71ce, 0 0 40px #b967ff;
+      font-style: italic;
+    }
+    .vapor-grid {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 120px;
+      background:
+        linear-gradient(transparent 0%, rgba(255,113,206,0.3) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 40px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.15) 0, rgba(255,255,255,0.15) 1px, transparent 1px, transparent 30px);
+      perspective: 400px;
+      transform: rotateX(40deg);
+      transform-origin: bottom;
+    }
+    .vapor-sun {
+      width: 80px; height: 80px;
+      background: linear-gradient(180deg, #ffe135 0%, #ff6b00 100%);
+      border-radius: 50%;
+      margin: 0 auto 8px;
+      box-shadow: 0 0 30px #ff6b00;
+      position: relative;
+      overflow: hidden;
+    }
+    .vapor-sun::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      background: #b967ff;
+      height: 10px;
+    }
+    .vapor-sun::after { top: 35px; box-shadow: 0 16px 0 #b967ff, 0 24px 0 #b967ff; }
+    .vapor-btn { background: linear-gradient(135deg, #ff71ce, #b967ff); color: #fff; box-shadow: 0 4px 16px rgba(185,103,255,0.4); }
+
+    /* ── C: PARTY ──────────────────────────────────────── */
+    #preview-party { background: #fff; transition: background 0.2s; }
+    #preview-party canvas { position: absolute; inset: 0; pointer-events: none; }
+    .party-center { text-align: center; position: relative; z-index: 1; }
+    .party-emoji { font-size: 56px; display: block; margin-bottom: 8px; animation: party-spin 1s linear infinite; }
+    @keyframes party-spin { to { transform: rotate(360deg); } }
+    .party-text { font-size: 22px; font-weight: 800; letter-spacing: -0.3px; }
+    .party-btn { background: linear-gradient(135deg, #f59e0b, #ef4444); color: #fff; box-shadow: 0 4px 16px rgba(239,68,68,0.35); }
+
+    /* ── D: GLITCH ─────────────────────────────────────── */
+    #preview-glitch { background: #0a0a0a; }
+    .glitch-scene { text-align: center; position: relative; z-index: 1; }
+    .glitch-word {
+      font-size: 40px;
+      font-weight: 900;
+      color: #fff;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 0.05em;
+    }
+    .glitch-word::before,
+    .glitch-word::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0; right: 0;
+    }
+    .glitch-word::before {
+      color: #0ff;
+      clip-path: polygon(0 0, 100% 0, 100% 35%, 0 35%);
+      animation: glitch-top 2.5s infinite;
+    }
+    .glitch-word::after {
+      color: #f0f;
+      clip-path: polygon(0 65%, 100% 65%, 100% 100%, 0 100%);
+      animation: glitch-bot 2.5s infinite;
+    }
+    @keyframes glitch-top {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(-4px, -2px); }
+      94% { transform: translate(4px, 1px); }
+      96% { transform: translate(-2px, -1px); }
+    }
+    @keyframes glitch-bot {
+      0%, 90%, 100% { transform: translate(0); }
+      92% { transform: translate(4px, 2px); }
+      94% { transform: translate(-3px, -1px); }
+      96% { transform: translate(2px, 1px); }
+    }
+    .glitch-scanlines {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.15) 2px,
+        rgba(0,0,0,0.15) 4px
+      );
+      pointer-events: none;
+    }
+    .glitch-btn { background: #0ff; color: #000; font-family: monospace; box-shadow: 0 0 12px rgba(0,255,255,0.5); }
+
+    /* ── E: KONAMI ─────────────────────────────────────── */
+    #preview-konami { background: #111; flex-direction: column; gap: 16px; }
+    .konami-keys {
+      display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+    }
+    .konami-key {
+      width: 32px; height: 32px;
+      background: #222;
+      border: 1px solid #444;
+      border-bottom: 3px solid #555;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 12px;
+      font-family: monospace;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.1s, transform 0.1s;
+    }
+    .konami-key.lit { background: #facc15; color: #000; border-color: #ca8a04; border-bottom-color: #92400e; transform: translateY(1px); }
+    .konami-label { color: #6e6e73; font-size: 13px; letter-spacing: 0.05em; }
+    .konami-btn { background: #facc15; color: #000; box-shadow: 0 4px 16px rgba(250,204,21,0.4); }
+
+    /* ── F: OLD INTERNET ───────────────────────────────── */
+    #preview-old {
+      background: #000080;
+      background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAoAAAAKCAYAAACNMs+9AAAAHUlEQVQoU2NkYGD4z8BAAowKRwWkBYZXCi8FAACJBAEBdoaVuAAAAABJRU5ErkJggg==");
+    }
+    .old-scene { text-align: center; position: relative; z-index: 1; padding: 8px; }
+    .old-title {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      font-size: 22px;
+      color: #ff0;
+      text-shadow: 2px 2px #f00;
+      margin-bottom: 6px;
+    }
+    .old-marquee {
+      font-family: 'Comic Sans MS', cursive;
+      color: #0ff;
+      font-size: 12px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .old-counter {
+      font-family: monospace;
+      font-size: 11px;
+      color: #0f0;
+      margin-top: 6px;
+    }
+    .old-btn { background: #c0c0c0; color: #000; font-family: 'Comic Sans MS', cursive; border: 2px outset #fff; border-radius: 0; box-shadow: none; }
+    .old-btn:hover { background: #d0d0d0; }
+
+    /* ── G: DONUT MODE ─────────────────────────────────── */
+    #preview-donut { background: #fff8f0; flex-direction: column; gap: 4px; }
+    .donut-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      padding: 12px;
+    }
+    .donut-cell {
+      aspect-ratio: 1;
+      background: #f3f4f6;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      animation: donut-spin 3s linear infinite;
+    }
+    .donut-cell:nth-child(odd)  { animation-duration: 2.5s; }
+    .donut-cell:nth-child(3n)   { animation-direction: reverse; }
+    @keyframes donut-spin { to { transform: rotate(360deg); } }
+    .donut-btn { background: #f97316; color: #fff; box-shadow: 0 4px 16px rgba(249,115,22,0.4); }
+
+    /* Overlay for full-page triggered effects */
+    #fullpage-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: none;
+      overflow: hidden;
+    }
+
+    /* MATRIX full */
+    #matrix-canvas { position: absolute; inset: 0; }
+    .matrix-exit {
+      position: absolute;
+      bottom: 32px; left: 50%;
+      transform: translateX(-50%);
+      background: #00ff41;
+      color: #000;
+      border: none;
+      padding: 10px 24px;
+      border-radius: 9999px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: monospace;
+      z-index: 2;
+      box-shadow: 0 0 16px rgba(0,255,65,0.6);
+    }
+
+    /* VAPORWAVE full */
+    #vapor-overlay {
+      background: linear-gradient(160deg, #ff71ce 0%, #b967ff 50%, #01cdfe 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .vapor-full-title {
+      font-size: clamp(36px, 8vw, 80px);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      color: #fff;
+      text-shadow: 0 0 30px #ff71ce, 0 0 60px #b967ff;
+      font-style: italic;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+    .vapor-full-sub {
+      font-size: 18px;
+      letter-spacing: 0.3em;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    #vapor-overlay .vapor-grid {
+      position: fixed;
+      height: 200px;
+      background:
+        linear-gradient(transparent 0%, rgba(255,113,206,0.25) 100%),
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.12) 0, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 60px),
+        repeating-linear-gradient(0deg, rgba(255,255,255,0.12) 0, rgba(255,255,255,0.12) 1px, transparent 1px, transparent 40px);
+    }
+
+    /* PARTY full */
+    #party-overlay { background: #fff; }
+    #party-canvas { position: absolute; inset: 0; }
+    .party-full-center {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+    }
+    .party-full-emoji { font-size: 80px; display: block; margin-bottom: 12px; animation: party-spin 0.6s linear infinite; }
+    .party-full-text { font-size: 32px; font-weight: 900; letter-spacing: -0.5px; }
+
+    /* GLITCH full */
+    #glitch-overlay {
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #glitch-overlay .glitch-scanlines { position: fixed; }
+    .glitch-full-word {
+      font-size: clamp(40px, 10vw, 100px);
+      font-weight: 900;
+      color: #fff;
+      position: relative;
+      display: inline-block;
+      letter-spacing: 0.05em;
+      animation: glitch-shake 0.15s infinite;
+    }
+    .glitch-full-word::before,
+    .glitch-full-word::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0; left: 0; right: 0;
+    }
+    .glitch-full-word::before { color: #0ff; animation: glitch-top 0.4s infinite; }
+    .glitch-full-word::after  { color: #f0f; animation: glitch-bot 0.4s infinite; }
+    @keyframes glitch-shake {
+      0%, 100% { transform: translate(0); }
+      25% { transform: translate(-3px, 1px); }
+      75% { transform: translate(3px, -1px); }
+    }
+    .glitch-noise {
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px;
+    }
+
+    /* KONAMI full */
+    #konami-overlay {
+      background: #111;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 24px;
+    }
+    .konami-full-title {
+      font-size: clamp(32px, 7vw, 72px);
+      font-weight: 900;
+      color: #facc15;
+      letter-spacing: -1px;
+      text-shadow: 0 0 40px rgba(250,204,21,0.6);
+      animation: konami-pulse 1s ease-in-out infinite alternate;
+    }
+    @keyframes konami-pulse {
+      from { text-shadow: 0 0 20px rgba(250,204,21,0.4); }
+      to   { text-shadow: 0 0 60px rgba(250,204,21,0.9), 0 0 100px rgba(250,204,21,0.4); }
+    }
+    .konami-sub { color: #6e6e73; font-size: 16px; letter-spacing: 0.1em; text-transform: uppercase; }
+    .konami-full-keys { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+    .konami-full-key {
+      width: 44px; height: 44px;
+      background: #222; border: 1px solid #444; border-bottom: 3px solid #555;
+      border-radius: 8px; color: #facc15; font-size: 14px; font-family: monospace;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* OLD INTERNET full */
+    #old-overlay {
+      background: #000080;
+      background-image: repeating-linear-gradient(
+        0deg, transparent, transparent 1px, rgba(0,0,80,0.3) 1px, rgba(0,0,80,0.3) 2px
+      );
+      display: flex; align-items: center; justify-content: center;
+    }
+    .old-full-inner {
+      text-align: center;
+      max-width: 600px;
+      padding: 32px;
+      background: #c0c0c0;
+      border: 3px outset #fff;
+    }
+    .old-full-title {
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      font-size: clamp(24px, 5vw, 48px);
+      color: #f00;
+      text-shadow: 3px 3px #800000;
+      margin-bottom: 12px;
+    }
+    .old-full-sub {
+      font-family: 'Comic Sans MS', cursive;
+      font-size: 16px;
+      color: #000080;
+      margin-bottom: 16px;
+    }
+    .old-full-marquee {
+      background: #000;
+      color: #0f0;
+      font-family: monospace;
+      font-size: 14px;
+      padding: 6px;
+      margin-bottom: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .old-full-counter {
+      font-family: monospace;
+      font-size: 13px;
+      color: #000;
+      background: #fff;
+      border: 1px inset #999;
+      display: inline-block;
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
+    .old-full-gif { font-size: 40px; margin-bottom: 8px; animation: old-blink 0.8s step-start infinite; }
+    @keyframes old-blink { 50% { opacity: 0; } }
+    .old-full-hr { border: none; border-top: 2px inset #999; margin: 12px 0; }
+    .old-visitor { font-family: monospace; font-size: 12px; color: #000; }
+
+    /* DONUT full */
+    #donut-overlay {
+      background: #fff8f0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    }
+    .donut-full-title {
+      font-size: clamp(28px, 6vw, 60px);
+      font-weight: 900;
+      letter-spacing: -1px;
+      color: #f97316;
+      position: relative; z-index: 2;
+    }
+    #donut-rain {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      font-size: 32px;
+      overflow: hidden;
+    }
+    .donut-drop {
+      position: absolute;
+      top: -50px;
+      animation: donut-fall linear infinite;
+      user-select: none;
+    }
+    @keyframes donut-fall {
+      to { transform: translateY(110vh) rotate(720deg); }
+    }
+
+    /* Shared exit button */
+    .overlay-exit {
+      position: fixed;
+      top: 24px; right: 24px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 8px 18px;
+      border-radius: 9999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      z-index: 10;
+    }
+    .overlay-exit:hover { background: rgba(255,255,255,0.25); }
+    .overlay-exit.dark { color: #000; border-color: rgba(0,0,0,0.2); background: rgba(0,0,0,0.08); }
+
+    /* Fade in/out */
+    .fade-in  { animation: fadeIn  0.4s ease forwards; }
+    .fade-out { animation: fadeOut 0.35s ease forwards; }
+    @keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
+
+    /* floating egg button preview */
+    .egg-btn-preview {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      border: none;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      position: absolute;
+      bottom: 16px; right: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    .egg-btn-preview:hover { transform: scale(1.15) rotate(10deg); }
+  </style>
+</head>
+<body>
+
+  <h1>Easter Egg — Options</h1>
+  <p class="subtitle">Click any preview or "Try it" to launch the full-page effect. Pick your favourite.</p>
+
+  <div class="options">
+
+    <!-- ── A: MATRIX ─────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-matrix">
+        <canvas id="mini-matrix"></canvas>
+        <button class="egg-btn-preview" style="background:#00ff41;" onclick="launchMatrix()">👾</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option A</p>
+        <p class="option-title">Matrix Mode</p>
+        <p class="option-desc">Green digital rain takes over the screen. Click the button again or press Esc to snap back to reality.</p>
+        <button class="trigger-btn matrix-btn" onclick="launchMatrix()">👾 Try it</button>
+      </div>
+    </div>
+
+    <!-- ── B: VAPORWAVE ───────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-vapor">
+        <div class="vapor-grid"></div>
+        <div class="vapor-scene">
+          <div class="vapor-sun"></div>
+          <div class="vapor-title">ÆSTHETIC</div>
+        </div>
+        <button class="egg-btn-preview" style="background:linear-gradient(135deg,#ff71ce,#b967ff);" onclick="launchVapor()">🌊</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option B</p>
+        <p class="option-title">Vaporwave</p>
+        <p class="option-desc">Retro pink-purple gradients, a striped sunset, and a perspective grid flood the page. Totally aesthetic.</p>
+        <button class="trigger-btn vapor-btn" onclick="launchVapor()">🌊 Try it</button>
+      </div>
+    </div>
+
+    <!-- ── C: PARTY ────────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-party">
+        <canvas id="mini-party"></canvas>
+        <div class="party-center" style="position:relative;z-index:1;">
+          <span class="party-emoji">🎉</span>
+          <p class="party-text">Let's gooo!</p>
+        </div>
+        <button class="egg-btn-preview" style="background:linear-gradient(135deg,#f59e0b,#ef4444);" onclick="launchParty()">🎉</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option C</p>
+        <p class="option-title">Party Mode</p>
+        <p class="option-desc">Confetti bursts across the screen, the background cycles through rainbow hues. Pure chaos energy.</p>
+        <button class="trigger-btn party-btn" onclick="launchParty()">🎉 Try it</button>
+      </div>
+    </div>
+
+    <!-- ── D: GLITCH ───────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-glitch">
+        <div class="glitch-scanlines"></div>
+        <div class="glitch-scene">
+          <span class="glitch-word" data-text="ERROR">ERROR</span>
+        </div>
+        <button class="egg-btn-preview" style="background:#0ff;color:#000;" onclick="launchGlitch()">⚡</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option D</p>
+        <p class="option-title">Glitch</p>
+        <p class="option-desc">The screen tears, RGB channels split, scanlines flicker. Feels like reality broke for a second.</p>
+        <button class="trigger-btn glitch-btn" onclick="launchGlitch()">⚡ Try it</button>
+      </div>
+    </div>
+
+    <!-- ── E: KONAMI ─────────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-konami">
+        <div class="konami-keys" id="mini-konami-keys">
+          <div class="konami-key" data-k="0">↑</div>
+          <div class="konami-key" data-k="1">↑</div>
+          <div class="konami-key" data-k="2">↓</div>
+          <div class="konami-key" data-k="3">↓</div>
+          <div class="konami-key" data-k="4">←</div>
+          <div class="konami-key" data-k="5">→</div>
+          <div class="konami-key" data-k="6">←</div>
+          <div class="konami-key" data-k="7">→</div>
+          <div class="konami-key" data-k="8">B</div>
+          <div class="konami-key" data-k="9">A</div>
+        </div>
+        <p class="konami-label">Type the sequence on your keyboard</p>
+        <button class="egg-btn-preview" style="background:#facc15;color:#000;" onclick="launchKonami()">⭐</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option E</p>
+        <p class="option-title">Konami Code</p>
+        <p class="option-desc">Type ↑↑↓↓←→←→BA on your keyboard and watch something unexpected happen. Classic cheat code energy.</p>
+        <button class="trigger-btn konami-btn" onclick="launchKonami()">⭐ Try it</button>
+      </div>
+    </div>
+
+    <!-- ── F: OLD INTERNET ────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-old">
+        <div class="old-scene">
+          <div class="old-title">✨ WELCOME ✨</div>
+          <div class="old-marquee" id="mini-marquee">🌟 Best viewed in Internet Explorer 6 · 800x600 · Click to enter 🌟 &nbsp;&nbsp;&nbsp;</div>
+          <div class="old-counter">Visitors: 000,001,337</div>
+        </div>
+        <button class="egg-btn-preview" style="background:#c0c0c0;color:#000;border:2px outset #fff;border-radius:0;" onclick="launchOld()">💾</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option F</p>
+        <p class="option-title">Old Internet</p>
+        <p class="option-desc">The page resets to 1999: Comic Sans, marquee text, tiled background, a hit counter, and pure chaotic nostalgia.</p>
+        <button class="trigger-btn old-btn" onclick="launchOld()">💾 Try it</button>
+      </div>
+    </div>
+
+    <!-- ── G: DONUT MODE ──────────────────────────────── -->
+    <div class="option-card">
+      <div class="option-preview" id="preview-donut">
+        <div class="donut-grid">
+          <div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div>
+          <div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div><div class="donut-cell">🍩</div>
+        </div>
+        <button class="egg-btn-preview" style="background:#f97316;" onclick="launchDonut()">🍩</button>
+      </div>
+      <div class="option-info">
+        <p class="option-label">Option G</p>
+        <p class="option-title">Donut Mode</p>
+        <p class="option-desc">Every image on the page gets replaced with a 🍩 and a rain of donuts falls across the screen. No explanation needed.</p>
+        <button class="trigger-btn donut-btn" onclick="launchDonut()">🍩 Try it</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ FULL-PAGE OVERLAYS ══════════════════════════════════════════ -->
+
+  <div id="fullpage-overlay">
+
+    <!-- Matrix -->
+    <div id="matrix-overlay" style="display:none;position:absolute;inset:0;background:#000;">
+      <canvas id="matrix-canvas"></canvas>
+      <button class="matrix-exit" onclick="exitOverlay()">[ EXIT MATRIX ]</button>
+    </div>
+
+    <!-- Vaporwave -->
+    <div id="vapor-overlay" style="display:none;position:absolute;inset:0;">
+      <div class="vapor-grid"></div>
+      <div style="position:relative;z-index:1;text-align:center;">
+        <div class="vapor-full-title">ÆSTHETIC</div>
+        <div class="vapor-full-sub">Portfolio · 1984</div>
+        <div style="font-size:64px;">🌊</div>
+      </div>
+      <button class="overlay-exit" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+    <!-- Party -->
+    <div id="party-overlay" style="display:none;position:absolute;inset:0;">
+      <canvas id="party-canvas"></canvas>
+      <div class="party-full-center">
+        <span class="party-full-emoji">🎉</span>
+        <p class="party-full-text">You found it!</p>
+      </div>
+      <button class="overlay-exit dark" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+    <!-- Glitch -->
+    <div id="glitch-overlay" style="display:none;position:absolute;inset:0;">
+      <div class="glitch-scanlines"></div>
+      <div class="glitch-noise"></div>
+      <span class="glitch-full-word" data-text="EASTER EGG">EASTER EGG</span>
+      <button class="overlay-exit" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+    <!-- Konami -->
+    <div id="konami-overlay" style="display:none;position:absolute;inset:0;">
+      <div class="konami-full-title">+30 LIVES</div>
+      <div class="konami-sub">Cheat code activated</div>
+      <div class="konami-full-keys">
+        <div class="konami-full-key">↑</div><div class="konami-full-key">↑</div>
+        <div class="konami-full-key">↓</div><div class="konami-full-key">↓</div>
+        <div class="konami-full-key">←</div><div class="konami-full-key">→</div>
+        <div class="konami-full-key">←</div><div class="konami-full-key">→</div>
+        <div class="konami-full-key">B</div><div class="konami-full-key">A</div>
+      </div>
+      <button class="overlay-exit" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+    <!-- Old Internet -->
+    <div id="old-overlay" style="display:none;position:absolute;inset:0;">
+      <div class="old-full-inner">
+        <div class="old-full-gif">🚧 🚧 🚧</div>
+        <div class="old-full-title">Welcome to My Portfolio!!</div>
+        <div class="old-full-sub">Under Construction · Est. 1999</div>
+        <hr class="old-full-hr" />
+        <div class="old-full-marquee" id="full-marquee">🌟 Best viewed in Netscape Navigator at 800x600 · Please sign my guestbook · Free web hosting by GeoCities 🌟 &nbsp;&nbsp;&nbsp;</div>
+        <hr class="old-full-hr" />
+        <div class="old-full-counter">👁 You are visitor number: <strong>001,337,420</strong></div>
+        <div class="visitor" style="margin-top:8px;">Last updated: Jan 1, 2000</div>
+      </div>
+      <button class="overlay-exit dark" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+    <!-- Donut -->
+    <div id="donut-overlay" style="display:none;position:absolute;inset:0;">
+      <div id="donut-rain"></div>
+      <div class="donut-full-title">🍩 Donut Mode 🍩</div>
+      <button class="overlay-exit dark" onclick="exitOverlay()">✕ Exit</button>
+    </div>
+
+  </div>
+
+  <script>
+    /* ── Mini matrix canvas in card preview ──────────────────── */
+    (function () {
+      const canvas = document.getElementById('mini-matrix');
+      const preview = document.getElementById('preview-matrix');
+      canvas.width  = preview.offsetWidth;
+      canvas.height = preview.offsetHeight;
+      const ctx = canvas.getContext('2d');
+      const cols = Math.floor(canvas.width / 14);
+      const drops = Array(cols).fill(1);
+      setInterval(() => {
+        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff41';
+        ctx.font = '13px monospace';
+        drops.forEach((y, i) => {
+          const ch = String.fromCharCode(0x30A0 + Math.random() * 96);
+          ctx.fillText(ch, i * 14, y * 14);
+          if (y * 14 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        });
+      }, 50);
+    })();
+
+    /* ── Mini party confetti in card preview ─────────────────── */
+    (function () {
+      const canvas = document.getElementById('mini-party');
+      const preview = document.getElementById('preview-party');
+      canvas.width  = preview.offsetWidth;
+      canvas.height = preview.offsetHeight;
+      const ctx = canvas.getContext('2d');
+      const colors = ['#f59e0b','#ef4444','#10b981','#3b82f6','#8b5cf6','#ec4899'];
+      const dots = Array.from({length: 40}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: 4 + Math.random() * 5,
+        c: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 1.5,
+        vy: (Math.random() - 0.5) * 1.5,
+        spin: Math.random() * Math.PI * 2,
+        ds: (Math.random() - 0.5) * 0.1,
+      }));
+      function drawMiniParty() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        dots.forEach(d => {
+          ctx.save();
+          ctx.translate(d.x, d.y);
+          ctx.rotate(d.spin);
+          ctx.fillStyle = d.c;
+          ctx.fillRect(-d.r, -d.r / 2, d.r * 2, d.r);
+          ctx.restore();
+          d.x += d.vx; d.y += d.vy; d.spin += d.ds;
+          if (d.x < 0) d.x = canvas.width;
+          if (d.x > canvas.width) d.x = 0;
+          if (d.y < 0) d.y = canvas.height;
+          if (d.y > canvas.height) d.y = 0;
+        });
+        requestAnimationFrame(drawMiniParty);
+      }
+      drawMiniParty();
+    })();
+
+    /* ── Mini marquee animation ──────────────────────────────── */
+    (function () {
+      const el = document.getElementById('mini-marquee');
+      if (!el) return;
+      let x = 0;
+      const text = el.textContent;
+      const speed = 1;
+      setInterval(() => {
+        x -= speed;
+        const w = el.scrollWidth / 2;
+        if (Math.abs(x) >= w) x = 0;
+        el.style.transform = `translateX(${x}px)`;
+      }, 16);
+    })();
+
+    /* ── Konami mini key highlight ────────────────────────────── */
+    const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown','ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+    let konamiIdx = 0;
+    document.addEventListener('keydown', (e) => {
+      const keys = document.querySelectorAll('#mini-konami-keys .konami-key');
+      if (e.key === KONAMI[konamiIdx]) {
+        keys[konamiIdx].classList.add('lit');
+        konamiIdx++;
+        if (konamiIdx === KONAMI.length) {
+          konamiIdx = 0;
+          setTimeout(() => { keys.forEach(k => k.classList.remove('lit')); launchKonami(); }, 300);
+        }
+      } else {
+        konamiIdx = 0;
+        keys.forEach(k => k.classList.remove('lit'));
+      }
+    });
+
+    /* ── Overlay state ───────────────────────────────────────── */
+    const ALL_OVERLAYS = ['matrix-overlay','vapor-overlay','party-overlay','glitch-overlay','konami-overlay','old-overlay','donut-overlay'];
+    let activeRaf = null;
+    let activeInterval = null;
+
+    function showOverlay(id) {
+      const wrap = document.getElementById('fullpage-overlay');
+      ALL_OVERLAYS.forEach(oid => {
+        document.getElementById(oid).style.display = oid === id ? 'block' : 'none';
+      });
+      wrap.style.display = 'block';
+      wrap.classList.remove('fade-out');
+      wrap.classList.add('fade-in');
+      document.addEventListener('keydown', escListener);
+    }
+
+    function exitOverlay() {
+      const wrap = document.getElementById('fullpage-overlay');
+      wrap.classList.remove('fade-in');
+      wrap.classList.add('fade-out');
+      wrap.addEventListener('animationend', () => {
+        wrap.style.display = 'none';
+        wrap.classList.remove('fade-out');
+      }, { once: true });
+      if (activeRaf) { cancelAnimationFrame(activeRaf); activeRaf = null; }
+      if (activeInterval) { clearInterval(activeInterval); activeInterval = null; }
+      document.removeEventListener('keydown', escListener);
+    }
+
+    function escListener(e) { if (e.key === 'Escape') exitOverlay(); }
+
+    /* ── A: Matrix full-page ─────────────────────────────────── */
+    function launchMatrix() {
+      showOverlay('matrix-overlay');
+      const canvas = document.getElementById('matrix-canvas');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      const cols  = Math.floor(canvas.width / 16);
+      const drops = Array(cols).fill(1);
+      function draw() {
+        ctx.fillStyle = 'rgba(0,0,0,0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#00ff41';
+        ctx.font = '15px monospace';
+        drops.forEach((y, i) => {
+          const ch = String.fromCharCode(0x30A0 + Math.random() * 96);
+          ctx.fillText(ch, i * 16, y * 16);
+          if (y * 16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+          drops[i]++;
+        });
+        activeRaf = requestAnimationFrame(draw);
+      }
+      draw();
+    }
+
+    /* ── B: Vaporwave (static overlay) ──────────────────────── */
+    function launchVapor() {
+      showOverlay('vapor-overlay');
+    }
+
+    /* ── C: Party confetti ───────────────────────────────────── */
+    function launchParty() {
+      showOverlay('party-overlay');
+      const canvas = document.getElementById('party-canvas');
+      canvas.width  = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const ctx = canvas.getContext('2d');
+      const colors = ['#f59e0b','#ef4444','#10b981','#3b82f6','#8b5cf6','#ec4899','#fff'];
+      const pieces = Array.from({length: 160}, () => ({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        w: 8 + Math.random() * 8,
+        h: 4 + Math.random() * 6,
+        c: colors[Math.floor(Math.random() * colors.length)],
+        vx: (Math.random() - 0.5) * 3,
+        vy: 2 + Math.random() * 4,
+        spin: Math.random() * Math.PI * 2,
+        ds: (Math.random() - 0.5) * 0.15,
+      }));
+      let hue = 0;
+      function drawParty() {
+        hue = (hue + 0.5) % 360;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        document.getElementById('party-overlay').style.background =
+          `hsl(${hue}, 80%, 96%)`;
+        pieces.forEach(p => {
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.spin);
+          ctx.fillStyle = p.c;
+          ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+          p.x += p.vx; p.y += p.vy; p.spin += p.ds;
+          if (p.y > canvas.height) {
+            p.y = -20;
+            p.x = Math.random() * canvas.width;
+          }
+        });
+        activeRaf = requestAnimationFrame(drawParty);
+      }
+      drawParty();
+    }
+
+    /* ── D: Glitch (CSS-driven, no canvas needed) ────────────── */
+    function launchGlitch() {
+      showOverlay('glitch-overlay');
+    }
+
+    /* ── E: Konami ───────────────────────────────────────────── */
+    function launchKonami() {
+      showOverlay('konami-overlay');
+    }
+
+    /* ── F: Old Internet ─────────────────────────────────────── */
+    function launchOld() {
+      showOverlay('old-overlay');
+      /* Animate the marquee */
+      const el = document.getElementById('full-marquee');
+      if (!el) return;
+      let x = 0;
+      function tickMarquee() {
+        x -= 1.5;
+        const w = el.scrollWidth / 2;
+        if (Math.abs(x) >= w) x = 0;
+        el.style.transform = `translateX(${x}px)`;
+        activeRaf = requestAnimationFrame(tickMarquee);
+      }
+      tickMarquee();
+    }
+
+    /* ── G: Donut Mode ───────────────────────────────────────── */
+    function launchDonut() {
+      showOverlay('donut-overlay');
+      const rain = document.getElementById('donut-rain');
+      rain.innerHTML = '';
+      for (let i = 0; i < 30; i++) {
+        const d = document.createElement('span');
+        d.className = 'donut-drop';
+        d.textContent = '🍩';
+        d.style.left     = `${Math.random() * 100}vw`;
+        d.style.fontSize = `${20 + Math.random() * 40}px`;
+        d.style.animationDuration = `${2 + Math.random() * 4}s`;
+        d.style.animationDelay   = `${Math.random() * 3}s`;
+        d.style.opacity = 0.7 + Math.random() * 0.3;
+        rain.appendChild(d);
+      }
+    }
+  </script>
+</body>
+</html>

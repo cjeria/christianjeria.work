@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Card Explorations — Christian Jeria</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-base: #f5f5f7;
+      --accent: #0071e3;
+      --glass-bg: rgba(255,255,255,0.72);
+      --glass-border: rgba(0,0,0,0.06);
+      --glass-border-hover: rgba(0,113,227,0.3);
+      --text-primary: #1d1d1f;
+      --text-secondary: #6e6e73;
+      --radius-card: 24px;
+      --shadow-sm: 0 2px 12px rgba(0,0,0,0.06);
+      --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
+      --shadow-lg: 0 16px 48px rgba(0,0,0,0.14);
+      --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+      --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+      --t1: linear-gradient(135deg,#d4ecf5,#b9daed);
+      --t2: linear-gradient(135deg,#e4d4f8,#cfbcf0);
+      --t3: linear-gradient(135deg,#d4f6e2,#afe2c8);
+      --t4: linear-gradient(135deg,#f8e2c5,#efcba8);
+    }
+
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg-base);
+      color: var(--text-primary);
+      line-height: 1.6;
+    }
+
+    a { text-decoration: none; color: inherit; }
+
+    /* ── Sticky nav ─────────────────────────────────────────── */
+    .prototype-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(245,245,247,0.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      padding: 14px 40px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+    }
+    .prototype-nav span {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-right: 8px;
+      white-space: nowrap;
+    }
+    .prototype-nav a {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      background: rgba(0,0,0,0.05);
+      border-radius: 9999px;
+      padding: 5px 14px;
+      white-space: nowrap;
+      transition: background var(--transition), color var(--transition);
+    }
+    .prototype-nav a:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    /* ── Section wrapper ────────────────────────────────────── */
+    .proto-section {
+      padding: 80px 40px;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+    }
+    .proto-section:last-child { border-bottom: none; }
+
+    .proto-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,113,227,0.08);
+      border-radius: 9999px;
+      padding: 4px 12px;
+      margin-bottom: 12px;
+    }
+    .proto-title {
+      font-size: clamp(22px,3vw,32px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .proto-desc {
+      font-size: 15px;
+      color: var(--text-secondary);
+      margin-bottom: 40px;
+      max-width: 560px;
+    }
+
+    .container { max-width: 1120px; margin: 0 auto; }
+
+    /* ── Shared card bits ───────────────────────────────────── */
+    .tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(0,113,227,0.08);
+      border-radius: 9999px;
+      padding: 3px 10px;
+    }
+    .card-title { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+    .card-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.55; }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION A — Glass Tile Grid (current)
+    ════════════════════════════════════════════════════════ */
+    .grid-a {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .card-a {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .card-a:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--glass-border-hover);
+    }
+    .card-a .thumb {
+      height: 200px;
+    }
+    .card-a .body { padding: 22px 26px 26px; }
+    .card-a .meta { margin-bottom: 10px; }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION B — Horizontal List
+    ════════════════════════════════════════════════════════ */
+    .list-b {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .card-b {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .card-b:hover {
+      transform: translateX(6px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--glass-border-hover);
+    }
+    .card-b .thumb { height: 100%; min-height: 160px; }
+    .card-b .body {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION C — Magazine / Feature Grid
+    ════════════════════════════════════════════════════════ */
+    .grid-c {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .card-c {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .card-c:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--glass-border-hover);
+    }
+    .card-c.feature {
+      grid-column: span 3;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .card-c.feature .thumb { height: auto; min-height: 320px; }
+    .card-c.feature .body {
+      padding: 48px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card-c.feature .card-title { font-size: 26px; margin-bottom: 10px; }
+    .card-c.feature .card-desc { font-size: 15px; }
+    .card-c .thumb { height: 180px; }
+    .card-c .body { padding: 20px 24px 24px; }
+    .card-c .meta { margin-bottom: 8px; }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION D — Full-Bleed Image Overlay
+    ════════════════════════════════════════════════════════ */
+    .grid-d {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .card-d {
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      position: relative;
+      height: 320px;
+      box-shadow: var(--shadow-sm);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .card-d:hover {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: var(--shadow-lg);
+    }
+    .card-d .thumb {
+      position: absolute;
+      inset: 0;
+    }
+    .card-d .overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,10,20,0.78) 0%, rgba(10,10,20,0.12) 55%, transparent 100%);
+    }
+    .card-d .body {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 26px;
+    }
+    .card-d .body .tag {
+      background: rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 8px;
+    }
+    .card-d .card-title { font-size: 20px; color: #fff; margin-bottom: 4px; }
+    .card-d .card-desc { font-size: 13px; color: rgba(255,255,255,0.75); line-height: 1.5; }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION E — Minimal Editorial / Text-Forward
+    ════════════════════════════════════════════════════════ */
+    .list-e {
+      display: flex;
+      flex-direction: column;
+    }
+    .card-e {
+      display: grid;
+      grid-template-columns: 48px 1fr auto;
+      align-items: start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.07);
+      transition: background var(--transition);
+      border-radius: 12px;
+      cursor: pointer;
+    }
+    .card-e:first-child { border-top: 1px solid rgba(0,0,0,0.07); }
+    .card-e:hover { background: rgba(255,255,255,0.6); padding-left: 16px; padding-right: 16px; margin-left: -16px; margin-right: -16px; }
+    .card-e .num {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      padding-top: 4px;
+    }
+    .card-e .content .card-title { font-size: 19px; margin-bottom: 6px; }
+    .card-e .arrow {
+      font-size: 20px;
+      color: var(--text-secondary);
+      padding-top: 2px;
+      transition: transform var(--transition), color var(--transition);
+    }
+    .card-e:hover .arrow { transform: translateX(4px); color: var(--accent); }
+
+    /* ════════════════════════════════════════════════════════
+       OPTION F — Bento / Mosaic Grid
+    ════════════════════════════════════════════════════════ */
+    .grid-f {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 240px 240px;
+      gap: 16px;
+    }
+    .card-f {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+    .card-f:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--glass-border-hover);
+    }
+    .card-f.tall { grid-row: span 2; }
+    .card-f.wide { grid-column: span 2; }
+    .card-f .thumb { flex: 1; min-height: 0; }
+    .card-f.tall .thumb { flex: 1.4; }
+    .card-f .body { padding: 18px 22px 22px; }
+    .card-f .meta { margin-bottom: 6px; }
+    .card-f .card-title { font-size: 17px; }
+    .card-f.tall .card-title { font-size: 20px; }
+
+    /* ── Shared thumb colors ───────────────────────────────── */
+    .t1 { background: var(--t1); }
+    .t2 { background: var(--t2); }
+    .t3 { background: var(--t3); }
+    .t4 { background: var(--t4); }
+    .t5 { background: linear-gradient(135deg,#dde8ff,#bdc8ff); }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav class="prototype-nav">
+    <span>Card Explorations</span>
+    <a href="#option-a">A — Glass Tile</a>
+    <a href="#option-b">B — Horizontal List</a>
+    <a href="#option-c">C — Magazine</a>
+    <a href="#option-d">D — Full-Bleed</a>
+    <a href="#option-e">E — Minimal Editorial</a>
+    <a href="#option-f">F — Bento Mosaic</a>
+  </nav>
+
+  <!-- ══ OPTION A ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-a">
+    <div class="container">
+      <div class="proto-label">Option A</div>
+      <h2 class="proto-title">Glass Tile Grid</h2>
+      <p class="proto-desc">Current direction — equal 3-column glass cards with top thumbnail. Clean, familiar, iCloud-inspired.</p>
+      <div class="grid-a">
+        <div class="card-a">
+          <div class="thumb t1"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Web App</span></div>
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">Unifying scattered experiments into one flagship product for a crypto-powered knowledge network.</p>
+          </div>
+        </div>
+        <div class="card-a">
+          <div class="thumb t2"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Brand, Web &amp; Mobile</span></div>
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Shaping the experience of one of the world's most widely used web3 wallets.</p>
+          </div>
+        </div>
+        <div class="card-a">
+          <div class="thumb t3"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Embedded UI, Web App</span></div>
+            <div class="card-title">Origin Labs</div>
+            <p class="card-desc">Designing the logo, embedded UI, and fleet management app for a 3D printing startup.</p>
+          </div>
+        </div>
+        <div class="card-a">
+          <div class="thumb t4"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Mobile, Web &amp; Illustration</span></div>
+            <div class="card-title">Portal</div>
+            <p class="card-desc">Bringing wallet service concepts to life through rapid prototyping and illustrations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OPTION B ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-b">
+    <div class="container">
+      <div class="proto-label">Option B</div>
+      <h2 class="proto-title">Horizontal List</h2>
+      <p class="proto-desc">Each project is a landscape row — image left, content right. Feels more like a case-study index, easy to scan.</p>
+      <div class="list-b">
+        <div class="card-b">
+          <div class="thumb t1"></div>
+          <div class="body">
+            <div><span class="tag">Web App</span></div>
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">Unifying scattered experiments into one flagship product for a crypto-powered knowledge network.</p>
+          </div>
+        </div>
+        <div class="card-b">
+          <div class="thumb t2"></div>
+          <div class="body">
+            <div><span class="tag">Brand, Web &amp; Mobile</span></div>
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Shaping the experience of one of the world's most widely used web3 wallets.</p>
+          </div>
+        </div>
+        <div class="card-b">
+          <div class="thumb t3"></div>
+          <div class="body">
+            <div><span class="tag">Embedded UI, Web App</span></div>
+            <div class="card-title">Origin Labs</div>
+            <p class="card-desc">Designing the logo, embedded UI, and fleet management app for a 3D printing startup.</p>
+          </div>
+        </div>
+        <div class="card-b">
+          <div class="thumb t4"></div>
+          <div class="body">
+            <div><span class="tag">Mobile, Web &amp; Illustration</span></div>
+            <div class="card-title">Portal</div>
+            <p class="card-desc">Bringing wallet service concepts to life through rapid prototyping and illustrations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OPTION C ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-c">
+    <div class="container">
+      <div class="proto-label">Option C</div>
+      <h2 class="proto-title">Magazine / Feature Grid</h2>
+      <p class="proto-desc">One hero project spans full width; supporting projects sit in a row below. Creates natural hierarchy without extra words.</p>
+      <div class="grid-c">
+        <div class="card-c feature">
+          <div class="thumb t2" style="min-height:320px;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Brand, Web &amp; Mobile</span></div>
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Shaping the experience of one of the world's most widely used web3 wallets, from onboarding flows to the iconic fox logo.</p>
+          </div>
+        </div>
+        <div class="card-c">
+          <div class="thumb t1"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Web App</span></div>
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">Unifying scattered experiments into one flagship product.</p>
+          </div>
+        </div>
+        <div class="card-c">
+          <div class="thumb t3"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Embedded UI</span></div>
+            <div class="card-title">Origin Labs</div>
+            <p class="card-desc">Logo, embedded UI, and fleet management app for a 3D printing startup.</p>
+          </div>
+        </div>
+        <div class="card-c">
+          <div class="thumb t4"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Mobile, Illustration</span></div>
+            <div class="card-title">Portal</div>
+            <p class="card-desc">Rapid prototyping and illustrations for a wallet startup.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OPTION D ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-d">
+    <div class="container">
+      <div class="proto-label">Option D</div>
+      <h2 class="proto-title">Full-Bleed Image Overlay</h2>
+      <p class="proto-desc">Project images fill the entire card; text overlays at the bottom. High visual impact — best once real project photography or screens are in place.</p>
+      <div class="grid-d">
+        <div class="card-d">
+          <div class="thumb t1"></div>
+          <div class="overlay"></div>
+          <div class="body">
+            <div><span class="tag">Web App</span></div>
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">One flagship product for a crypto-powered knowledge network.</p>
+          </div>
+        </div>
+        <div class="card-d">
+          <div class="thumb t2"></div>
+          <div class="overlay"></div>
+          <div class="body">
+            <div><span class="tag">Brand, Web &amp; Mobile</span></div>
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Experience design for the world's most used web3 wallet.</p>
+          </div>
+        </div>
+        <div class="card-d">
+          <div class="thumb t3"></div>
+          <div class="overlay"></div>
+          <div class="body">
+            <div><span class="tag">Embedded UI, Web App</span></div>
+            <div class="card-title">Origin Labs</div>
+            <p class="card-desc">Fleet management and embedded UI for a manufacturing startup.</p>
+          </div>
+        </div>
+        <div class="card-d">
+          <div class="thumb t4"></div>
+          <div class="overlay"></div>
+          <div class="body">
+            <div><span class="tag">Mobile, Illustration</span></div>
+            <div class="card-title">Portal</div>
+            <p class="card-desc">Rapid prototyping and product illustrations for an early-stage startup.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OPTION E ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-e">
+    <div class="container">
+      <div class="proto-label">Option E</div>
+      <h2 class="proto-title">Minimal Editorial</h2>
+      <p class="proto-desc">No thumbnails — pure typography and layout. Numbered rows with an arrow CTA. Lets the project titles do the talking; ideal for a senior, text-forward voice.</p>
+      <div class="list-e">
+        <div class="card-e">
+          <div class="num">01</div>
+          <div class="content">
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">Unifying scattered experiments into one flagship product for a crypto-powered knowledge network.</p>
+            <div style="margin-top:10px;"><span class="tag">Web App</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-e">
+          <div class="num">02</div>
+          <div class="content">
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Shaping the experience of one of the world's most widely used web3 wallets, from onboarding to the fox logo.</p>
+            <div style="margin-top:10px;"><span class="tag">Brand, Web &amp; Mobile</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-e">
+          <div class="num">03</div>
+          <div class="content">
+            <div class="card-title">Origin Labs</div>
+            <p class="card-desc">Logo, embedded UI, and fleet management app for a manufacturing-grade 3D printing startup acquired by Stratasys.</p>
+            <div style="margin-top:10px;"><span class="tag">Embedded UI, Web App</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+        <div class="card-e">
+          <div class="num">04</div>
+          <div class="content">
+            <div class="card-title">Portal</div>
+            <p class="card-desc">Rapid prototyping, product illustrations, and website design for an early-stage wallet startup.</p>
+            <div style="margin-top:10px;"><span class="tag">Mobile, Illustration</span></div>
+          </div>
+          <div class="arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ OPTION F ══════════════════════════════════════════════ -->
+  <section class="proto-section" id="option-f">
+    <div class="container">
+      <div class="proto-label">Option F</div>
+      <h2 class="proto-title">Bento Mosaic</h2>
+      <p class="proto-desc">Asymmetric grid — one tall card anchors the left, a wide card spans the top right, smaller cards fill remaining cells. Creates rhythm and visual interest without a hero.</p>
+      <div class="grid-f">
+        <!-- tall left -->
+        <div class="card-f tall">
+          <div class="thumb t2" style="flex:1.4;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Brand, Web &amp; Mobile</span></div>
+            <div class="card-title">MetaMask</div>
+            <p class="card-desc">Experience design for the world's most used web3 wallet.</p>
+          </div>
+        </div>
+        <!-- wide top-right -->
+        <div class="card-f wide">
+          <div class="thumb t1" style="height:140px;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Web App</span></div>
+            <div class="card-title">Intuition Systems</div>
+            <p class="card-desc">One flagship product for a crypto-powered knowledge network.</p>
+          </div>
+        </div>
+        <!-- small 1 -->
+        <div class="card-f">
+          <div class="thumb t5" style="height:110px;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">AI, Web App</span></div>
+            <div class="card-title">ChrisGPT</div>
+          </div>
+        </div>
+        <!-- small 2 -->
+        <div class="card-f">
+          <div class="thumb t3" style="height:110px;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Embedded UI</span></div>
+            <div class="card-title">Origin Labs</div>
+          </div>
+        </div>
+        <!-- small 3 -->
+        <div class="card-f">
+          <div class="thumb t4" style="height:110px;"></div>
+          <div class="body">
+            <div class="meta"><span class="tag">Mobile</span></div>
+            <div class="card-title">Portal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>
