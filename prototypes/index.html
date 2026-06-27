@@ -96,6 +96,20 @@
       color: var(--text-secondary);
       max-width: 480px;
     }
+
+    .proto-breadcrumb-inline {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 16px;
+      margin-bottom: 4px;
+    }
+    .proto-breadcrumb-inline a { color: var(--text-secondary); text-decoration: none; }
+    .proto-breadcrumb-inline a:hover { color: var(--text-primary); }
+    .proto-breadcrumb-inline .sep { color: #c7c7cc; }
+    .proto-breadcrumb-inline .current { color: var(--text-primary); }
   </style>
 </head>
 <body>
@@ -115,6 +129,12 @@
 
   <main class="section">
     <div class="container">
+
+      <nav class="proto-breadcrumb-inline reveal" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span class="sep">/</span>
+        <span class="current">Prototypes</span>
+      </nav>
 
       <div class="proto-header reveal">
         <p class="proto-eyebrow">In Progress</p>

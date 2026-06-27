@@ -342,9 +342,40 @@
     .t3 { background: var(--t3); }
     .t4 { background: var(--t4); }
     .t5 { background: linear-gradient(135deg,#dde8ff,#bdc8ff); }
+
+    .proto-breadcrumb {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 200;
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.08);
+      border-radius: 9999px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .proto-breadcrumb a { color: #6e6e73; text-decoration: none; }
+    .proto-breadcrumb a:hover { color: #1d1d1f; }
+    .proto-breadcrumb .sep { color: #c7c7cc; }
+    .proto-breadcrumb .current { color: #1d1d1f; }
   </style>
 </head>
 <body>
+
+  <nav class="proto-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/prototypes/">Prototypes</a>
+    <span class="sep">/</span>
+    <span class="current">Card Explorations</span>
+  </nav>
 
   <!-- Nav -->
   <nav class="prototype-nav">
