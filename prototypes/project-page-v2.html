@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MetaMask — Project Page v2 Prototype</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #fafaf8;
+      --gray:  #6b6b6b;
+      --light: #f0efeb;
+      --accent: #f6851b;
+      --serif: Georgia, 'Times New Roman', serif;
+      --sans:  -apple-system, BlinkMacSystemFont, 'Helvetica Neue', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
+    }
+
+    /* ── Breadcrumb ───────────────────────────────────── */
+    .proto-breadcrumb {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 200;
+      background: rgba(250,250,248,0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 9999px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .proto-breadcrumb a { color: #6b6b6b; text-decoration: none; }
+    .proto-breadcrumb a:hover { color: var(--black); }
+    .proto-breadcrumb .sep { color: #ccc; }
+    .proto-breadcrumb .current { color: var(--black); }
+
+    /* ── Progress bar ─────────────────────────────────── */
+    #progress-bar {
+      position: fixed;
+      top: 0; left: 0;
+      height: 2px;
+      width: 0%;
+      background: var(--accent);
+      z-index: 300;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Section nav ──────────────────────────────────── */
+    #section-nav {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      z-index: 100;
+    }
+    .snav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .snav-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #ccc;
+      text-align: right;
+      transition: color 0.3s;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.2s, transform 0.2s, color 0.2s;
+    }
+    .snav-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #ccc;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .snav-item:hover .snav-label,
+    .snav-item.active .snav-label { opacity: 1; transform: translateX(0); color: var(--black); }
+    .snav-item.active .snav-dot { background: var(--accent); transform: scale(1.5); }
+    .snav-item:hover .snav-dot { background: var(--black); }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 0 60px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(246,133,27,0.12) 0%, transparent 70%),
+        var(--white);
+    }
+
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 32px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-num {
+      font-family: var(--serif);
+      font-size: 13px;
+      color: var(--gray);
+      letter-spacing: 0.05em;
+    }
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray);
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 9999px;
+      padding: 4px 10px;
+    }
+
+    .hero-title {
+      font-size: clamp(64px, 11vw, 140px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 0.9;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 32px;
+      overflow: hidden;
+    }
+    .hero-title-inner {
+      display: block;
+      transform: translateY(110%);
+      animation: slide-up 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+    }
+    @keyframes slide-up {
+      to { transform: translateY(0); }
+    }
+
+    .hero-sub {
+      max-width: 560px;
+      font-size: clamp(16px, 1.8vw, 20px);
+      line-height: 1.5;
+      color: var(--gray);
+      position: relative;
+      z-index: 1;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fade-up 0.8s ease 0.7s forwards;
+    }
+    @keyframes fade-up {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      right: 60px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      opacity: 0;
+      animation: fade-up 0.6s ease 1.2s forwards;
+    }
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: var(--gray);
+      transform-origin: left;
+      animation: grow-line 0.6s ease 1.4s both;
+    }
+    @keyframes grow-line { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* ── Hero image ───────────────────────────────────── */
+    .hero-image-wrap {
+      width: 100%;
+      aspect-ratio: 16/8;
+      overflow: hidden;
+      background: #1a1a1a;
+      position: relative;
+    }
+    .hero-image-wrap img {
+      width: 100%;
+      height: 115%;
+      object-fit: cover;
+      object-position: top;
+      transform: translateY(0);
+      will-change: transform;
+    }
+
+    /* ── Sections ─────────────────────────────────────── */
+    .content-section {
+      padding: 120px 60px;
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 0 64px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-aside {
+      position: relative;
+    }
+    .section-num {
+      font-family: var(--serif);
+      font-size: 80px;
+      font-weight: 400;
+      color: rgba(0,0,0,0.07);
+      line-height: 1;
+      position: sticky;
+      top: 120px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-body {}
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-heading {
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .section-heading em {
+      font-style: italic;
+      font-family: var(--serif);
+      font-weight: 400;
+      color: var(--gray);
+    }
+
+    .section-text {
+      font-size: 17px;
+      line-height: 1.7;
+      color: #444;
+      max-width: 620px;
+      margin-bottom: 48px;
+    }
+
+    /* ── Images ───────────────────────────────────────── */
+    .img-full {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--light);
+      margin-bottom: 20px;
+    }
+    .img-full img { width: 100%; height: auto; display: block; }
+
+    .img-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .img-pair .img-cell {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--light);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .img-pair .img-cell img { width: 100%; height: 100%; object-fit: cover; }
+
+    .img-trio {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .img-trio .img-cell {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--light);
+      aspect-ratio: 3/4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+    }
+    .img-trio .img-cell img { width: 100%; height: 100%; object-fit: cover; }
+
+    /* placeholder tinted boxes when no image */
+    .ph { display: flex; align-items: center; justify-content: center; font-size: 28px; opacity: 0.4; }
+    .ph-1 { background: linear-gradient(135deg, #f6851b22, #f6851b44); }
+    .ph-2 { background: linear-gradient(135deg, #1a1a2e, #16213e); }
+    .ph-3 { background: linear-gradient(135deg, #f6851b11, #f6851b33); }
+    .ph-4 { background: #f5f5f5; }
+
+    /* ── Stats row ────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin: 48px 0;
+      padding: 40px 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .stat-item {}
+    .stat-num {
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.4;
+    }
+
+    /* ── Quote pull ───────────────────────────────────── */
+    .pull-quote {
+      font-family: var(--serif);
+      font-size: clamp(22px, 3vw, 32px);
+      font-style: italic;
+      line-height: 1.4;
+      color: var(--black);
+      border-left: 3px solid var(--accent);
+      padding: 12px 0 12px 28px;
+      margin: 48px 0;
+      max-width: 580px;
+    }
+
+    /* ── Divider ──────────────────────────────────────── */
+    .section-divider {
+      height: 1px;
+      background: rgba(0,0,0,0.07);
+      max-width: 1200px;
+      margin: 0 auto 0 calc(120px + 60px + 64px);
+    }
+
+    /* ── Reveal animations ────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ── Footer ───────────────────────────────────────── */
+    .page-footer {
+      padding: 80px 60px;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .footer-label { font-size: 13px; color: var(--gray); }
+    .footer-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--black);
+      text-decoration: none;
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 9999px;
+      padding: 10px 20px;
+      transition: background 0.2s;
+    }
+    .footer-back:hover { background: var(--black); color: #fff; }
+
+    /* ── Responsive ───────────────────────────────────── */
+    @media (max-width: 768px) {
+      .hero { padding: 0 24px 60px; }
+      .content-section { grid-template-columns: 1fr; padding: 72px 24px; gap: 16px; }
+      .section-num { position: static; font-size: 48px; }
+      .img-trio { grid-template-columns: 1fr 1fr; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      #section-nav { display: none; }
+      .hero-scroll-hint { display: none; }
+      .page-footer { padding: 60px 24px; }
+      .section-divider { margin-left: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="progress-bar"></div>
+
+  <nav class="proto-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/prototypes/">Prototypes</a>
+    <span class="sep">/</span>
+    <span class="current">Project Page v2</span>
+  </nav>
+
+  <!-- Section nav dots -->
+  <nav id="section-nav" aria-label="Sections">
+    <a class="snav-item" href="#overview">
+      <span class="snav-label">Overview</span>
+      <span class="snav-dot"></span>
+    </a>
+    <a class="snav-item" href="#problem">
+      <span class="snav-label">Problem</span>
+      <span class="snav-dot"></span>
+    </a>
+    <a class="snav-item" href="#solution">
+      <span class="snav-label">Solution</span>
+      <span class="snav-dot"></span>
+    </a>
+    <a class="snav-item" href="#impact">
+      <span class="snav-label">Impact</span>
+      <span class="snav-dot"></span>
+    </a>
+  </nav>
+
+  <!-- ── HERO ───────────────────────────────────────────── -->
+  <section class="hero" id="top">
+    <div class="hero-bg"></div>
+    <div class="hero-eyebrow">
+      <span class="hero-num">02 —</span>
+      <div class="hero-tags">
+        <span class="tag">Brand</span>
+        <span class="tag">Web</span>
+        <span class="tag">Mobile App</span>
+        <span class="tag">Web3</span>
+      </div>
+    </div>
+    <h1 class="hero-title">
+      <span class="hero-title-inner">MetaMask</span>
+    </h1>
+    <p class="hero-sub">
+      Shaping the experience of one of the world's most widely used web3 products — making decentralized technology feel human.
+    </p>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      Scroll
+    </div>
+  </section>
+
+  <!-- Hero image with parallax -->
+  <div class="hero-image-wrap" id="hero-img">
+    <img src="../metamask/images/extension-hero.png"
+         alt="MetaMask extension interface"
+         id="parallax-img"
+         onerror="this.style.display='none';this.parentElement.classList.add('ph','ph-2');this.parentElement.innerHTML='🦊';" />
+  </div>
+
+  <!-- ── 01 OVERVIEW ────────────────────────────────────── -->
+  <section class="content-section" id="overview">
+    <div class="section-aside">
+      <div class="section-num">01</div>
+    </div>
+    <div class="section-body">
+      <p class="section-label reveal">Overview</p>
+      <h2 class="section-heading reveal reveal-delay-1">
+        Building trust at<br /><em>web3 scale</em>
+      </h2>
+      <p class="section-text reveal reveal-delay-2">
+        Over 4.5 years at MetaMask I helped shape the experience of one of the world's most widely used web3 wallets. My work spanned onboarding, wallet interactions, and decentralised app transactions — designing for both seasoned crypto users and those brand new to the space.
+      </p>
+      <p class="section-text reveal reveal-delay-2">
+        I also created the now-iconic MetaMask fox logo and mascot, which has become a recognisable symbol of web3 itself.
+      </p>
+
+      <div class="img-full reveal">
+        <img src="../metamask/images/extension-hero.png"
+             alt="MetaMask extension"
+             onerror="this.style.display='none';this.closest('.img-full').classList.add('ph','ph-1');this.closest('.img-full').style.height='320px';this.closest('.img-full').innerHTML='🦊';" />
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 02 PROBLEM ─────────────────────────────────────── -->
+  <section class="content-section" id="problem">
+    <div class="section-aside">
+      <div class="section-num">02</div>
+    </div>
+    <div class="section-body">
+      <p class="section-label reveal">The Problem</p>
+      <h2 class="section-heading reveal reveal-delay-1">
+        Web3 shouldn't require<br /><em>a computer science degree</em>
+      </h2>
+      <p class="section-text reveal reveal-delay-2">
+        For most people, accessing decentralised technologies is confusing, risky, and fragmented. Seed phrases, gas fees, network switching — the mental overhead was enormous. Without the right product design, everyday users couldn't safely participate.
+      </p>
+
+      <div class="pull-quote reveal reveal-delay-1">
+        "Users were dropping off at every step. The onboarding wasn't a funnel — it was a wall."
+      </div>
+
+      <div class="img-pair reveal">
+        <div class="img-cell">
+          <img src="../metamask/images/onboarding-flow.png"
+               alt="Onboarding flow"
+               onerror="this.style.display='none';this.closest('.img-cell').classList.add('ph','ph-3');this.closest('.img-cell').innerHTML='📋';" />
+        </div>
+        <div class="img-cell ph ph-4">
+          <span style="font-size:40px;opacity:0.3;">🔑</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 03 SOLUTION ────────────────────────────────────── -->
+  <section class="content-section" id="solution">
+    <div class="section-aside">
+      <div class="section-num">03</div>
+    </div>
+    <div class="section-body">
+      <p class="section-label reveal">The Solution</p>
+      <h2 class="section-heading reveal reveal-delay-1">
+        A gateway that feels<br /><em>familiar, not foreign</em>
+      </h2>
+      <p class="section-text reveal reveal-delay-2">
+        MetaMask provides a secure, user-friendly wallet and gateway to the decentralised web. I simplified complex flows — key management, transactions, dapp connections — into clear, guided experiences that lowered barriers without removing control.
+      </p>
+
+      <div class="img-full reveal">
+        <img src="../metamask/images/frame-9.png"
+             alt="MetaMask interface"
+             onerror="this.style.display='none';this.closest('.img-full').classList.add('ph','ph-2');this.closest('.img-full').style.height='400px';this.closest('.img-full').innerHTML='📱';" />
+      </div>
+
+      <div class="img-trio reveal reveal-delay-1">
+        <div class="img-cell ph ph-3"><span>🔐</span></div>
+        <div class="img-cell">
+          <img src="../metamask/images/frame-21.png"
+               alt="MetaMask interface"
+               onerror="this.style.display='none';this.closest('.img-cell').classList.add('ph','ph-1');this.closest('.img-cell').innerHTML='💸';" />
+        </div>
+        <div class="img-cell ph ph-4"><span>🌐</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-divider"></div>
+
+  <!-- ── 04 IMPACT ──────────────────────────────────────── -->
+  <section class="content-section" id="impact">
+    <div class="section-aside">
+      <div class="section-num">04</div>
+    </div>
+    <div class="section-body">
+      <p class="section-label reveal">The Impact</p>
+      <h2 class="section-heading reveal reveal-delay-1">
+        Tens of millions of people,<br /><em>one wallet</em>
+      </h2>
+
+      <div class="stats-row reveal reveal-delay-1">
+        <div class="stat-item">
+          <div class="stat-num">30M+</div>
+          <div class="stat-label">Monthly active users worldwide</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">4.5yr</div>
+          <div class="stat-label">Leading product design at MetaMask</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-num">#1</div>
+          <div class="stat-label">Most widely used web3 wallet</div>
+        </div>
+      </div>
+
+      <p class="section-text reveal">
+        MetaMask has become one of the most trusted wallets in web3. By lowering barriers to entry, it accelerated adoption of decentralised apps and enabled everyday people, creators, and businesses to participate in the evolving decentralised economy.
+      </p>
+
+      <div class="img-full reveal reveal-delay-1">
+        <img src="../metamask/images/results.png"
+             alt="MetaMask results"
+             onerror="this.style.display='none';this.closest('.img-full').classList.add('ph','ph-1');this.closest('.img-full').style.height='320px';this.closest('.img-full').innerHTML='📈';" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="page-footer">
+    <span class="footer-label">MetaMask · Lead Product Designer · 2019–2024</span>
+    <a href="/prototypes/" class="footer-back">← Back to Prototypes</a>
+  </footer>
+
+  <script>
+    /* Progress bar */
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (doc.scrollTop) / (doc.scrollHeight - doc.clientHeight) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+    }, { passive: true });
+
+    /* Parallax hero image */
+    const parallaxImg = document.getElementById('parallax-img');
+    if (parallaxImg) {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        parallaxImg.style.transform = `translateY(${scrolled * 0.3}px)`;
+      }, { passive: true });
+    }
+
+    /* Reveal on scroll */
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => revealObs.observe(el));
+
+    /* Section nav active state */
+    const sections = ['overview','problem','solution','impact'].map(id => document.getElementById(id));
+    const navItems = document.querySelectorAll('.snav-item');
+    const sectionObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        const idx = sections.indexOf(e.target);
+        if (idx !== -1) navItems[idx].classList.toggle('active', e.isIntersecting);
+      });
+    }, { rootMargin: '-30% 0px -60% 0px' });
+    sections.forEach(s => { if (s) sectionObs.observe(s); });
+  </script>
+</body>
+</html>
