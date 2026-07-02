@@ -48,39 +48,13 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // run once on load in case page is already scrolled
 
-  // Section-based active nav highlighting (landing page only)
-  if (isHomePage && 'IntersectionObserver' in window) {
-    const sectionIds = ['work', 'services', 'about', 'contact'];
-    const navLinks = nav ? nav.querySelectorAll('.nav-links a') : [];
-
-    function setActiveLink(id) {
-      navLinks.forEach((link) => {
-        const href = link.getAttribute('href').replace(/^.*#/, '');
-        link.classList.toggle('active', href === id);
-      });
-    }
-
-    const sectionObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveLink(entry.target.id);
-        }
-      });
-    }, {
-      rootMargin: '-20% 0px -65% 0px',
-    });
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) sectionObserver.observe(el);
-    });
-  }
-
-
   /* ----------------------------------------------------------
      1b. Nav blob — sliding active indicator
+     Runs on any page that has a #nav-blob element (not just the
+     homepage) — sub-pages mark their own nav-links entry with
+     class="active" statically in HTML, so this works unchanged.
      ---------------------------------------------------------- */
-  if (isHomePage) {
+  {
     const blob     = document.getElementById('nav-blob');
     const navInner = nav ? nav.querySelector('.nav-inner') : null;
 
@@ -96,17 +70,19 @@
         if (!animate) requestAnimationFrame(() => { blob.style.transition = ''; });
       }
 
-      function syncBlob() {
+      function currentTarget() {
         const activeLink = nav.querySelector('.nav-links a.active');
-        if (navLogo.classList.contains('is-home') || !activeLink) {
-          positionBlob(navLogo, true);
-        } else {
-          positionBlob(activeLink, true);
-        }
+        return (navLogo.classList.contains('is-home') || !activeLink) ? navLogo : activeLink;
       }
 
-      /* Set initial position instantly (no slide-in on load) */
-      requestAnimationFrame(() => positionBlob(navLogo, false));
+      function syncBlob() {
+        positionBlob(currentTarget(), true);
+      }
+
+      /* Set initial position instantly (no slide-in on load) — must
+         reflect whichever link is already marked active in the static
+         HTML (e.g. sub-pages), not always default to the logo. */
+      requestAnimationFrame(() => positionBlob(currentTarget(), false));
 
       /* Watch for class changes on logo and all nav links */
       const mo = new MutationObserver(syncBlob);
@@ -114,6 +90,14 @@
       nav.querySelectorAll('.nav-links a').forEach(a => {
         mo.observe(a, { attributes: true, attributeFilter: ['class'] });
       });
+
+      /* Hover: blob follows the cursor between nav items, then
+         snaps back to whichever item is actually active on exit */
+      const hoverTargets = [navLogo, ...nav.querySelectorAll('.nav-links a')];
+      hoverTargets.forEach((el) => {
+        el.addEventListener('mouseenter', () => positionBlob(el, true));
+      });
+      navInner.addEventListener('mouseleave', syncBlob);
     }
   }
 

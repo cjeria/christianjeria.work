@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="About Christian Jeria — Product Designer & Builder."
+    />
+    <title>About — Christian Jeria</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <script
+      src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+      async
+    ></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav id="nav">
+      <div class="nav-inner">
+        <div class="nav-blob" id="nav-blob"></div>
+        <a href="/" class="nav-logo"
+          ><svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            style="display: block"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M9.29297 2.29303C9.4805 2.10556 9.73481 2.00024 9.99997 2.00024C10.2651 2.00024 10.5194 2.10556 10.707 2.29303L17.707 9.29303C17.8468 9.43288 17.942 9.61105 17.9806 9.805C18.0191 9.99895 17.9993 10.2 17.9236 10.3827C17.848 10.5654 17.7198 10.7215 17.5554 10.8314C17.391 10.9413 17.1977 11 17 11H16V17C16 17.2652 15.8946 17.5196 15.7071 17.7071C15.5195 17.8947 15.2652 18 15 18H13C12.7348 18 12.4804 17.8947 12.2929 17.7071C12.1053 17.5196 12 17.2652 12 17V14C12 13.7348 11.8946 13.4805 11.7071 13.2929C11.5195 13.1054 11.2652 13 11 13H8.99997C8.73475 13 8.4804 13.1054 8.29286 13.2929C8.10533 13.4805 7.99997 13.7348 7.99997 14V17C7.99997 17.2652 7.89461 17.5196 7.70708 17.7071C7.51954 17.8947 7.26519 18 6.99997 18H4.99997C4.73475 18 4.4804 17.8947 4.29286 17.7071C4.10533 17.5196 3.99997 17.2652 3.99997 17V11H2.99997C2.80222 11 2.60892 10.9413 2.44451 10.8314C2.2801 10.7215 2.15196 10.5654 2.07629 10.3827C2.00062 10.2 1.98082 9.99895 2.01939 9.805C2.05795 9.61105 2.15316 9.43288 2.29297 9.29303L9.29297 2.29303Z"
+            /></svg
+        ></a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <ul class="nav-links">
+          <li><a href="/work/">Work</a></li>
+          <li><a href="/about/" class="active">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- About -->
+    <section id="about" class="section section-top">
+      <div class="container">
+        <div class="about-grid reveal">
+          <div class="fan-wrap">
+            <div class="fan" id="about-fan">
+              <button class="fan-card" type="button" data-pos="0" aria-label="Bring photo 1 to front"><img src="cj-1.png" alt="Christian Jeria — photo 1" /></button>
+              <button class="fan-card" type="button" data-pos="1" aria-label="Bring photo 2 to front"><img src="cj-2.png" alt="Christian Jeria — photo 2" /></button>
+              <button class="fan-card" type="button" data-pos="2" aria-label="Bring photo 3 to front"><img src="../cjeria-portrait.png" alt="Christian Jeria — photo 3" /></button>
+            </div>
+          </div>
+          <div class="about-text">
+            <h2 class="section-title">About</h2>
+            <p class="about-bio">
+              My name is Christian. I grew up in Miami, lived in San Francisco
+              for 10 years before moving to Seattle. I'm a compulsive maker:
+              designer, engineer, painter, and endlessly curious about how
+              things work.
+            </p>
+            <p class="about-bio">
+              My experience in product design and years at places like Apple and
+              MetaMask taught me that the best work happens at the intersection
+              of craft, constraint, and human need. My approach to design is
+              direct, intentional, and grounded in first principles. I believe
+              in solving real problems for real people, in asking better
+              questions before settling on answers, and in the uncompromising
+              pursuit of clarity.
+            </p>
+            <p class="about-bio">
+              When I'm not designing or building, I'm painting, surfing,
+              traveling, or thinking about the next thing worth making.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">&copy; 2026 Christian Jeria</span>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="/work/">Work</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+      (function () {
+        /* Photo fan — full carousel rotation on click. Clicking the
+           right card (pos "2") rotates the whole set right-to-left:
+           right→front, front→left, left→right (wraps around).
+           Clicking the left card (pos "1") rotates the opposite way. */
+        document.querySelectorAll(".fan").forEach((fan) => {
+          const cards = Array.from(fan.querySelectorAll(".fan-card"));
+          const byPos = (pos) => cards.find((c) => c.dataset.pos === pos);
+          let rotateTimer = null;
+
+          cards.forEach((card) => {
+            card.addEventListener("click", () => {
+              const pos = card.dataset.pos;
+              if (pos === "0") return;
+
+              const front = byPos("0");
+              const left = byPos("1");
+              const right = byPos("2");
+
+              // Slow the transition down for the rotation itself, then
+              // drop back to the snappy hover speed once it settles
+              fan.classList.add("is-rotating");
+              clearTimeout(rotateTimer);
+              rotateTimer = setTimeout(() => fan.classList.remove("is-rotating"), 650);
+
+              if (pos === "2") {
+                right.dataset.pos = "0";
+                front.dataset.pos = "1";
+                left.dataset.pos = "2";
+              } else if (pos === "1") {
+                left.dataset.pos = "0";
+                front.dataset.pos = "2";
+                right.dataset.pos = "1";
+              }
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

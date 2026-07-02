@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Work — selected projects by Christian Jeria, Product Designer & Builder."
+    />
+    <title>Work — Christian Jeria</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <script
+      src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+      async
+    ></script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav id="nav">
+      <div class="nav-inner">
+        <div class="nav-blob" id="nav-blob"></div>
+        <a href="/" class="nav-logo"
+          ><svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            style="display: block"
+          >
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M9.29297 2.29303C9.4805 2.10556 9.73481 2.00024 9.99997 2.00024C10.2651 2.00024 10.5194 2.10556 10.707 2.29303L17.707 9.29303C17.8468 9.43288 17.942 9.61105 17.9806 9.805C18.0191 9.99895 17.9993 10.2 17.9236 10.3827C17.848 10.5654 17.7198 10.7215 17.5554 10.8314C17.391 10.9413 17.1977 11 17 11H16V17C16 17.2652 15.8946 17.5196 15.7071 17.7071C15.5195 17.8947 15.2652 18 15 18H13C12.7348 18 12.4804 17.8947 12.2929 17.7071C12.1053 17.5196 12 17.2652 12 17V14C12 13.7348 11.8946 13.4805 11.7071 13.2929C11.5195 13.1054 11.2652 13 11 13H8.99997C8.73475 13 8.4804 13.1054 8.29286 13.2929C8.10533 13.4805 7.99997 13.7348 7.99997 14V17C7.99997 17.2652 7.89461 17.5196 7.70708 17.7071C7.51954 17.8947 7.26519 18 6.99997 18H4.99997C4.73475 18 4.4804 17.8947 4.29286 17.7071C4.10533 17.5196 3.99997 17.2652 3.99997 17V11H2.99997C2.80222 11 2.60892 10.9413 2.44451 10.8314C2.2801 10.7215 2.15196 10.5654 2.07629 10.3827C2.00062 10.2 1.98082 9.99895 2.01939 9.805C2.05795 9.61105 2.15316 9.43288 2.29297 9.29303L9.29297 2.29303Z"
+            /></svg
+        ></a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <ul class="nav-links">
+          <li><a href="/work/" class="active">Work</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/contact/">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Work -->
+    <section id="work" class="section section-top">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2 class="section-title">Work</h2>
+          <p class="section-subtitle">A selection of projects I'm proud of.</p>
+        </div>
+
+        <div class="work-filters reveal">
+          <button class="filter-tab active" data-filter="all">All</button>
+          <button class="filter-tab" data-filter="client">Case Studies</button>
+          <button class="filter-tab" data-filter="apps">Indie Apps</button>
+          <button class="filter-tab" data-filter="prototypes">
+            Prototypes
+          </button>
+        </div>
+        <p class="filter-desc" id="filter-desc"></p>
+
+        <div class="work-grid" id="work-grid">
+          <!-- Gridberry -->
+          <a
+            href="https://gridberry.app"
+            class="project-card reveal"
+            data-category="apps"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="card-thumbnail thumbnail-3" style="height: 100%">
+              <img src="/gridberry/gridberry-social.png" alt="Gridberry" />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web App</span>
+              </div>
+              <h3 class="card-title">Gridberry</h3>
+              <p class="card-subtitle">Name badge generator</p>
+              <p class="card-desc">
+                Print-ready name badges in 60 seconds. Upload your spreadsheet,
+                pick a template, download a PDF — no Word, no mail merge.
+              </p>
+            </div>
+          </a>
+
+          <!-- Maildrop -->
+          <a
+            href="https://maildrop-pi.vercel.app/"
+            class="project-card reveal"
+            data-category="apps"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="card-thumbnail thumbnail-2" style="height: 100%">
+              <img src="/maildrop/maildrop_logo.png" alt="Maildrop" />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web App</span>
+              </div>
+              <h3 class="card-title">Maildrop</h3>
+              <p class="card-subtitle">Email campaign builder</p>
+              <p class="card-desc">
+                A lightweight tool for capturing and organizing email ideas
+                before they slip through the cracks.
+              </p>
+            </div>
+          </a>
+
+          <!-- Panoramic Domains -->
+          <a
+            href="https://panodoms.com"
+            class="project-card reveal"
+            data-category="apps"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div class="card-thumbnail thumbnail-4" style="height: 100%">
+              <img
+                src="/panodoms/panodoms_logo-bw.png"
+                alt="Panoramic Domains"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web App</span>
+              </div>
+              <h3 class="card-title">Panoramic Domains</h3>
+              <p class="card-subtitle">Visual domain search</p>
+              <p class="card-desc">
+                A visual domain search site — Find available domains and preview
+                what's already taken.
+              </p>
+            </div>
+          </a>
+
+          <!-- Intuition Systems -->
+          <a
+            href="/intuition-systems/"
+            class="project-card reveal"
+            data-category="client"
+          >
+            <div class="card-thumbnail thumbnail-1" style="height: 100%">
+              <img
+                src="/intuition-systems/images/hero-decoration.png"
+                alt="Intuition Systems"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web App</span>
+              </div>
+              <h3 class="card-title">Intuition Systems</h3>
+              <p class="card-subtitle">Crypto knowledge network</p>
+              <p class="card-desc">
+                Unifying a series of scattered experiments into one flagship
+                product for a crypto-powered knowledge network.
+              </p>
+            </div>
+          </a>
+
+          <!-- MetaMask -->
+          <a
+            href="/metamask/"
+            class="project-card reveal"
+            data-category="client"
+          >
+            <div class="card-thumbnail thumbnail-2" style="height: 100%">
+              <img src="/metamask/images/hero-decoration.svg" alt="MetaMask" />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Brand, Web &amp; Mobile App</span>
+              </div>
+              <h3 class="card-title">MetaMask</h3>
+              <p class="card-subtitle">World-class Web3 wallet</p>
+              <p class="card-desc">
+                Shaping the experience of one of the world's most widely used
+                web3 wallets, from onboarding flows to the iconic fox logo.
+              </p>
+            </div>
+          </a>
+
+          <!-- Origin Labs -->
+          <a
+            href="/origin-labs/"
+            class="project-card reveal"
+            data-category="client"
+          >
+            <div class="card-thumbnail thumbnail-3" style="height: 100%">
+              <img
+                src="/origin-labs/images/hero-decoration.png"
+                alt="Origin Labs"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Embedded UI, Web App</span>
+              </div>
+              <h3 class="card-title">Origin Labs</h3>
+              <p class="card-subtitle">3D printing fleet management</p>
+              <p class="card-desc">
+                Designing the logo, embedded UI, and fleet management app for a
+                manufacturing-grade 3D printing startup acquired by Stratasys.
+              </p>
+            </div>
+          </a>
+
+          <!-- Portal -->
+          <a
+            href="/portal/"
+            class="project-card reveal"
+            data-category="client"
+          >
+            <div class="card-thumbnail thumbnail-4" style="height: 100%">
+              <img src="/portal/images/hero-decoration.png" alt="Portal" />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Mobile, Web &amp; Illustration</span>
+              </div>
+              <h3 class="card-title">Portal</h3>
+              <p class="card-subtitle">Wallet design & illustration</p>
+              <p class="card-desc">
+                Bringing wallet service concepts to life through rapid
+                prototyping, product illustrations, and website design for an
+                early-stage startup.
+              </p>
+            </div>
+          </a>
+
+          <!-- Apple -->
+          <a href="/apple/" class="project-card reveal" data-category="client">
+            <div class="card-thumbnail thumbnail-apple" style="height: 100%">
+              <img
+                src="/apple/apple-logo.svg"
+                alt="Apple"
+                class="apple-card-logo"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web &amp; iOS</span>
+              </div>
+              <h3 class="card-title">Apple</h3>
+              <p class="card-subtitle">Internal design tooling</p>
+            </div>
+          </a>
+
+          <!-- Steady Hands -->
+          <a
+            href="https://steadyhands.app"
+            class="project-card reveal"
+            data-category="prototypes"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div
+              class="card-thumbnail thumbnail-steady-hands"
+              style="height: 100%"
+            >
+              <img
+                src="/steady-hands/app-mockup.png"
+                alt="Steady Hands"
+                style="object-position: top center"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">iOS App</span>
+              </div>
+              <h3 class="card-title">Steady Hands</h3>
+              <p class="card-subtitle">Investing education app</p>
+            </div>
+          </a>
+
+          <!-- TaskLocal -->
+          <a
+            href="https://tasklocal.co"
+            class="project-card reveal"
+            data-category="prototypes"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <div
+              class="card-thumbnail thumbnail-tasklocal"
+              style="height: 100%"
+            >
+              <img
+                src="/tasklocal/illustration.svg"
+                alt="TaskLocal"
+                style="object-fit: contain; padding: 10%"
+              />
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Web App</span>
+              </div>
+              <h3 class="card-title">TaskLocal</h3>
+              <p class="card-subtitle">
+                Trusted neighbors for the little things
+              </p>
+            </div>
+          </a>
+
+          <!-- ChrisGPT (hidden) -->
+          <a
+            href="https://chat.christianjeria.work"
+            class="project-card reveal"
+            data-category="apps"
+            data-permanently-hidden
+            target="_blank"
+            rel="noopener noreferrer"
+            style="display: none"
+          >
+            <div class="card-thumbnail thumbnail-5" style="height: 100%">
+              <div class="thumb-shape shape-c"></div>
+              <div class="thumb-shape shape-d"></div>
+              <div class="thumb-shape shape-h"></div>
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">AI, Web App</span>
+              </div>
+              <h3 class="card-title">ChrisGPT</h3>
+              <p class="card-desc">
+                An AI-powered chat interface trained on my background,
+                experience, and perspective — a smarter way to get to know me.
+              </p>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <div class="container">
+        <div class="footer-inner">
+          <span class="footer-copy">&copy; 2026 Christian Jeria</span>
+          <nav class="footer-nav" aria-label="Footer navigation">
+            <a href="/work/">Work</a>
+            <a href="/about/">About</a>
+            <a href="/contact/">Contact</a>
+          </nav>
+        </div>
+      </div>
+    </footer>
+
+    <script src="../script.js"></script>
+    <script>
+      (function () {
+        const FADE_OUT = 180; // ms to fade departing cards
+        const MOVE = 400; // ms for FLIP repositioning
+        const FADE_IN = 300; // ms for entering cards to fade in
+        const STAGGER = 50; // ms between each entering card
+
+        const tabs = document.querySelectorAll(".filter-tab");
+        const allCards = [
+          ...document.querySelectorAll("#work-grid .project-card"),
+        ].filter((c) => !c.hasAttribute("data-permanently-hidden"));
+
+        const filterDesc = document.getElementById("filter-desc");
+        const FILTER_DESCRIPTIONS = {
+          client: "Recent projects from full-time jobs.",
+          apps: "Apps I've built and launched with Claude Code",
+          prototypes: "Quick experiments built to test a concept",
+        };
+
+        function updateFilterDesc(filter) {
+          const text = FILTER_DESCRIPTIONS[filter] || "";
+          filterDesc.style.opacity = "0";
+          setTimeout(() => {
+            filterDesc.textContent = text;
+            filterDesc.style.opacity = text ? "1" : "0";
+          }, 220);
+        }
+
+        let busy = false;
+
+        function applyFilter(filter) {
+          if (busy) return;
+          busy = true;
+
+          const visible = allCards.filter((c) => c.style.display !== "none");
+          const toShow = allCards.filter(
+            (c) => filter === "all" || c.dataset.category === filter,
+          );
+          const toHide = allCards.filter(
+            (c) => filter !== "all" && c.dataset.category !== filter,
+          );
+          const toStay = toShow.filter((c) => visible.includes(c));
+          const toEnter = toShow.filter((c) => !visible.includes(c));
+
+          // ── FIRST: snapshot current positions ───────────────────
+          const firstRects = new Map();
+          visible.forEach((c) => firstRects.set(c, c.getBoundingClientRect()));
+
+          // ── Phase 1: fade out departing cards ───────────────────
+          toHide.forEach((c) => {
+            c.style.transition = `opacity ${FADE_OUT}ms ease, transform ${FADE_OUT}ms ease`;
+            c.style.opacity = "0";
+            c.style.transform = "scale(0.88)";
+          });
+
+          setTimeout(() => {
+            // ── Phase 2: update DOM layout ───────────────────────
+            toHide.forEach((c) => {
+              c.style.display = "none";
+              c.style.transition = "";
+              c.style.opacity = "";
+              c.style.transform = "";
+            });
+
+            // Entering cards: visible in DOM but invisible to eye
+            toEnter.forEach((c) => {
+              c.style.display = "";
+              c.style.opacity = "0";
+              c.style.transform = "translateY(16px) scale(0.92)";
+              c.style.transition = "none";
+            });
+
+            // ── LAST: read new positions after DOM update ─────────
+            document.body.offsetHeight; // force reflow
+
+            // ── INVERT: push staying cards back to where they were
+            toStay.forEach((c) => {
+              const first = firstRects.get(c);
+              const last = c.getBoundingClientRect();
+              const dx = first.left - last.left;
+              const dy = first.top - last.top;
+              if (Math.abs(dx) > 0.5 || Math.abs(dy) > 0.5) {
+                c.style.transition = "none";
+                c.style.transform = `translate(${dx}px, ${dy}px)`;
+              }
+            });
+
+            document.body.offsetHeight; // reflow so inverted transforms register
+
+            // ── PLAY: animate everything to its final state ───────
+            toStay.forEach((c) => {
+              c.style.transition = `transform ${MOVE}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+              c.style.transform = "";
+            });
+
+            toEnter.forEach((c, i) => {
+              setTimeout(() => {
+                c.style.transition = `opacity ${FADE_IN}ms ease, transform ${FADE_IN}ms cubic-bezier(0.4, 0, 0.2, 1)`;
+                c.style.opacity = "";
+                c.style.transform = "";
+              }, i * STAGGER);
+            });
+
+            // ── Cleanup: remove inline styles so CSS hover works ──
+            const total = MOVE + toEnter.length * STAGGER + 60;
+            setTimeout(() => {
+              allCards.forEach((c) => {
+                if (c.style.display !== "none") {
+                  c.style.transition = "";
+                  c.style.transform = "";
+                  c.style.opacity = "";
+                }
+              });
+              busy = false;
+            }, total);
+          }, FADE_OUT);
+        }
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            if (tab.classList.contains("active") || busy) return;
+            tabs.forEach((t) => t.classList.remove("active"));
+            tab.classList.add("active");
+            applyFilter(tab.dataset.filter);
+            updateFilterDesc(tab.dataset.filter);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
