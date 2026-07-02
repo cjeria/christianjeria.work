@@ -166,12 +166,13 @@
 
         <div class="work-filters reveal">
           <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="client">Showcases</button>
-          <button class="filter-tab" data-filter="apps">Apps I've Built</button>
+          <button class="filter-tab" data-filter="client">Case Studies</button>
+          <button class="filter-tab" data-filter="apps">Indie Apps</button>
           <button class="filter-tab" data-filter="prototypes">
             Prototypes
           </button>
         </div>
+        <p class="filter-desc" id="filter-desc"></p>
 
         <div class="work-grid" id="work-grid">
           <!-- Gridberry -->
@@ -214,7 +215,7 @@
                 <span class="tag">Web App</span>
               </div>
               <h3 class="card-title">Maildrop</h3>
-              <p class="card-subtitle">Email idea capture</p>
+              <p class="card-subtitle">Email campaign builder</p>
               <p class="card-desc">
                 A lightweight tool for capturing and organizing email ideas
                 before they slip through the cracks.
@@ -860,6 +861,22 @@
           ...document.querySelectorAll("#work-grid .project-card"),
         ].filter((c) => !c.hasAttribute("data-permanently-hidden"));
 
+        const filterDesc = document.getElementById("filter-desc");
+        const FILTER_DESCRIPTIONS = {
+          client: "Recent projects from full-time jobs.",
+          apps: "Apps I've built and launched with Claude Code",
+          prototypes: "Quick experiments built to test a concept",
+        };
+
+        function updateFilterDesc(filter) {
+          const text = FILTER_DESCRIPTIONS[filter] || "";
+          filterDesc.style.opacity = "0";
+          setTimeout(() => {
+            filterDesc.textContent = text;
+            filterDesc.style.opacity = text ? "1" : "0";
+          }, 220);
+        }
+
         let busy = false;
 
         function applyFilter(filter) {
@@ -956,6 +973,7 @@
             tabs.forEach((t) => t.classList.remove("active"));
             tab.classList.add("active");
             applyFilter(tab.dataset.filter);
+            updateFilterDesc(tab.dataset.filter);
           });
         });
       })();
