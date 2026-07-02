@@ -61,6 +61,7 @@
     if (blob && navInner && navLogo) {
       function positionBlob(el, animate) {
         if (!animate) blob.style.transition = 'none';
+        blob.style.opacity = '1';
         const nr = navInner.getBoundingClientRect();
         const er = el.getBoundingClientRect();
         blob.style.left   = `${er.left   - nr.left}px`;
@@ -70,19 +71,33 @@
         if (!animate) requestAnimationFrame(() => { blob.style.transition = ''; });
       }
 
+      /* Only the logo counts as a "current page" fallback on the
+         homepage itself — on every other page without an active
+         nav-link (project/case-study pages, prototypes, etc.) there
+         is no current nav item, so the blob should stay hidden
+         rather than resting on the logo. */
       function currentTarget() {
         const activeLink = nav.querySelector('.nav-links a.active');
-        return (navLogo.classList.contains('is-home') || !activeLink) ? navLogo : activeLink;
+        if (activeLink) return activeLink;
+        return isHomePage ? navLogo : null;
       }
 
       function syncBlob() {
-        positionBlob(currentTarget(), true);
+        const target = currentTarget();
+        if (target) {
+          positionBlob(target, true);
+        } else {
+          blob.style.opacity = '0';
+        }
       }
 
       /* Set initial position instantly (no slide-in on load) — must
          reflect whichever link is already marked active in the static
          HTML (e.g. sub-pages), not always default to the logo. */
-      requestAnimationFrame(() => positionBlob(currentTarget(), false));
+      requestAnimationFrame(() => {
+        const target = currentTarget();
+        if (target) positionBlob(target, false);
+      });
 
       /* Watch for class changes on logo and all nav links */
       const mo = new MutationObserver(syncBlob);
@@ -91,8 +106,9 @@
         mo.observe(a, { attributes: true, attributeFilter: ['class'] });
       });
 
-      /* Hover: blob follows the cursor between nav items, then
-         snaps back to whichever item is actually active on exit */
+      /* Hover: blob follows the cursor between nav items (even on
+         pages with no current target), then snaps back to whichever
+         item is actually active on exit, or hides again if none is */
       const hoverTargets = [navLogo, ...nav.querySelectorAll('.nav-links a')];
       hoverTargets.forEach((el) => {
         el.addEventListener('mouseenter', () => positionBlob(el, true));
