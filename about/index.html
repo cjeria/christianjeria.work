@@ -146,30 +146,33 @@
             });
           });
 
-          /* Drag — the front card follows the pointer (mouse or touch,
-             unified via the Pointer Events API) and rotates the set
-             once released past a distance threshold, snapping back to
-             rest otherwise. Dragging left behaves like tapping the
-             right card (advance); dragging right is like tapping the
-             left card (go back). */
+          /* Drag — touch only (mouse/desktop stays click-only, see
+             above). The front card follows the finger but is clamped
+             to a fixed maximum distance, like it's sliding along a
+             bounded carousel track rather than following the finger
+             anywhere on the page. Releasing past a distance threshold
+             rotates the set (dragging left behaves like tapping the
+             right card — advance; dragging right is like tapping the
+             left card — go back); releasing before the threshold
+             snaps back to rest. */
           const SWIPE_THRESHOLD = 40;
+          const MAX_DRAG = 90; // px — hard boundary the card can't pass
+          const MAX_ROTATE = 8; // deg, reached at MAX_DRAG
           let dragActive = false;
           let dragPointerId = null;
           let dragStartX = 0;
           let dragStartY = 0;
           let dragDeltaX = 0;
-          let dragDeltaY = 0;
           let isHorizontalDrag = false;
           let draggedCard = null;
 
           fan.addEventListener("pointerdown", (e) => {
-            if (e.pointerType === "mouse" && e.button !== 0) return;
+            if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
             dragActive = true;
             isHorizontalDrag = false;
             dragStartX = e.clientX;
             dragStartY = e.clientY;
             dragDeltaX = 0;
-            dragDeltaY = 0;
             dragPointerId = e.pointerId;
             draggedCard = byPos("0"); // the front card is what follows the drag
             fan.setPointerCapture(e.pointerId);
@@ -177,10 +180,10 @@
 
           fan.addEventListener("pointermove", (e) => {
             if (!dragActive || e.pointerId !== dragPointerId) return;
-            dragDeltaX = e.clientX - dragStartX;
-            dragDeltaY = e.clientY - dragStartY;
+            const rawDeltaX = e.clientX - dragStartX;
+            const dy = e.clientY - dragStartY;
 
-            if (!isHorizontalDrag && Math.abs(dragDeltaX) > 6 && Math.abs(dragDeltaX) > Math.abs(dragDeltaY)) {
+            if (!isHorizontalDrag && Math.abs(rawDeltaX) > 6 && Math.abs(rawDeltaX) > Math.abs(dy)) {
               isHorizontalDrag = true;
               draggedCard.style.transition = "none";
             }
@@ -188,8 +191,11 @@
               // Stops the page from scrolling and the underlying
               // card's tap from firing once it's clearly a drag
               e.preventDefault();
-              const rotate = dragDeltaX * 0.045;
-              draggedCard.style.transform = `translate(${dragDeltaX}px, ${dragDeltaY * 0.15}px) rotate(${rotate}deg)`;
+              // Clamp to a fixed range — the card stops at this
+              // boundary no matter how far the finger keeps moving
+              dragDeltaX = Math.max(-MAX_DRAG, Math.min(MAX_DRAG, rawDeltaX));
+              const rotate = (dragDeltaX / MAX_DRAG) * MAX_ROTATE;
+              draggedCard.style.transform = `translate(${dragDeltaX}px, 0) rotate(${rotate}deg)`;
             }
           });
 
