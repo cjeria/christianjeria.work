@@ -907,10 +907,14 @@ ul {
 .fan .fan-card[data-pos="1"] { transform: translate(-24px, 8px) rotate(-4deg) scale(0.97); z-index: 2; }
 .fan .fan-card[data-pos="2"] { transform: translate(24px, 8px) rotate(4deg) scale(0.97); z-index: 1; }
 
-/* Hover the fan area — expand out */
-.fan:hover .fan-card[data-pos="0"] { transform: translate(0, -12px) rotate(0deg) scale(1.02); box-shadow: var(--shadow-lg); }
-.fan:hover .fan-card[data-pos="1"] { transform: translate(-72px, 20px) rotate(-11deg) scale(0.96); }
-.fan:hover .fan-card[data-pos="2"] { transform: translate(72px, 20px) rotate(11deg) scale(0.96); }
+/* Hover the fan area — expand out (desktop only; touch devices can
+   get hover "stuck" after a tap, which would leave the mobile fan
+   expanded when it should stay in its tight resting cluster) */
+@media (min-width: 768px) {
+  .fan:hover .fan-card[data-pos="0"] { transform: translate(0, -12px) rotate(0deg) scale(1.02); box-shadow: var(--shadow-lg); }
+  .fan:hover .fan-card[data-pos="1"] { transform: translate(-72px, 20px) rotate(-11deg) scale(0.96); }
+  .fan:hover .fan-card[data-pos="2"] { transform: translate(72px, 20px) rotate(11deg) scale(0.96); }
+}
 
 .about-text .section-title {
   margin-bottom: 28px;
@@ -1994,15 +1998,18 @@ ul {
     text-align: center;
   }
 
-  /* 15% smaller than the 220x300 desktop size */
+  /* 15% smaller than the 220x300 desktop size, then another 15%
+     on top of that (159x217) */
   .fan {
-    width: 187px;
-    height: 255px;
+    width: 159px;
+    height: 217px;
   }
 
-  /* Extra breathing room below the fan before the bio text starts,
-     on top of .about-grid's own row gap (stacked at this width) */
+  /* Extra breathing room above the fan (below the nav) and below it
+     before the bio text starts (on top of .about-grid's own row gap,
+     stacked at this width) */
   .fan-wrap {
+    margin-top: 24px;
     margin-bottom: 24px;
   }
 }
