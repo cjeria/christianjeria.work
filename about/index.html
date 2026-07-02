@@ -146,50 +146,75 @@
             });
           });
 
-          /* Touch swipe */
-          let touchStartX = 0;
-          let touchStartY = 0;
-          let touchDeltaX = 0;
-          let isHorizontalSwipe = false;
-          let touchActive = false;
+          /* Drag — the front card follows the pointer (mouse or touch,
+             unified via the Pointer Events API) and rotates the set
+             once released past a distance threshold, snapping back to
+             rest otherwise. Dragging left behaves like tapping the
+             right card (advance); dragging right is like tapping the
+             left card (go back). */
           const SWIPE_THRESHOLD = 40;
+          let dragActive = false;
+          let dragPointerId = null;
+          let dragStartX = 0;
+          let dragStartY = 0;
+          let dragDeltaX = 0;
+          let dragDeltaY = 0;
+          let isHorizontalDrag = false;
+          let draggedCard = null;
 
-          fan.addEventListener("touchstart", (e) => {
-            if (e.touches.length !== 1) return;
-            touchStartX = e.touches[0].clientX;
-            touchStartY = e.touches[0].clientY;
-            touchDeltaX = 0;
-            isHorizontalSwipe = false;
-            touchActive = true;
-          }, { passive: true });
+          fan.addEventListener("pointerdown", (e) => {
+            if (e.pointerType === "mouse" && e.button !== 0) return;
+            dragActive = true;
+            isHorizontalDrag = false;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            dragDeltaX = 0;
+            dragDeltaY = 0;
+            dragPointerId = e.pointerId;
+            draggedCard = byPos("0"); // the front card is what follows the drag
+            fan.setPointerCapture(e.pointerId);
+          });
 
-          fan.addEventListener("touchmove", (e) => {
-            if (!touchActive) return;
-            const touch = e.touches[0];
-            touchDeltaX = touch.clientX - touchStartX;
-            const dy = touch.clientY - touchStartY;
+          fan.addEventListener("pointermove", (e) => {
+            if (!dragActive || e.pointerId !== dragPointerId) return;
+            dragDeltaX = e.clientX - dragStartX;
+            dragDeltaY = e.clientY - dragStartY;
 
-            if (!isHorizontalSwipe && Math.abs(touchDeltaX) > 10 && Math.abs(touchDeltaX) > Math.abs(dy)) {
-              isHorizontalSwipe = true;
+            if (!isHorizontalDrag && Math.abs(dragDeltaX) > 6 && Math.abs(dragDeltaX) > Math.abs(dragDeltaY)) {
+              isHorizontalDrag = true;
+              draggedCard.style.transition = "none";
             }
-            // Once it's clearly a horizontal swipe, stop the page from
-            // scrolling and stop the underlying card's tap from firing
-            if (isHorizontalSwipe) e.preventDefault();
-          }, { passive: false });
-
-          fan.addEventListener("touchend", (e) => {
-            if (!touchActive) return;
-            touchActive = false;
-            if (isHorizontalSwipe && Math.abs(touchDeltaX) > SWIPE_THRESHOLD) {
+            if (isHorizontalDrag) {
+              // Stops the page from scrolling and the underlying
+              // card's tap from firing once it's clearly a drag
               e.preventDefault();
-              if (touchDeltaX < 0) rotateLeft();
-              else rotateRight();
+              const rotate = dragDeltaX * 0.045;
+              draggedCard.style.transform = `translate(${dragDeltaX}px, ${dragDeltaY * 0.15}px) rotate(${rotate}deg)`;
             }
           });
 
-          fan.addEventListener("touchcancel", () => {
-            touchActive = false;
-          });
+          function endDrag(e) {
+            if (!dragActive || e.pointerId !== dragPointerId) return;
+            dragActive = false;
+
+            if (isHorizontalDrag) {
+              const card = draggedCard;
+              if (Math.abs(dragDeltaX) > SWIPE_THRESHOLD) {
+                if (dragDeltaX < 0) rotateLeft();
+                else rotateRight();
+              }
+              // Hand back off to CSS — either to the resting front
+              // spot, or to wherever the card landed after rotating
+              requestAnimationFrame(() => {
+                card.style.transition = "";
+                card.style.transform = "";
+              });
+            }
+            draggedCard = null;
+          }
+
+          fan.addEventListener("pointerup", endDrag);
+          fan.addEventListener("pointercancel", endDrag);
         });
       })();
     </script>
