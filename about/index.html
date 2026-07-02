@@ -97,40 +97,98 @@
     <script src="../script.js"></script>
     <script>
       (function () {
-        /* Photo fan — full carousel rotation on click. Clicking the
-           right card (pos "2") rotates the whole set right-to-left:
-           right→front, front→left, left→right (wraps around).
-           Clicking the left card (pos "1") rotates the opposite way. */
+        /* Photo fan — full carousel rotation on click, or on swipe
+           for touch. Bringing the right card to front rotates the
+           whole set right-to-left: right→front, front→left,
+           left→right (wraps around). Bringing the left card to
+           front rotates the opposite way. Swiping left is the same
+           gesture as tapping the right card (advance); swiping
+           right is the same as tapping the left card (go back). */
         document.querySelectorAll(".fan").forEach((fan) => {
           const cards = Array.from(fan.querySelectorAll(".fan-card"));
           const byPos = (pos) => cards.find((c) => c.dataset.pos === pos);
           let rotateTimer = null;
 
+          function triggerRotation() {
+            // Slow the transition down for the rotation itself, then
+            // drop back to the snappy hover speed once it settles
+            fan.classList.add("is-rotating");
+            clearTimeout(rotateTimer);
+            rotateTimer = setTimeout(() => fan.classList.remove("is-rotating"), 650);
+          }
+
+          function rotateLeft() {
+            const front = byPos("0");
+            const left = byPos("1");
+            const right = byPos("2");
+            triggerRotation();
+            right.dataset.pos = "0";
+            front.dataset.pos = "1";
+            left.dataset.pos = "2";
+          }
+
+          function rotateRight() {
+            const front = byPos("0");
+            const left = byPos("1");
+            const right = byPos("2");
+            triggerRotation();
+            left.dataset.pos = "0";
+            front.dataset.pos = "2";
+            right.dataset.pos = "1";
+          }
+
           cards.forEach((card) => {
             card.addEventListener("click", () => {
               const pos = card.dataset.pos;
               if (pos === "0") return;
-
-              const front = byPos("0");
-              const left = byPos("1");
-              const right = byPos("2");
-
-              // Slow the transition down for the rotation itself, then
-              // drop back to the snappy hover speed once it settles
-              fan.classList.add("is-rotating");
-              clearTimeout(rotateTimer);
-              rotateTimer = setTimeout(() => fan.classList.remove("is-rotating"), 650);
-
-              if (pos === "2") {
-                right.dataset.pos = "0";
-                front.dataset.pos = "1";
-                left.dataset.pos = "2";
-              } else if (pos === "1") {
-                left.dataset.pos = "0";
-                front.dataset.pos = "2";
-                right.dataset.pos = "1";
-              }
+              if (pos === "2") rotateLeft();
+              else if (pos === "1") rotateRight();
             });
+          });
+
+          /* Touch swipe */
+          let touchStartX = 0;
+          let touchStartY = 0;
+          let touchDeltaX = 0;
+          let isHorizontalSwipe = false;
+          let touchActive = false;
+          const SWIPE_THRESHOLD = 40;
+
+          fan.addEventListener("touchstart", (e) => {
+            if (e.touches.length !== 1) return;
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+            touchDeltaX = 0;
+            isHorizontalSwipe = false;
+            touchActive = true;
+          }, { passive: true });
+
+          fan.addEventListener("touchmove", (e) => {
+            if (!touchActive) return;
+            const touch = e.touches[0];
+            touchDeltaX = touch.clientX - touchStartX;
+            const dy = touch.clientY - touchStartY;
+
+            if (!isHorizontalSwipe && Math.abs(touchDeltaX) > 10 && Math.abs(touchDeltaX) > Math.abs(dy)) {
+              isHorizontalSwipe = true;
+            }
+            // Once it's clearly a horizontal swipe, stop the page from
+            // scrolling and stop the underlying card's tap from firing
+            if (isHorizontalSwipe) e.preventDefault();
+          }, { passive: false });
+
+          fan.addEventListener("touchend", (e) => {
+            if (!touchActive) return;
+            touchActive = false;
+            if (isHorizontalSwipe && Math.abs(touchDeltaX) > SWIPE_THRESHOLD) {
+              e.preventDefault();
+              if (touchDeltaX < 0) rotateLeft();
+              else rotateRight();
+            }
+          });
+
+          fan.addEventListener("touchcancel", () => {
+            touchActive = false;
           });
         });
       })();
