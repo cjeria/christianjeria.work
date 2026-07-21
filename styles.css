@@ -672,6 +672,33 @@ ul {
 .thumbnail-tasklocal {
   background: #FFF6F1;
 }
+.thumbnail-waves {
+  background: #000000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Waves — sunburst glow behind a centered wordmark */
+.thumbnail-waves .waves-sunburst {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 180%;
+  height: 180%;
+  transform: translate(-50%, -50%);
+  object-fit: contain;
+  pointer-events: none;
+}
+.thumbnail-waves .waves-card-logo {
+  position: relative;
+  width: 63.75%;
+  max-width: 319px;
+  height: auto;
+  object-fit: contain;
+  transform: translateY(-10%);
+  z-index: 1;
+}
 
 /* Apple logo — centered via flex on .thumbnail-apple */
 .thumbnail-apple .apple-card-logo {
