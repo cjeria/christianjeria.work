@@ -1554,6 +1554,10 @@ ul {
   margin: 0;
 }
 
+.project-img-pair-stacked {
+  grid-template-columns: 1fr;
+}
+
 .project-list {
   list-style: none;
   margin: 16px 0 20px;
