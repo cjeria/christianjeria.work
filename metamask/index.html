@@ -39,7 +39,7 @@
           <p class="project-desc fade-in-up delay-3">Shaping the experience of one of the world's most widely used web3 products.</p>
         </div>
         <div class="project-hero-img-wrap fade-in-up delay-2">
-          <img src="images/hero-decoration.svg" alt="" />
+          <div class="metamask-3d-logo" id="metamask-3d-logo" aria-hidden="true"></div>
         </div>
       </div>
     </div>
@@ -161,5 +161,17 @@
 
 
   <script src="../script.js"></script>
+  <script src="metamask-logo.js"></script>
+  <script>
+    (function () {
+      // metamask-logo.js appends its <svg> to document.body — relocate it
+      // into the hero image slot and let CSS drive its rendered size.
+      var svg = document.body.querySelector(':scope > svg');
+      var target = document.getElementById('metamask-3d-logo');
+      if (svg && target) {
+        target.appendChild(svg);
+      }
+    })();
+  </script>
 </body>
 </html>

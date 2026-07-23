@@ -1416,6 +1416,20 @@ ul {
   pointer-events: none;
 }
 
+/* MetaMask — interactive 3D fox logo (github.com/cjeria/metamask-logo) */
+.metamask-3d-logo {
+  width: 100%;
+  max-width: 380px;
+  height: 380px;
+  pointer-events: none;
+}
+
+.metamask-3d-logo svg {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+
 /* Origin Labs — 3 printers side by side */
 .hero-printer-trio {
   display: flex;
@@ -1464,6 +1478,9 @@ ul {
   }
   .project-hero-img-wrap img {
     max-height: 200px;
+  }
+  .metamask-3d-logo {
+    height: 200px;
   }
 }
 
