@@ -392,11 +392,24 @@
 
         function updateFilterDesc(filter) {
           const text = FILTER_DESCRIPTIONS[filter] || "";
-          filterDesc.style.opacity = "0";
-          setTimeout(() => {
+
+          if (!text) {
+            filterDesc.classList.remove("is-active");
+            return;
+          }
+
+          if (filterDesc.classList.contains("is-active")) {
+            // Already showing copy — crossfade to the new copy
+            filterDesc.style.opacity = "0";
+            setTimeout(() => {
+              filterDesc.textContent = text;
+              filterDesc.style.opacity = "";
+            }, 160);
+          } else {
+            // Hidden — set copy, then fade it in
             filterDesc.textContent = text;
-            filterDesc.style.opacity = text ? "1" : "0";
-          }, 220);
+            filterDesc.classList.add("is-active");
+          }
         }
 
         let busy = false;

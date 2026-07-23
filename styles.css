@@ -529,7 +529,11 @@ ul {
   padding: 60px 0;
   text-align: center;
   opacity: 0;
-  transition: opacity 220ms ease;
+  transition: opacity 260ms ease;
+}
+
+.filter-desc.is-active {
+  opacity: 1;
 }
 
 .filter-tab {
@@ -610,13 +614,17 @@ ul {
 @media (max-width: 560px) {
   .work-grid {
     grid-template-columns: 1fr;
-    grid-auto-rows: 200px;
+    grid-auto-rows: auto;
     gap: 16px;
   }
   .card-big,
   .card-wide {
     grid-column: span 1;
     grid-row: span 1;
+  }
+  .project-card {
+    height: auto;
+    aspect-ratio: 1 / 1;
   }
 }
 
