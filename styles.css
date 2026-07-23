@@ -291,7 +291,8 @@ ul {
 .hero-avatar-ring {
   width: 167px;
   height: 167px;
-  border-radius: 50%;
+  border-radius: 42% 58% 63% 37% / 41% 42% 58% 59%;
+  animation: blob-morph 13.5s ease-in-out infinite;
   margin: 0 auto 36px;
   cursor: pointer;
   position: relative;
@@ -300,14 +301,30 @@ ul {
   justify-content: center;
 }
 
+@keyframes blob-morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 42% 58% 59%; }
+  25%      { border-radius: 58% 42% 39% 61% / 59% 51% 49% 41%; }
+  50%      { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; }
+  75%      { border-radius: 63% 37% 55% 45% / 40% 62% 38% 60%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar-ring,
+  .hero-avatar-ring::before,
+  .hero-avatar,
+  .avatar-particle-layer,
+  .avatar-glare {
+    animation: none !important;
+    border-radius: 50% !important;
+  }
+}
 
 .hero-avatar-ring::before {
   content: '';
   position: absolute;
   inset: 0;
-  border-radius: 50%;
   background: conic-gradient(from 0deg, #b3d9f7, #d4b8f0, #bce0fa, #e0d4f7, #b3d9f7);
-  animation: spin-border 2s linear infinite;
+  animation: spin-border 6s linear infinite, blob-morph 6s ease-in-out infinite;
   will-change: transform;
   opacity: 0.9;
   transition: opacity 0.3s ease;
@@ -324,13 +341,13 @@ ul {
   z-index: 0;
   pointer-events: none;
   overflow: visible;
-  border-radius: 50%;
+  border-radius: inherit;
 }
 
 .hero-avatar {
   width: 161px;
   height: 161px;
-  border-radius: 50%;
+  border-radius: inherit;
   overflow: hidden;
   position: relative;
   z-index: 1;
@@ -349,7 +366,7 @@ ul {
 .avatar-glare {
   position: absolute;
   inset: 0;
-  border-radius: 50%;
+  border-radius: inherit;
   pointer-events: none;
   z-index: 2;
   opacity: 0;
