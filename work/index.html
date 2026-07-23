@@ -61,6 +61,7 @@
           <button class="filter-tab" data-filter="prototypes">
             Prototypes
           </button>
+          <button class="filter-tab" data-filter="motion">Motion</button>
         </div>
         <p class="filter-desc" id="filter-desc"></p>
       </div>
@@ -261,6 +262,29 @@
             </div>
           </a>
 
+          <!-- Mobina -->
+          <a
+            href="/mobina/"
+            class="project-card reveal"
+            data-category="motion"
+          >
+            <div class="card-thumbnail thumbnail-mobina" style="height: 100%">
+              <div class="mobina-mark">
+                <span class="mobina-wordmark">Mobina</span>
+                <span class="mobina-play" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                </span>
+              </div>
+            </div>
+            <div class="card-body">
+              <div class="card-meta">
+                <span class="tag">Motion Design</span>
+              </div>
+              <h3 class="card-title">Mobina</h3>
+              <p class="card-subtitle">Product video for an AI executive assistant</p>
+            </div>
+          </a>
+
           <!-- Portal -->
           <a
             href="/portal/"
@@ -311,13 +335,15 @@
             </div>
           </a>
 
-          <!-- TaskLocal -->
+          <!-- TaskLocal (hidden) -->
           <a
             href="https://tasklocal.co"
             class="project-card reveal"
             data-category="prototypes"
+            data-permanently-hidden
             target="_blank"
             rel="noopener noreferrer"
+            style="display: none"
           >
             <div
               class="card-thumbnail thumbnail-tasklocal"
@@ -388,6 +414,7 @@
           client: "Recent projects from full-time jobs.",
           apps: "Apps I've built and launched with Claude Code",
           prototypes: "Quick experiments built to test a concept",
+          motion: "Motion design and video work",
         };
 
         function updateFilterDesc(filter) {

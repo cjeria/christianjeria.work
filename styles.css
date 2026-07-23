@@ -626,6 +626,23 @@ ul {
   .card-big {
     grid-row: span 2;
   }
+
+  .work-filters {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 60px));
+    padding: 0 clamp(20px, 5vw, 60px) 4px;
+  }
+  .work-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 }
 
 @media (max-width: 560px) {
@@ -781,6 +798,48 @@ ul {
   max-height: 220px;
   opacity: 0.25;
   filter: invert(0);
+}
+
+/* Mobina — glowing orb behind a centered wordmark, hints at the video reel */
+.thumbnail-mobina {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(138, 110, 255, 0.45), transparent 55%),
+    linear-gradient(160deg, #17123a 0%, #0c0920 60%, #050310 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mobina-mark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.mobina-wordmark {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.mobina-play {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-mark {
+  gap: 0;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-wordmark {
+  font-size: 14px;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-play {
+  display: none;
 }
 
 /* Decorative shapes inside thumbnails */
@@ -1391,7 +1450,8 @@ ul {
 .project-hero.thumbnail-2,
 .project-hero.thumbnail-3,
 .project-hero.thumbnail-4,
-.project-hero.thumbnail-apple {
+.project-hero.thumbnail-apple,
+.project-hero.thumbnail-mobina {
   background: none;
 }
 
@@ -1427,6 +1487,27 @@ ul {
   display: block;
   user-select: none;
   pointer-events: none;
+}
+
+.project-hero-video {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  background: #000;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+
+/* Mobina — hero video shown at 2x size on desktop */
+@media (min-width: 768px) {
+  .project-hero-img-wrap.video-wide {
+    max-width: 1280px;
+  }
+  .project-hero-img-wrap.video-wide .project-hero-video {
+    max-height: 760px;
+  }
 }
 
 /* MetaMask — interactive 3D fox logo (github.com/cjeria/metamask-logo) */
@@ -1473,7 +1554,8 @@ ul {
   .project-hero-text {
     margin-bottom: 40px;
   }
-  .project-hero-img-wrap img {
+  .project-hero-img-wrap img,
+  .project-hero-video {
     max-height: 200px;
   }
   .metamask-3d-logo {
@@ -1768,7 +1850,7 @@ ul {
 
 .project-nav-scroll {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 12px;
 }
 
