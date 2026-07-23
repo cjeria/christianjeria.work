@@ -620,6 +620,10 @@ ul {
 }
 
 @media (max-width: 700px) {
+  #work.section-top {
+    padding-top: calc(52px + clamp(45px, 6vw, 75px) + 100px);
+  }
+
   .work-grid {
     grid-template-columns: repeat(2, 1fr);
   }
