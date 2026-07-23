@@ -1443,6 +1443,10 @@ ul {
   display: block;
 }
 
+.project-hero-img-wrap .metamask-static-logo {
+  display: none;
+}
+
 /* Origin Labs — 3 printers side by side */
 .hero-printer-trio {
   display: flex;
@@ -1473,7 +1477,16 @@ ul {
     max-height: 200px;
   }
   .metamask-3d-logo {
-    height: 200px;
+    display: none;
+  }
+  .project-hero-img-wrap .metamask-static-logo {
+    display: block;
+    width: 160px;
+    height: 160px;
+    max-height: 200px;
+    object-fit: contain;
+    user-select: none;
+    pointer-events: none;
   }
 }
 
