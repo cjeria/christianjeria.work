@@ -213,14 +213,20 @@ ul {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--bg-gradient);
+  background: var(--bg-base);
 }
+
+/* Animated gradient — disabled for now, kept here to re-enable easily.
+@keyframes heroGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+*/
 
 /* Animated gradient orbs */
 .hero-orbs {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
+  display: none;
 }
 
 .orb {
@@ -375,7 +381,7 @@ ul {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
@@ -422,7 +428,7 @@ ul {
 
 .brand-pill-metamask {
   background: rgba(246, 133, 27, 0.12);
-  color: #c47210;
+  color: var(--text-primary);
 }
 
 .brand-pill-metamask:hover {
@@ -441,19 +447,19 @@ ul {
   align-items: center;
   gap: 8px;
   padding: 14px 32px;
-  background: var(--accent);
+  background: var(--text-primary);
   color: #fff;
   border-radius: 980px;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: -0.2px;
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
-  box-shadow: 0 4px 20px rgba(0, 113, 227, 0.28);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
 }
 .hero-cta:hover {
-  background: var(--accent-hover);
+  background: #000;
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 113, 227, 0.36);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.36);
 }
 
 /* Hero entrance animations */
@@ -996,24 +1002,12 @@ ul {
    CONTACT
    ============================================================ */
 #contact {
-  background: var(--bg-gradient);
+  background: var(--bg-base);
   position: relative;
   overflow: hidden;
   flex: 1;
   display: flex;
   align-items: center;
-}
-
-#contact::before {
-  content: '';
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(179, 217, 247, 0.4) 0%, transparent 70%);
-  top: -200px;
-  right: -100px;
-  border-radius: 50%;
-  pointer-events: none;
 }
 
 .contact-inner {
@@ -1029,7 +1023,7 @@ ul {
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--text-primary);
   margin-bottom: 20px;
 }
 
