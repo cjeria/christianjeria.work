@@ -123,6 +123,7 @@
               <video
                 id="hero-avatar-video"
                 src="./cj-avatar.mp4"
+                autoplay
                 muted
                 loop
                 playsinline
@@ -161,10 +162,26 @@
           const restFrame = 6;
           const setRestFrame = () => { video.currentTime = restFrame; };
 
-          if (video.readyState >= 1) {
-            setRestFrame();
+          /* Mobile browsers won't decode/paint any frame until playback has
+             actually started once, so seeking alone leaves a blank frame.
+             Force a play, then immediately pause and seek to the rest frame. */
+          const primeRestFrame = () => {
+            const playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.then === 'function') {
+              playAttempt.then(() => {
+                video.pause();
+                setRestFrame();
+              }).catch(() => setRestFrame());
+            } else {
+              video.pause();
+              setRestFrame();
+            }
+          };
+
+          if (video.readyState >= 2) {
+            primeRestFrame();
           } else {
-            video.addEventListener('loadedmetadata', setRestFrame, { once: true });
+            video.addEventListener('loadeddata', primeRestFrame, { once: true });
           }
 
           ring.addEventListener('mouseenter', () => {
