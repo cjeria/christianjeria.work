@@ -10,8 +10,15 @@
          navigate when a nav link is clicked, so the destination
          page loads blurred and focuses in the same way
      ---------------------------------------------------------- */
+  /* Double rAF: the script tag sits at the end of body, so by the time
+     it runs the browser may not have painted the blurred state yet — a
+     single rAF can land on that same first paint and the transition
+     never becomes visible. Waiting a frame, then another, guarantees
+     the blurred state is actually painted before we transition out. */
   requestAnimationFrame(() => {
-    document.body.classList.add('is-ready');
+    requestAnimationFrame(() => {
+      document.body.classList.add('is-ready');
+    });
   });
 
   {

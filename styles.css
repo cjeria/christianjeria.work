@@ -44,18 +44,24 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+}
+
+/* Blur/focus transition lives on body's other children (not body itself)
+   so #nav — a direct child of body — never sits inside a filtered
+   containing block, which would break its position: fixed on scroll. */
+body > *:not(#nav) {
   opacity: 0;
   filter: blur(18px);
   transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
-body.is-ready {
+body.is-ready > *:not(#nav) {
   opacity: 1;
   filter: blur(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  body {
+  body > *:not(#nav) {
     transition: none;
   }
 }
