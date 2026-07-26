@@ -133,7 +133,7 @@
             </div>
           </div>
         </div>
-        <p class="hero-eyebrow fade-in-up delay-1">Hi, I'm Christian</p>
+        <p class="hero-eyebrow" id="hero-message">Hi, I'm Christian! 👋</p>
         <h1 class="hero-headline fade-in-up delay-2">
           Product designer & builder helping teams leverage AI ✨ to ship
           world-class products faster.
@@ -153,6 +153,16 @@
     <script src="script.js"></script>
     <script>
       (function () {
+        const message = document.getElementById('hero-message');
+        if (message) {
+          const revealMessage = () => setTimeout(() => message.classList.add('is-visible'), 1000);
+          if (document.readyState === 'complete') {
+            revealMessage();
+          } else {
+            window.addEventListener('load', revealMessage, { once: true });
+          }
+        }
+
         const ring  = document.getElementById('avatar-ring');
         const layer = document.getElementById('particle-layer');
         const video = document.getElementById('hero-avatar-video');
