@@ -299,6 +299,12 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.2s var(--ease, cubic-bezier(0.4,0,0.2,1));
+}
+
+.hero-avatar-ring:active,
+.hero-avatar-ring.is-pressed {
+  transform: scale(0.9);
 }
 
 @keyframes blob-morph {
@@ -324,10 +330,14 @@ ul {
   position: absolute;
   inset: 0;
   background: conic-gradient(from 0deg, #b3d9f7, #d4b8f0, #bce0fa, #e0d4f7, #b3d9f7);
-  animation: spin-border 6s linear infinite, blob-morph 6s ease-in-out infinite;
+  animation: spin-border 12s linear infinite, blob-morph 12s ease-in-out infinite;
   will-change: transform;
   opacity: 0.9;
   transition: opacity 0.3s ease;
+}
+
+.hero-avatar-ring:hover::before {
+  animation: spin-border 6s linear infinite, blob-morph 6s ease-in-out infinite;
 }
 
 @keyframes spin-border {

@@ -116,17 +116,20 @@
         <div class="orb orb-3"></div>
       </div>
       <div class="hero-content">
-        <div class="hero-avatar-ring fade-in-up" id="avatar-ring">
-          <div class="avatar-particle-layer" id="particle-layer"></div>
-          <div class="hero-avatar">
-            <video
-              src="./cj-avatar.mp4"
-              autoplay
-              muted
-              loop
-              playsinline
-              aria-label="Christian Jeria"
-            ></video>
+        <div class="hero-avatar-entrance fade-in-up">
+          <div class="hero-avatar-ring" id="avatar-ring">
+            <div class="avatar-particle-layer" id="particle-layer"></div>
+            <div class="hero-avatar">
+              <video
+                id="hero-avatar-video"
+                src="./cj-avatar.mp4"
+                muted
+                loop
+                playsinline
+                preload="auto"
+                aria-label="Christian Jeria"
+              ></video>
+            </div>
           </div>
         </div>
         <p class="hero-eyebrow fade-in-up delay-1">Hi, I'm Christian</p>
@@ -151,7 +154,37 @@
       (function () {
         const ring  = document.getElementById('avatar-ring');
         const layer = document.getElementById('particle-layer');
+        const video = document.getElementById('hero-avatar-video');
         if (!ring || !layer) return;
+
+        if (video) {
+          const restFrame = 6;
+          const setRestFrame = () => { video.currentTime = restFrame; };
+
+          if (video.readyState >= 1) {
+            setRestFrame();
+          } else {
+            video.addEventListener('loadedmetadata', setRestFrame, { once: true });
+          }
+
+          ring.addEventListener('mouseenter', () => {
+            video.currentTime = restFrame;
+            video.play();
+          });
+          ring.addEventListener('mouseleave', () => {
+            video.pause();
+            setRestFrame();
+          });
+        }
+
+        const press = () => ring.classList.add('is-pressed');
+        const release = () => ring.classList.remove('is-pressed');
+        ring.addEventListener('mousedown', press);
+        ring.addEventListener('touchstart', press, { passive: true });
+        document.addEventListener('mouseup', release);
+        document.addEventListener('touchend', release);
+        document.addEventListener('touchcancel', release);
+        ring.addEventListener('mouseleave', release);
 
         const emojis = ['📱', '💻', '🖥️', '⌨️', '🖱️', '✏️', '📐', '🎨', '🔍', '⚙️', '💡', '🖌️', '⌚', '🪄', '🤖'];
 
