@@ -133,19 +133,19 @@
             </div>
           </div>
         </div>
-        <p class="hero-eyebrow" id="hero-message">Hi, I'm Christian! 👋</p>
-        <h1 class="hero-headline fade-in-up delay-2">
+        <p class="hero-eyebrow hero-reveal" id="hero-message">Hi, I'm Christian! 👋</p>
+        <h1 class="hero-headline hero-reveal">
           Product designer & builder helping teams leverage AI ✨ to ship
           world-class products faster.
         </h1>
-        <p class="hero-tagline fade-in-up delay-3">
+        <p class="hero-tagline hero-reveal">
           Previously at
           <a href="https://apple.com" target="_blank" rel="noopener" class="brand-pill brand-pill-apple"><img src="./apple/apple-logo.svg" alt="" aria-hidden="true" class="inline-brand-logo" />Apple</a> &
           <a href="https://metamask.io" target="_blank" rel="noopener" class="brand-pill brand-pill-metamask"
             ><img src="./metamask/images/metamask-fox.svg" alt="" aria-hidden="true" class="inline-brand-logo" />MetaMask</a
           >
         </p>
-        <a href="/work/" class="hero-cta fade-in-up delay-4">View Work</a>
+        <a href="/work/" class="hero-cta hero-reveal">View Work</a>
       </div>
     </section>
 
@@ -153,13 +153,15 @@
     <script src="script.js"></script>
     <script>
       (function () {
-        const message = document.getElementById('hero-message');
-        if (message) {
-          const revealMessage = () => setTimeout(() => message.classList.add('is-visible'), 1000);
+        const revealItems = document.querySelectorAll('.hero-reveal');
+        if (revealItems.length) {
+          const runReveal = () => {
+            revealItems.forEach((el) => el.classList.add('is-visible'));
+          };
           if (document.readyState === 'complete') {
-            revealMessage();
+            runReveal();
           } else {
-            window.addEventListener('load', revealMessage, { once: true });
+            window.addEventListener('load', runReveal, { once: true });
           }
         }
 

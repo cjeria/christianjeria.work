@@ -6,6 +6,47 @@
   'use strict';
 
   /* ----------------------------------------------------------
+     -1. Page blur transition — blur-in on load, blur-out then
+         navigate when a nav link is clicked, so the destination
+         page loads blurred and focuses in the same way
+     ---------------------------------------------------------- */
+  requestAnimationFrame(() => {
+    document.body.classList.add('is-ready');
+  });
+
+  {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const navEl = document.getElementById('nav');
+    const navLinkEls = navEl
+      ? [navEl.querySelector('.nav-logo'), ...navEl.querySelectorAll('.nav-links a')].filter(Boolean)
+      : [];
+    const projectCardLinks = Array.from(document.querySelectorAll('a.project-card'));
+    const projectNavLinks = Array.from(document.querySelectorAll('a.project-nav-card'));
+    const transitionLinkEls = [...navLinkEls, ...projectCardLinks, ...projectNavLinks];
+
+    transitionLinkEls.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#' || href.startsWith('#')) return;
+
+      link.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+
+        const destination = new URL(link.href, window.location.href);
+        if (destination.origin !== window.location.origin) return;
+        if (destination.href.split('#')[0] === window.location.href.split('#')[0]) return;
+
+        e.preventDefault();
+        if (reduceMotion) {
+          window.location.href = link.href;
+          return;
+        }
+        document.body.classList.remove('is-ready');
+        setTimeout(() => { window.location.href = link.href; }, 350);
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------
      0. Hash scroll offset — correct anchor position on page load
         so the floating nav doesn't overlap the target section
      ---------------------------------------------------------- */

@@ -44,6 +44,20 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+  opacity: 0;
+  filter: blur(18px);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+body.is-ready {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
 }
 
 a {
@@ -404,6 +418,17 @@ ul {
   margin: 0 auto 28px;
 }
 
+.hero-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.25s ease-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .hero-eyebrow {
   display: inline-block;
   position: relative;
@@ -416,14 +441,6 @@ ul {
   padding: 9px 18px;
   border-radius: 19px;
   margin-bottom: 24px;
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.5s ease-out, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.hero-eyebrow.is-visible {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .hero-eyebrow::before {
@@ -524,6 +541,14 @@ ul {
   background: #000;
   transform: translateY(-2px);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.36);
+}
+
+.hero-cta.hero-reveal {
+  transition: opacity 0.25s ease-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-cta.hero-reveal.is-visible {
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
 
 /* Hero entrance animations */
