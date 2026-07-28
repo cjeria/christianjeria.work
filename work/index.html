@@ -564,6 +564,13 @@
         const expScroll = document.getElementById('carousel-scroll');
         const lastIndex = slides.length - 1;
 
+        // Below 821px the CSS turns this into a plain stacked, vertically
+        // scrolling list (see the @media block in styles.css) — no
+        // horizontal paging, no dots. Every handler below that drives the
+        // carousel checks this first and gets out of the way on mobile,
+        // leaving native page scroll untouched.
+        const desktopQuery = window.matchMedia('(min-width: 821px)');
+
         // The authoritative slide index. Position is driven purely by this
         // plus the `transform` it maps to — there's no native scrolling to
         // fall out of sync with, so a new navigation can always fire the
@@ -587,34 +594,20 @@
         // back on the same slide instead of resetting to the first one.
         // replaceState (not pushState) so paging through slides doesn't
         // fill up browser history with an entry per slide.
-        function syncHash(i) {
-          const id = slideIds[i];
+        function syncHash(id) {
           if (id && window.location.hash.slice(1) !== id) {
             history.replaceState(null, '', '#' + id);
           }
         }
 
         function goTo(i) {
+          if (!desktopQuery.matches) return; // mobile pages by scrolling, not this
           i = Math.max(0, Math.min(lastIndex, i));
           current = i;
           setActive(i);
           render();
-          syncHash(i);
+          syncHash(slideIds[i]);
         }
-
-        // On load, jump straight to whichever slide the URL hash points
-        // at (no slide-in animation for this one — it should just be
-        // there), then hand off to the normal animated goTo() above for
-        // every navigation from here on.
-        const initialIndex = slideIds.indexOf(window.location.hash.slice(1));
-        if (initialIndex > -1) {
-          current = initialIndex;
-        }
-        track.style.transition = 'none';
-        render();
-        setActive(current);
-        track.offsetHeight;
-        track.style.transition = '';
 
         dots.forEach((dot, i) => {
           dot.addEventListener('click', () => goTo(i));
@@ -647,6 +640,7 @@
         }
 
         track.addEventListener('wheel', (e) => {
+          if (!desktopQuery.matches) return; // let the page scroll normally
           if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
 
           // The Experimental slide scrolls its grid internally — let that
@@ -665,19 +659,20 @@
           pageBy(e.deltaY > 0 ? 1 : -1);
         }, { passive: false });
 
-        // Touch drag only — since the track no longer scrolls natively,
-        // this replaces the swipe gesture that used to come for free on
-        // mobile. Desktop keeps mouse-wheel and dots/arrow-key navigation
-        // instead of drag — native Touch Events only ever fire for touch
-        // input, so mouse drags never page the carousel without needing
-        // to check pointer type. (This used to be built on Pointer Events
-        // with setPointerCapture, which reliably paged the first slide
-        // but then got stuck — a known trouble spot for that API on
-        // mobile Safari once a CSS transform transition is involved.
-        // Touch Events sidestep it entirely.) A gesture only commits to
-        // paging once it's clearly more horizontal than vertical, so a
-        // vertical swipe over the Experimental slide's grid still scrolls
-        // it natively instead of being hijacked into a horizontal page-turn.
+        // Touch drag paging — desktop-viewport-only (e.g. a touchscreen
+        // laptop). Below 821px the slides are a plain stacked list, so a
+        // touch just scrolls the page natively; these handlers bail out
+        // immediately in that case rather than fighting the browser for
+        // the gesture. Native Touch Events only ever fire for touch
+        // input, so a mouse drag never pages the carousel either way.
+        // (This used to be built on Pointer Events with
+        // setPointerCapture, which reliably paged the first slide but
+        // then got stuck — a known trouble spot for that API on mobile
+        // Safari once a CSS transform transition is involved. Touch
+        // Events sidestep it entirely.) A gesture only commits to paging
+        // once it's clearly more horizontal than vertical, so a vertical
+        // swipe over the Experimental slide's grid still scrolls it
+        // natively instead of being hijacked into a horizontal page-turn.
         let dragging = false;
         let dragDecided = false;
         let dragStartX = 0;
@@ -693,6 +688,7 @@
         }
 
         track.addEventListener('touchstart', (e) => {
+          if (!desktopQuery.matches) return;
           const t = e.changedTouches[0];
           touchId = t.identifier;
           dragStartX = t.clientX;
@@ -702,6 +698,7 @@
         }, { passive: true });
 
         track.addEventListener('touchmove', (e) => {
+          if (!desktopQuery.matches) return;
           const t = touchById(e.changedTouches, touchId);
           if (!t) return;
 
@@ -721,6 +718,7 @@
         }, { passive: false });
 
         function endDrag(e) {
+          if (!desktopQuery.matches) return;
           const t = touchById(e.changedTouches, touchId) || e.changedTouches[0];
           touchId = null;
           dragDecided = false;
@@ -737,6 +735,58 @@
 
         track.addEventListener('touchend', endDrag);
         track.addEventListener('touchcancel', endDrag);
+
+        // ---- Mode setup ---------------------------------------------
+        let hashObserver = null;
+
+        function enterDesktopMode() {
+          if (hashObserver) {
+            hashObserver.disconnect();
+            hashObserver = null;
+          }
+          const initialIndex = slideIds.indexOf(window.location.hash.slice(1));
+          if (initialIndex > -1) current = initialIndex;
+          // Jump straight there with no slide-in animation — it should
+          // just be there — then hand off to the normal animated goTo()
+          // above for every navigation from here on.
+          track.style.transition = 'none';
+          render();
+          setActive(current);
+          track.offsetHeight;
+          track.style.transition = '';
+        }
+
+        function enterMobileMode() {
+          // Plain stacked scroll — CSS handles the layout, and the
+          // site's shared hash-scroll-offset logic (script.js) already
+          // jumps to the right slide on load since each one has a real
+          // id. This just needs to keep the hash pointing at whichever
+          // project is currently in view as the user scrolls, the same
+          // way goTo() does on desktop, so a refresh still lands back on
+          // the same project.
+          track.style.transform = '';
+          setActive(-1);
+          if (!hashObserver) {
+            hashObserver = new IntersectionObserver((entries) => {
+              let best = null;
+              entries.forEach((entry) => {
+                if (entry.isIntersecting && (!best || entry.intersectionRatio > best.intersectionRatio)) {
+                  best = entry;
+                }
+              });
+              if (best) syncHash(best.target.id);
+            }, { threshold: [0.5] });
+            slides.forEach((s) => hashObserver.observe(s));
+          }
+        }
+
+        if (desktopQuery.matches) enterDesktopMode();
+        else enterMobileMode();
+
+        desktopQuery.addEventListener('change', (e) => {
+          if (e.matches) enterDesktopMode();
+          else enterMobileMode();
+        });
       })();
     </script>
   </body>
