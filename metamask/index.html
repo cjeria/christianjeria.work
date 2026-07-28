@@ -35,8 +35,7 @@
           <p class="project-desc fade-in-up delay-1">A secure, user-friendly wallet and gateway to the decentralized web, trusted by tens of millions of monthly active users worldwide.</p>
         </div>
         <div class="project-hero-img-wrap fade-in-up delay-2">
-          <div class="metamask-3d-logo" id="metamask-3d-logo" aria-hidden="true"></div>
-          <img src="images/metamask-fox.svg" alt="" aria-hidden="true" class="metamask-static-logo" />
+          <img src="images/metamask-mobile-hero.png" alt="MetaMask mobile app showing account balance and a token swap screen" />
         </div>
       </div>
     </div>
@@ -61,10 +60,6 @@
                   <span class="project-role-value">Lead Product Designer</span>
                 </div>
                 <div class="project-role-item">
-                  <span class="project-role-label">Duration</span>
-                  <span class="project-role-value">4.5 years</span>
-                </div>
-                <div class="project-role-item">
                   <span class="project-role-label">Platform</span>
                   <span class="project-role-value">iOS &amp; Web</span>
                 </div>
@@ -73,9 +68,9 @@
                   <span class="project-role-value"><a href="https://metamask.io" target="_blank" rel="noopener" class="project-link">metamask.io ↗</a></span>
                 </div>
                 <div class="project-role-item project-role-tags">
-                  <span class="tag">Brand</span>
-                  <span class="tag">Web</span>
-                  <span class="tag">Mobile App</span>
+                  <span class="tag">UI / UX</span>
+                  <span class="tag">Prototyping</span>
+                  <span class="tag">Brand Identity</span>
                 </div>
               </div>
             </div>
@@ -184,27 +179,5 @@
 
 
   <script src="../script.js"></script>
-  <script>
-    (function () {
-      // Skip loading the interactive 3D logo on mobile — the static SVG
-      // (shown via CSS) replaces it there, avoiding the WebGL render loop
-      // and deviceorientation listener on small screens.
-      if (window.matchMedia('(max-width: 767px)').matches) {
-        return;
-      }
-      var script = document.createElement('script');
-      script.src = 'metamask-logo.js';
-      script.onload = function () {
-        // metamask-logo.js appends its <svg> to document.body — relocate it
-        // into the hero image slot and let CSS drive its rendered size.
-        var svg = document.body.querySelector(':scope > svg');
-        var target = document.getElementById('metamask-3d-logo');
-        if (svg && target) {
-          target.appendChild(svg);
-        }
-      };
-      document.body.appendChild(script);
-    })();
-  </script>
 </body>
 </html>

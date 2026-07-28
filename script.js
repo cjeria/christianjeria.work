@@ -21,6 +21,20 @@
     });
   });
 
+  /* Browser back/forward can restore this page from bfcache instead of
+     reloading it. A bfcache restore replays the DOM exactly as it was
+     when the user left — including the blurred-out state the click
+     handler below sets right before navigating away — but it does not
+     re-run this script, so the rAF above never fires again and the
+     page is left permanently blurred/blank. `pageshow` fires on both a
+     normal load and a bfcache restore; `event.persisted` tells them
+     apart, so we can re-add `is-ready` only when it's actually needed. */
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      document.body.classList.add('is-ready');
+    }
+  });
+
   {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const navEl = document.getElementById('nav');
@@ -29,7 +43,9 @@
       : [];
     const projectCardLinks = Array.from(document.querySelectorAll('a.project-card'));
     const projectNavLinks = Array.from(document.querySelectorAll('a.project-nav-card'));
-    const transitionLinkEls = [...navLinkEls, ...projectCardLinks, ...projectNavLinks];
+    const heroCtaLinks = Array.from(document.querySelectorAll('a.hero-cta'));
+    const featuredLinks = Array.from(document.querySelectorAll('a.featured-link'));
+    const transitionLinkEls = [...navLinkEls, ...projectCardLinks, ...projectNavLinks, ...heroCtaLinks, ...featuredLinks];
 
     transitionLinkEls.forEach((link) => {
       const href = link.getAttribute('href');

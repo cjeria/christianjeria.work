@@ -47,352 +47,370 @@
     </nav>
 
     <!-- Work -->
-    <section id="work" class="section section-top">
-      <div class="container">
-        <div class="section-header reveal">
-          <h2 class="section-title">Work</h2>
-        </div>
+    <div class="carousel" id="work">
+      <div class="carousel-track" id="carousel-track">
 
-        <div class="work-filters reveal">
-          <button class="filter-tab active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="client">Case Studies</button>
-          <button class="filter-tab" data-filter="apps">Indie Apps</button>
-          <button class="filter-tab" data-filter="prototypes">
-            Prototypes
-          </button>
-          <button class="filter-tab" data-filter="motion">Motion</button>
-        </div>
-        <p class="filter-desc" id="filter-desc"></p>
-      </div>
-
-      <div class="work-grid" id="work-grid">
-          <!-- MetaMask -->
-          <a
-            href="/metamask/"
-            class="project-card card-big reveal"
-            data-category="client"
-          >
-            <div class="card-thumbnail thumbnail-2" style="height: 100%">
-              <img src="/metamask/images/hero-decoration.svg" alt="MetaMask" />
+        <!-- MetaMask -->
+        <section class="carousel-slide" id="metamask">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
+              <img
+                src="/metamask/images/metamask-mobile-hero.png"
+                alt="MetaMask mobile app showing account balance and a token swap screen"
+              />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Case Study</span>
-              </div>
-              <h3 class="card-title">MetaMask</h3>
-              <p class="card-subtitle">World-class Web3 wallet</p>
-              <p class="card-desc">
+            <div class="featured-details">
+              <h1 class="featured-title">MetaMask</h1>
+              <p class="featured-subtitle">World-class Web3 wallet</p>
+              <p class="featured-desc">
                 Shaping the experience of one of the world's most widely used
                 web3 wallets, from onboarding flows to the iconic fox logo.
               </p>
+              <a href="/metamask/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- Intuition Systems -->
-          <a
-            href="/intuition-systems/"
-            class="project-card card-wide reveal"
-            data-category="client"
-          >
-            <div class="card-thumbnail thumbnail-1" style="height: 100%">
+        <!-- Intuition Systems -->
+        <section class="carousel-slide" id="intuition-systems">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
               <img
-                src="/intuition-systems/images/hero-decoration.png"
-                alt="Intuition Systems"
+                src="/intuition-systems/images/intuitionsystem-hero.png"
+                alt="Intuition Systems profile dashboard showing account stats and tags"
               />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Case Study</span>
-              </div>
-              <h3 class="card-title">Intuition Systems</h3>
-              <p class="card-subtitle">Crypto knowledge network</p>
-              <p class="card-desc">
+            <div class="featured-details">
+              <h1 class="featured-title">Intuition Systems</h1>
+              <p class="featured-subtitle">Crypto knowledge network</p>
+              <p class="featured-desc">
                 Unifying a series of scattered experiments into one flagship
                 product for a crypto-powered knowledge network.
               </p>
+              <a href="/intuition-systems/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- Origin Labs -->
-          <a
-            href="/origin-labs/"
-            class="project-card reveal"
-            data-category="client"
-          >
-            <div class="card-thumbnail thumbnail-3" style="height: 100%">
+        <!-- Origin Labs -->
+        <section class="carousel-slide" id="origin-labs">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
               <img
                 src="/origin-labs/images/hero-decoration.png"
                 alt="Origin Labs"
               />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Case Study</span>
-              </div>
-              <h3 class="card-title">Origin Labs</h3>
-              <p class="card-subtitle">3D printing fleet management</p>
-              <p class="card-desc">
-                Designing the logo, embedded UI, and fleet management app for a
-                manufacturing-grade 3D printing startup acquired by Stratasys.
+            <div class="featured-details">
+              <h1 class="featured-title">Origin Labs</h1>
+              <p class="featured-subtitle">3D printing fleet management</p>
+              <p class="featured-desc">
+                Designing the logo, embedded UI, and fleet management app for
+                a manufacturing-grade 3D printing startup acquired by
+                Stratasys.
               </p>
+              <a href="/origin-labs/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- Waves -->
-          <a
-            href="https://www.trywaves.xyz/"
-            class="project-card card-wide reveal"
-            data-category="prototypes"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="card-thumbnail thumbnail-waves" style="height: 100%">
-              <img
-                src="/waves/sun_burst.svg"
-                alt=""
-                class="waves-sunburst"
-                aria-hidden="true"
-              />
-              <img src="/waves/waves_logo.svg" alt="Waves" class="waves-card-logo" />
+        <!-- Apple -->
+        <section class="carousel-slide carousel-slide--apple" id="apple">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
+              <img src="/apple/apple-logo.svg" alt="Apple" />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Prototype</span>
-              </div>
-              <h3 class="card-title">Waves</h3>
-              <p class="card-subtitle">White noise app with calming games</p>
-              <p class="card-desc">
-                Waves is a sleep app that pairs ambient noise with silent,
-                repetitive games to quiet your mind and help you fall asleep.
+            <div class="featured-details">
+              <h1 class="featured-title">Apple</h1>
+              <p class="featured-subtitle">Internal design tooling</p>
+              <p class="featured-desc">
+                Designing internal tools and workflows for Apple's Industrial
+                Design group, led by Jony Ive — software built to support one
+                of the world's most demanding design teams.
               </p>
+              <a href="/apple/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- Gridberry -->
-          <a
-            href="https://gridberry.app"
-            class="project-card reveal"
-            data-category="apps"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="card-thumbnail thumbnail-3" style="height: 100%">
-              <img src="/gridberry/gridberry-social.png" alt="Gridberry" />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Indie App</span>
-              </div>
-              <h3 class="card-title">Gridberry</h3>
-              <p class="card-subtitle">Name badge generator</p>
-              <p class="card-desc">
-                Print-ready name badges in 60 seconds. Upload your spreadsheet,
-                pick a template, download a PDF — no Word, no mail merge.
-              </p>
-            </div>
-          </a>
-
-          <!-- Maildrop -->
-          <a
-            href="https://maildrop-pi.vercel.app/"
-            class="project-card reveal"
-            data-category="apps"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="card-thumbnail thumbnail-2" style="height: 100%">
-              <img src="/maildrop/maildrop_logo.png" alt="Maildrop" />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Indie App</span>
-              </div>
-              <h3 class="card-title">Maildrop</h3>
-              <p class="card-subtitle">Email campaign builder</p>
-              <p class="card-desc">
-                A lightweight tool for capturing and organizing email ideas
-                before they slip through the cracks.
-              </p>
-            </div>
-          </a>
-
-          <!-- Panoramic Domains -->
-          <a
-            href="https://panodoms.com"
-            class="project-card reveal"
-            data-category="apps"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div class="card-thumbnail thumbnail-4" style="height: 100%">
-              <img
-                src="/panodoms/panodoms_logo-bw.png"
-                alt="Panoramic Domains"
-              />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Indie App</span>
-              </div>
-              <h3 class="card-title">Panoramic Domains</h3>
-              <p class="card-subtitle">Visual domain search</p>
-              <p class="card-desc">
-                A visual domain search site — Find available domains and preview
-                what's already taken.
-              </p>
-            </div>
-          </a>
-
-          <!-- Apple -->
-          <a href="/apple/" class="project-card card-big reveal" data-category="client">
-            <div class="card-thumbnail thumbnail-apple" style="height: 100%">
-              <img
-                src="/apple/apple-logo.svg"
-                alt="Apple"
-                class="apple-card-logo"
-              />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Case Study</span>
-              </div>
-              <h3 class="card-title">Apple</h3>
-              <p class="card-subtitle">Internal design tooling</p>
-            </div>
-          </a>
-
-          <!-- Mobina -->
-          <a
-            href="/mobina/"
-            class="project-card reveal"
-            data-category="motion"
-          >
-            <div class="card-thumbnail thumbnail-mobina" style="height: 100%">
-              <div class="mobina-mark">
-                <span class="mobina-wordmark">Mobina</span>
-                <span class="mobina-play" aria-hidden="true">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
-                </span>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Motion Design</span>
-              </div>
-              <h3 class="card-title">Mobina</h3>
-              <p class="card-subtitle">Product video for an AI executive assistant</p>
-            </div>
-          </a>
-
-          <!-- Portal -->
-          <a
-            href="/portal/"
-            class="project-card card-wide reveal"
-            data-category="client"
-          >
-            <div class="card-thumbnail thumbnail-4" style="height: 100%">
+        <!-- Portal -->
+        <section class="carousel-slide" id="portal">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
               <img src="/portal/images/hero-decoration.png" alt="Portal" />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Case Study</span>
-              </div>
-              <h3 class="card-title">Portal</h3>
-              <p class="card-subtitle">Wallet design & illustration</p>
-              <p class="card-desc">
+            <div class="featured-details">
+              <h1 class="featured-title">Portal</h1>
+              <p class="featured-subtitle">Wallet design & illustration</p>
+              <p class="featured-desc">
                 Bringing wallet service concepts to life through rapid
                 prototyping, product illustrations, and website design for an
                 early-stage startup.
               </p>
+              <a href="/portal/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- Steady Hands -->
-          <a
-            href="https://steadyhands.app"
-            class="project-card reveal"
-            data-category="prototypes"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <div
-              class="card-thumbnail thumbnail-steady-hands"
-              style="height: 100%"
-            >
+        <!-- Mobina -->
+        <section class="carousel-slide" id="mobina">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
               <img
-                src="/steady-hands/app-mockup.png"
-                alt="Steady Hands"
-                style="object-position: top center"
+                src="/mobina/images/Mobina-hero.png"
+                alt="App integrations Mobina connects with, including Slack, Gmail, Google Drive, and Outlook"
               />
             </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Prototype</span>
-              </div>
-              <h3 class="card-title">Steady Hands</h3>
-              <p class="card-subtitle">Investing education app</p>
-            </div>
-          </a>
-
-          <!-- TaskLocal (hidden) -->
-          <a
-            href="https://tasklocal.co"
-            class="project-card reveal"
-            data-category="prototypes"
-            data-permanently-hidden
-            target="_blank"
-            rel="noopener noreferrer"
-            style="display: none"
-          >
-            <div
-              class="card-thumbnail thumbnail-tasklocal"
-              style="height: 100%"
-            >
-              <img
-                src="/tasklocal/illustration.svg"
-                alt="TaskLocal"
-                style="object-fit: contain; padding: 10%"
-              />
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Prototype</span>
-              </div>
-              <h3 class="card-title">TaskLocal</h3>
-              <p class="card-subtitle">
-                Trusted neighbors for the little things
+            <div class="featured-details">
+              <h1 class="featured-title">Mobina</h1>
+              <p class="featured-subtitle">Product video for an AI executive assistant</p>
+              <p class="featured-desc">
+                Directing and animating a product video for Mobina, an AI
+                executive assistant — translating what it does into a short,
+                confident piece of motion design.
               </p>
+              <a href="/mobina/" class="featured-link"
+                >View Project <span aria-hidden="true">→</span></a
+              >
             </div>
-          </a>
+          </div>
+        </section>
 
-          <!-- ChrisGPT (hidden) -->
-          <a
-            href="https://chat.christianjeria.work"
-            class="project-card reveal"
-            data-category="apps"
-            data-permanently-hidden
-            target="_blank"
-            rel="noopener noreferrer"
-            style="display: none"
-          >
-            <div class="card-thumbnail thumbnail-5" style="height: 100%">
-              <div class="thumb-shape shape-c"></div>
-              <div class="thumb-shape shape-d"></div>
-              <div class="thumb-shape shape-h"></div>
-            </div>
-            <div class="card-body">
-              <div class="card-meta">
-                <span class="tag">Indie App</span>
+        <!-- Experimental -->
+        <section class="carousel-slide carousel-slide--experimental" id="experimental">
+          <div class="carousel-scroll" id="carousel-scroll">
+            <div class="container">
+              <div class="section-header reveal">
+                <h2 class="section-title">Experimental</h2>
+                <p class="section-subtitle">Recent projects I've built using AI</p>
               </div>
-              <h3 class="card-title">ChrisGPT</h3>
-              <p class="card-desc">
-                An AI-powered chat interface trained on my background,
-                experience, and perspective — a smarter way to get to know me.
-              </p>
+
+              <div class="work-filters reveal">
+                <button class="filter-tab active" data-filter="all">All</button>
+                <button class="filter-tab" data-filter="apps">Indie Apps</button>
+                <button class="filter-tab" data-filter="prototypes">
+                  Prototypes
+                </button>
+              </div>
+              <p class="filter-desc" id="filter-desc"></p>
             </div>
-          </a>
+
+            <div class="work-grid" id="work-grid">
+              <!-- Waves -->
+              <a
+                href="https://www.trywaves.xyz/"
+                class="project-card reveal"
+                data-category="prototypes"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="card-thumbnail thumbnail-waves" style="height: 100%">
+                  <img
+                    src="/waves/sun_burst.svg"
+                    alt=""
+                    class="waves-sunburst"
+                    aria-hidden="true"
+                  />
+                  <img src="/waves/waves_logo.svg" alt="Waves" class="waves-card-logo" />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Prototype</span>
+                  </div>
+                  <h3 class="card-title">Waves</h3>
+                  <p class="card-subtitle">White noise app with calming games</p>
+                  <p class="card-desc">
+                    Waves is a sleep app that pairs ambient noise with silent,
+                    repetitive games to quiet your mind and help you fall asleep.
+                  </p>
+                </div>
+              </a>
+
+              <!-- Gridberry -->
+              <a
+                href="https://gridberry.app"
+                class="project-card reveal"
+                data-category="apps"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="card-thumbnail thumbnail-3" style="height: 100%">
+                  <img src="/gridberry/gridberry-social.png" alt="Gridberry" />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Indie App</span>
+                  </div>
+                  <h3 class="card-title">Gridberry</h3>
+                  <p class="card-subtitle">Name badge generator</p>
+                  <p class="card-desc">
+                    Print-ready name badges in 60 seconds. Upload your spreadsheet,
+                    pick a template, download a PDF — no Word, no mail merge.
+                  </p>
+                </div>
+              </a>
+
+              <!-- Maildrop -->
+              <a
+                href="https://maildrop-pi.vercel.app/"
+                class="project-card reveal"
+                data-category="apps"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="card-thumbnail thumbnail-2" style="height: 100%">
+                  <img src="/maildrop/maildrop_logo.png" alt="Maildrop" />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Indie App</span>
+                  </div>
+                  <h3 class="card-title">Maildrop</h3>
+                  <p class="card-subtitle">Email campaign builder</p>
+                  <p class="card-desc">
+                    A lightweight tool for capturing and organizing email ideas
+                    before they slip through the cracks.
+                  </p>
+                </div>
+              </a>
+
+              <!-- Panoramic Domains -->
+              <a
+                href="https://panodoms.com"
+                class="project-card reveal"
+                data-category="apps"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div class="card-thumbnail thumbnail-4" style="height: 100%">
+                  <img
+                    src="/panodoms/panodoms_logo-bw.png"
+                    alt="Panoramic Domains"
+                  />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Indie App</span>
+                  </div>
+                  <h3 class="card-title">Panoramic Domains</h3>
+                  <p class="card-subtitle">Visual domain search</p>
+                  <p class="card-desc">
+                    A visual domain search site — Find available domains and preview
+                    what's already taken.
+                  </p>
+                </div>
+              </a>
+
+              <!-- Steady Hands -->
+              <a
+                href="https://steadyhands.app"
+                class="project-card reveal"
+                data-category="prototypes"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <div
+                  class="card-thumbnail thumbnail-steady-hands"
+                  style="height: 100%"
+                >
+                  <img
+                    src="/steady-hands/app-mockup.png"
+                    alt="Steady Hands"
+                    style="object-position: top center"
+                  />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Prototype</span>
+                  </div>
+                  <h3 class="card-title">Steady Hands</h3>
+                  <p class="card-subtitle">Investing education app</p>
+                </div>
+              </a>
+
+              <!-- TaskLocal (hidden) -->
+              <a
+                href="https://tasklocal.co"
+                class="project-card reveal"
+                data-category="prototypes"
+                data-permanently-hidden
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: none"
+              >
+                <div
+                  class="card-thumbnail thumbnail-tasklocal"
+                  style="height: 100%"
+                >
+                  <img
+                    src="/tasklocal/illustration.svg"
+                    alt="TaskLocal"
+                    style="object-fit: contain; padding: 10%"
+                  />
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Prototype</span>
+                  </div>
+                  <h3 class="card-title">TaskLocal</h3>
+                  <p class="card-subtitle">
+                    Trusted neighbors for the little things
+                  </p>
+                </div>
+              </a>
+
+              <!-- ChrisGPT (hidden) -->
+              <a
+                href="https://chat.christianjeria.work"
+                class="project-card reveal"
+                data-category="apps"
+                data-permanently-hidden
+                target="_blank"
+                rel="noopener noreferrer"
+                style="display: none"
+              >
+                <div class="card-thumbnail thumbnail-5" style="height: 100%">
+                  <div class="thumb-shape shape-c"></div>
+                  <div class="thumb-shape shape-d"></div>
+                  <div class="thumb-shape shape-h"></div>
+                </div>
+                <div class="card-body">
+                  <div class="card-meta">
+                    <span class="tag">Indie App</span>
+                  </div>
+                  <h3 class="card-title">ChrisGPT</h3>
+                  <p class="card-desc">
+                    An AI-powered chat interface trained on my background,
+                    experience, and perspective — a smarter way to get to know me.
+                  </p>
+                </div>
+              </a>
+            </div>
+          </div>
+        </section>
+
       </div>
-    </section>
+
+      <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Project slides">
+        <button class="carousel-dot active" type="button" data-index="0" role="tab" aria-selected="true" aria-label="MetaMask"></button>
+        <button class="carousel-dot" type="button" data-index="1" role="tab" aria-selected="false" aria-label="Intuition Systems"></button>
+        <button class="carousel-dot" type="button" data-index="2" role="tab" aria-selected="false" aria-label="Origin Labs"></button>
+        <button class="carousel-dot" type="button" data-index="3" role="tab" aria-selected="false" aria-label="Apple"></button>
+        <button class="carousel-dot" type="button" data-index="4" role="tab" aria-selected="false" aria-label="Portal"></button>
+        <button class="carousel-dot" type="button" data-index="5" role="tab" aria-selected="false" aria-label="Mobina"></button>
+        <button class="carousel-dot" type="button" data-index="6" role="tab" aria-selected="false" aria-label="Experimental"></button>
+      </div>
+    </div>
 
 
     <script src="../script.js"></script>
@@ -410,10 +428,8 @@
 
         const filterDesc = document.getElementById("filter-desc");
         const FILTER_DESCRIPTIONS = {
-          client: "Recent projects from full-time jobs.",
           apps: "Apps I've built and launched with Claude Code",
           prototypes: "Quick experiments built to test a concept",
-          motion: "Motion design and video work",
         };
 
         function updateFilterDesc(filter) {
@@ -537,6 +553,173 @@
             updateFilterDesc(tab.dataset.filter);
           });
         });
+      })();
+    </script>
+    <script>
+      (function () {
+        const track = document.getElementById('carousel-track');
+        const slides = Array.from(track.children);
+        const slideIds = slides.map((s) => s.id);
+        const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+        const expScroll = document.getElementById('carousel-scroll');
+        const lastIndex = slides.length - 1;
+
+        // The authoritative slide index. Position is driven purely by this
+        // plus the `transform` it maps to — there's no native scrolling to
+        // fall out of sync with, so a new navigation can always fire the
+        // instant it's requested, whether or not the CSS transition from
+        // the last one has visually finished.
+        let current = 0;
+
+        function setActive(i) {
+          dots.forEach((d, idx) => {
+            d.classList.toggle('active', idx === i);
+            d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+          });
+        }
+
+        function render() {
+          track.style.transform = `translate3d(${current * -100}%, 0, 0)`;
+        }
+
+        // Keep the URL hash in sync with whichever project is showing —
+        // each slide's id (e.g. #metamask) — so refreshing the page lands
+        // back on the same slide instead of resetting to the first one.
+        // replaceState (not pushState) so paging through slides doesn't
+        // fill up browser history with an entry per slide.
+        function syncHash(i) {
+          const id = slideIds[i];
+          if (id && window.location.hash.slice(1) !== id) {
+            history.replaceState(null, '', '#' + id);
+          }
+        }
+
+        function goTo(i) {
+          i = Math.max(0, Math.min(lastIndex, i));
+          current = i;
+          setActive(i);
+          render();
+          syncHash(i);
+        }
+
+        // On load, jump straight to whichever slide the URL hash points
+        // at (no slide-in animation for this one — it should just be
+        // there), then hand off to the normal animated goTo() above for
+        // every navigation from here on.
+        const initialIndex = slideIds.indexOf(window.location.hash.slice(1));
+        if (initialIndex > -1) {
+          current = initialIndex;
+        }
+        track.style.transition = 'none';
+        render();
+        setActive(current);
+        track.offsetHeight;
+        track.style.transition = '';
+
+        dots.forEach((dot, i) => {
+          dot.addEventListener('click', () => goTo(i));
+        });
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowRight') goTo(current + 1);
+          else if (e.key === 'ArrowLeft') goTo(current - 1);
+        });
+
+        // A scroll gesture pages one slide at a time. Trackpads and hard
+        // wheel flicks fire a burst of wheel events as the gesture
+        // decelerates — rather than unlocking after a fixed delay (which
+        // can expire mid-burst and let the tail end of one gesture trigger
+        // a second slide change), we push the unlock out on every event
+        // and only actually unlock once the events stop arriving. So one
+        // gesture — gentle or hard — always advances exactly one slide,
+        // and the moment it does, goTo() can retarget the transform
+        // immediately — no waiting on the previous slide to land.
+        let wheelBusy = false;
+        let wheelIdleTimer = null;
+        const WHEEL_IDLE_MS = 150;
+
+        function pageBy(delta) {
+          clearTimeout(wheelIdleTimer);
+          wheelIdleTimer = setTimeout(() => { wheelBusy = false; }, WHEEL_IDLE_MS);
+          if (wheelBusy) return;
+          wheelBusy = true;
+          goTo(current + delta);
+        }
+
+        track.addEventListener('wheel', (e) => {
+          if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+
+          // The Experimental slide scrolls its grid internally — let that
+          // happen normally, and only page the carousel once you're
+          // already scrolled to its top and try to scroll up further.
+          if (current === lastIndex && expScroll) {
+            const atTop = expScroll.scrollTop <= 0;
+            if (e.deltaY < 0 && atTop) {
+              e.preventDefault();
+              pageBy(-1);
+            }
+            return;
+          }
+
+          e.preventDefault();
+          pageBy(e.deltaY > 0 ? 1 : -1);
+        }, { passive: false });
+
+        // Touch drag only — since the track no longer scrolls natively,
+        // this replaces the swipe gesture that used to come for free on
+        // mobile. Desktop keeps mouse-wheel and dots/arrow-key navigation
+        // instead of drag, so a mouse-drag inside a slide (e.g. selecting
+        // text) doesn't page the carousel. A gesture only commits to
+        // paging once it's clearly more horizontal than vertical, so a
+        // vertical swipe over the Experimental slide's grid still scrolls
+        // it natively instead of being hijacked into a horizontal page-turn.
+        let dragging = false;
+        let dragDecided = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        const DRAG_THRESHOLD = 8;
+
+        track.addEventListener('pointerdown', (e) => {
+          if (e.pointerType === 'mouse') return;
+          dragStartX = e.clientX;
+          dragStartY = e.clientY;
+          dragDecided = false;
+          dragging = false;
+        });
+
+        track.addEventListener('pointermove', (e) => {
+          if (e.pointerType === 'mouse') return;
+          if (!dragDecided) {
+            const dx = e.clientX - dragStartX;
+            const dy = e.clientY - dragStartY;
+            if (Math.abs(dx) < DRAG_THRESHOLD && Math.abs(dy) < DRAG_THRESHOLD) return;
+            dragDecided = true;
+            if (Math.abs(dx) <= Math.abs(dy)) return; // vertical intent — leave it to native scroll
+            dragging = true;
+            track.classList.add('is-dragging');
+            track.setPointerCapture(e.pointerId);
+          }
+          if (!dragging) return;
+          const dx = e.clientX - dragStartX;
+          track.style.transform = `translate3d(calc(${current * -100}% + ${dx}px), 0, 0)`;
+        });
+
+        function endDrag(e) {
+          if (e.pointerType === 'mouse') return;
+          dragDecided = false;
+          if (!dragging) return;
+          dragging = false;
+          track.classList.remove('is-dragging');
+
+          const dx = e.clientX - dragStartX;
+          const threshold = track.clientWidth * 0.15;
+          if (dx <= -threshold) goTo(current + 1);
+          else if (dx >= threshold) goTo(current - 1);
+          else render();
+        }
+
+        track.addEventListener('pointerup', endDrag);
+        track.addEventListener('pointercancel', endDrag);
       })();
     </script>
   </body>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Work — Full-Page Carousel Prototype</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
+  <link rel="stylesheet" href="../styles.css" />
+  <style>
+    /* ── Prototype-only additions ──────────────────────────────
+       The nav and .featured-media / .featured-title / .featured-subtitle /
+       .featured-desc / .featured-link styling below are the site's real
+       styles.css (same classes used on the live /work/ page). This block
+       only covers the new structural piece this idea introduces: a
+       full-viewport, horizontally-paged carousel with paging dots. ── */
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .proto-breadcrumb {
+      position: fixed;
+      top: 16px;
+      left: 20px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 200;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      border-radius: 9999px;
+      padding: 6px 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    .proto-breadcrumb a { color: var(--text-secondary); text-decoration: none; }
+    .proto-breadcrumb a:hover { color: var(--text-primary); }
+    .proto-breadcrumb .sep { color: #c7c7cc; }
+    .proto-breadcrumb .current { color: var(--text-primary); }
+
+    /* ── Carousel ── */
+    .carousel {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Slide position is driven entirely by a JS-set `transform`, not
+       native scrolling — changing a CSS transition's target mid-flight
+       always retargets smoothly from wherever it currently is, so a new
+       scroll input never has to wait for the previous slide to finish
+       landing the way native scroll-snap settling did. */
+    .carousel-track {
+      display: flex;
+      width: 100%;
+      height: 100%;
+      touch-action: none;
+      transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .carousel-track.is-dragging {
+      transition: none;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100vw;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px clamp(20px, 5vw, 60px) 100px;
+      box-sizing: border-box;
+    }
+
+    .carousel-slide-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: clamp(16px, 2.5vw, 32px);
+      width: 100%;
+      max-width: 1120px;
+      height: 100%;
+    }
+
+    /* Project images sized 25% smaller than the real page's rows */
+    .carousel-slide .featured-media img {
+      max-width: 75%;
+      max-height: 75%;
+    }
+
+    .carousel-slide--apple .featured-media img {
+      width: 28.5%;
+      max-width: 165px;
+    }
+
+    /* ── The one new visual element: paging dots ── */
+    .carousel-dots {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 50;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.18);
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .carousel-dot:hover {
+      background: rgba(0, 0, 0, 0.34);
+    }
+    .carousel-dot.active {
+      background: var(--text-primary);
+      transform: scale(1.3);
+    }
+
+    @media (max-width: 820px) {
+      .carousel-slide {
+        padding: 100px clamp(20px, 6vw, 40px) 80px;
+      }
+      .carousel-slide-inner {
+        grid-template-columns: 1fr;
+        grid-auto-rows: min-content;
+        row-gap: 24px;
+        height: auto;
+      }
+      .featured-media {
+        height: auto;
+        padding: 0;
+      }
+      .carousel-slide .featured-media img {
+        max-width: 100%;
+        max-height: 38vh;
+      }
+      .featured-desc {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-blob" id="nav-blob"></div>
+      <a href="/" class="nav-logo"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" style="display:block"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.29297 2.29303C9.4805 2.10556 9.73481 2.00024 9.99997 2.00024C10.2651 2.00024 10.5194 2.10556 10.707 2.29303L17.707 9.29303C17.8468 9.43288 17.942 9.61105 17.9806 9.805C18.0191 9.99895 17.9993 10.2 17.9236 10.3827C17.848 10.5654 17.7198 10.7215 17.5554 10.8314C17.391 10.9413 17.1977 11 17 11H16V17C16 17.2652 15.8946 17.5196 15.7071 17.7071C15.5195 17.8947 15.2652 18 15 18H13C12.7348 18 12.4804 17.8947 12.2929 17.7071C12.1053 17.5196 12 17.2652 12 17V14C12 13.7348 11.8946 13.4805 11.7071 13.2929C11.5195 13.1054 11.2652 13 11 13H8.99997C8.73475 13 8.4804 13.1054 8.29286 13.2929C8.10533 13.4805 7.99997 13.7348 7.99997 14V17C7.99997 17.2652 7.89461 17.5196 7.70708 17.7071C7.51954 17.8947 7.26519 18 6.99997 18H4.99997C4.73475 18 4.4804 17.8947 4.29286 17.7071C4.10533 17.5196 3.99997 17.2652 3.99997 17V11H2.99997C2.80222 11 2.60892 10.9413 2.44451 10.8314C2.2801 10.7215 2.15196 10.5654 2.07629 10.3827C2.00062 10.2 1.98082 9.99895 2.01939 9.805C2.05795 9.61105 2.15316 9.43288 2.29297 9.29303L9.29297 2.29303Z"/></svg></a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <ul class="nav-links">
+        <li><a href="/work/" class="active">Work</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <nav class="proto-breadcrumb" aria-label="Breadcrumb">
+    <a href="/">Home</a>
+    <span class="sep">/</span>
+    <a href="/prototypes/">Prototypes</a>
+    <span class="sep">/</span>
+    <span class="current">Work Carousel</span>
+  </nav>
+
+  <div class="carousel">
+    <div class="carousel-track" id="carousel-track">
+
+      <!-- MetaMask -->
+      <section class="carousel-slide">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/metamask/images/metamask-mobile-hero.png" alt="MetaMask mobile app showing account balance and a token swap screen" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">MetaMask</h1>
+            <p class="featured-subtitle">World-class Web3 wallet</p>
+            <p class="featured-desc">Shaping the experience of one of the world's most widely used web3 wallets, from onboarding flows to the iconic fox logo.</p>
+            <a href="/metamask/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Intuition Systems -->
+      <section class="carousel-slide">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/intuition-systems/images/intuitionsystem-hero.png" alt="Intuition Systems profile dashboard showing account stats and tags" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">Intuition Systems</h1>
+            <p class="featured-subtitle">Crypto knowledge network</p>
+            <p class="featured-desc">Unifying a series of scattered experiments into one flagship product for a crypto-powered knowledge network.</p>
+            <a href="/intuition-systems/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Origin Labs -->
+      <section class="carousel-slide">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/origin-labs/images/hero-decoration.png" alt="Origin Labs" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">Origin Labs</h1>
+            <p class="featured-subtitle">3D printing fleet management</p>
+            <p class="featured-desc">Designing the logo, embedded UI, and fleet management app for a manufacturing-grade 3D printing startup acquired by Stratasys.</p>
+            <a href="/origin-labs/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Apple -->
+      <section class="carousel-slide carousel-slide--apple">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/apple/apple-logo.svg" alt="Apple" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">Apple</h1>
+            <p class="featured-subtitle">Internal design tooling</p>
+            <p class="featured-desc">Designing internal tools and workflows for Apple's Industrial Design group, led by Jony Ive — software built to support one of the world's most demanding design teams.</p>
+            <a href="/apple/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Portal -->
+      <section class="carousel-slide">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/portal/images/hero-decoration.png" alt="Portal" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">Portal</h1>
+            <p class="featured-subtitle">Wallet design & illustration</p>
+            <p class="featured-desc">Bringing wallet service concepts to life through rapid prototyping, product illustrations, and website design for an early-stage startup.</p>
+            <a href="/portal/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Mobina -->
+      <section class="carousel-slide">
+        <div class="carousel-slide-inner">
+          <div class="featured-media">
+            <img src="/mobina/images/Mobina-hero.png" alt="App integrations Mobina connects with, including Slack, Gmail, Google Drive, and Outlook" />
+          </div>
+          <div class="featured-details">
+            <h1 class="featured-title">Mobina</h1>
+            <p class="featured-subtitle">Product video for an AI executive assistant</p>
+            <p class="featured-desc">Directing and animating a product video for Mobina, an AI executive assistant — translating what it does into a short, confident piece of motion design.</p>
+            <a href="/mobina/" class="featured-link">View Project <span aria-hidden="true">→</span></a>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Project slides">
+      <button class="carousel-dot active" type="button" data-index="0" role="tab" aria-selected="true" aria-label="MetaMask"></button>
+      <button class="carousel-dot" type="button" data-index="1" role="tab" aria-selected="false" aria-label="Intuition Systems"></button>
+      <button class="carousel-dot" type="button" data-index="2" role="tab" aria-selected="false" aria-label="Origin Labs"></button>
+      <button class="carousel-dot" type="button" data-index="3" role="tab" aria-selected="false" aria-label="Apple"></button>
+      <button class="carousel-dot" type="button" data-index="4" role="tab" aria-selected="false" aria-label="Portal"></button>
+      <button class="carousel-dot" type="button" data-index="5" role="tab" aria-selected="false" aria-label="Mobina"></button>
+    </div>
+  </div>
+
+  <script src="../script.js"></script>
+  <script>
+    (function () {
+      const track = document.getElementById('carousel-track');
+      const slides = Array.from(track.children);
+      const dots = Array.from(document.querySelectorAll('.carousel-dot'));
+
+      // The authoritative slide index. Position is driven purely by this
+      // plus the `transform` it maps to — there's no native scrolling to
+      // fall out of sync with, so a new navigation can always fire the
+      // instant it's requested, whether or not the CSS transition from
+      // the last one has visually finished.
+      let current = 0;
+
+      function setActive(i) {
+        dots.forEach((d, idx) => {
+          d.classList.toggle('active', idx === i);
+          d.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+        });
+      }
+
+      function render() {
+        track.style.transform = `translate3d(${current * -100}%, 0, 0)`;
+      }
+
+      function goTo(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        current = i;
+        setActive(i);
+        render();
+      }
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => goTo(i));
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') goTo(current + 1);
+        else if (e.key === 'ArrowLeft') goTo(current - 1);
+      });
+
+      // A scroll gesture pages one slide at a time. Trackpads and hard
+      // wheel flicks fire a burst of wheel events as the gesture
+      // decelerates — rather than unlocking after a fixed delay (which
+      // can expire mid-burst and let the tail end of one gesture trigger
+      // a second slide change), we push the unlock out on every event
+      // and only actually unlock once the events stop arriving. So one
+      // gesture — gentle or hard — always advances exactly one slide,
+      // and the moment it does, goTo() can retarget the transform
+      // immediately — no waiting on the previous slide to land.
+      let wheelBusy = false;
+      let wheelIdleTimer = null;
+      const WHEEL_IDLE_MS = 150;
+
+      track.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        e.preventDefault();
+
+        clearTimeout(wheelIdleTimer);
+        wheelIdleTimer = setTimeout(() => { wheelBusy = false; }, WHEEL_IDLE_MS);
+
+        if (wheelBusy) return;
+        wheelBusy = true;
+
+        goTo(current + (e.deltaY > 0 ? 1 : -1));
+      }, { passive: false });
+
+      // Touch drag only — since the track no longer scrolls natively,
+      // this replaces the swipe gesture that used to come for free on
+      // mobile. Desktop keeps mouse-wheel and dots/arrow-key navigation
+      // instead of drag.
+      let dragging = false;
+      let dragStartX = 0;
+
+      track.addEventListener('pointerdown', (e) => {
+        if (e.pointerType === 'mouse') return;
+        dragging = true;
+        dragStartX = e.clientX;
+        track.classList.add('is-dragging');
+        track.setPointerCapture(e.pointerId);
+      });
+
+      track.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'mouse') return;
+        if (!dragging) return;
+        const dx = e.clientX - dragStartX;
+        track.style.transform = `translate3d(calc(${current * -100}% + ${dx}px), 0, 0)`;
+      });
+
+      function endDrag(e) {
+        if (e.pointerType === 'mouse') return;
+        if (!dragging) return;
+        dragging = false;
+        track.classList.remove('is-dragging');
+
+        const dx = e.clientX - dragStartX;
+        const threshold = track.clientWidth * 0.15;
+        if (dx <= -threshold) goTo(current + 1);
+        else if (dx >= threshold) goTo(current - 1);
+        else render();
+      }
+
+      track.addEventListener('pointerup', endDrag);
+      track.addEventListener('pointercancel', endDrag);
+    })();
+  </script>
+</body>
+</html>
