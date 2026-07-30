@@ -151,8 +151,75 @@
       </div>
     </section>
 
+    <!-- Intro overlay — plays once on load: avatar + greeting fade/blur into
+         view over the real hero, then dissolve to reveal the settled page.
+         Built from measured clones (not the real elements) so script.js's
+         `.hero-avatar` / `#avatar-ring` hover & click wiring, which runs
+         first via script.js below, stays attached to the real nodes. -->
+    <div id="intro-overlay" aria-hidden="true"></div>
 
     <script src="script.js"></script>
+    <script>
+      (function () {
+        const overlay = document.getElementById('intro-overlay');
+        const realAvatar = document.getElementById('avatar-ring');
+        const realEyebrow = document.getElementById('hero-message');
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        if (overlay && realAvatar && realEyebrow && !reduceMotion) {
+          // Measure the real elements' on-screen position/size so the
+          // overlay clones sit exactly where the hero's avatar and
+          // greeting actually are — the overlay fades away without any
+          // jump because the real elements are already right there.
+          const cloneAt = (source, extraClass) => {
+            const rect = source.getBoundingClientRect();
+            const clone = source.cloneNode(true);
+            clone.removeAttribute('id');
+            clone.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+            clone.classList.remove('hero-reveal');
+            clone.classList.add('intro-clone', extraClass);
+            clone.style.position = 'fixed';
+            clone.style.top = `${rect.top}px`;
+            clone.style.left = `${rect.left}px`;
+            clone.style.width = `${rect.width}px`;
+            clone.style.height = `${rect.height}px`;
+            clone.style.margin = '0';
+            overlay.appendChild(clone);
+            return clone;
+          };
+
+          const avatarClone = cloneAt(realAvatar, 'intro-avatar');
+          const eyebrowClone = cloneAt(realEyebrow, 'intro-eyebrow');
+
+          const clonedVideo = avatarClone.querySelector('video');
+          if (clonedVideo) {
+            clonedVideo.currentTime = 0;
+            const playAttempt = clonedVideo.play();
+            if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
+          }
+
+          // Timeline (~4s total): avatar fades/blurs in first, the greeting
+          // slides up from below a beat later, then everything holds before
+          // the whole overlay dissolves to reveal the settled homepage.
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              avatarClone.classList.add('intro-in');
+              setTimeout(() => eyebrowClone.classList.add('intro-in'), 1500);
+            });
+          });
+
+          setTimeout(() => overlay.classList.add('intro-hide'), 3200);
+
+          overlay.addEventListener('transitionend', function onDone(e) {
+            if (e.target !== overlay || e.propertyName !== 'opacity' || !overlay.classList.contains('intro-hide')) return;
+            overlay.removeEventListener('transitionend', onDone);
+            overlay.remove();
+          });
+        } else if (overlay) {
+          overlay.remove();
+        }
+      })();
+    </script>
     <script>
       (function () {
         const revealItems = document.querySelectorAll('.hero-reveal');

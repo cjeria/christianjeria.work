@@ -48,14 +48,16 @@ body {
 
 /* Blur/focus transition lives on body's other children (not body itself)
    so #nav — a direct child of body — never sits inside a filtered
-   containing block, which would break its position: fixed on scroll. */
-body > *:not(#nav) {
+   containing block, which would break its position: fixed on scroll.
+   #intro-overlay is also excluded — it runs its own independent fade
+   timeline and must not inherit this transition or its early trigger. */
+body > *:not(#nav):not(#intro-overlay) {
   opacity: 0;
   filter: blur(18px);
   transition: opacity 0.5s ease, filter 0.5s ease;
 }
 
-body.is-ready > *:not(#nav) {
+body.is-ready > *:not(#nav):not(#intro-overlay) {
   opacity: 1;
   filter: blur(0);
 }
@@ -91,6 +93,49 @@ ul {
    padding to clear the fixed nav bar — same formula as .project-hero */
 .section.section-top {
   padding-top: calc(52px + clamp(45px, 6vw, 75px));
+}
+
+/* ============================================================
+   INTRO OVERLAY — one-time avatar + greeting animation on load
+   ============================================================ */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--bg-base);
+  opacity: 1;
+  transition: opacity 0.8s ease, filter 0.8s ease;
+}
+
+#intro-overlay.intro-hide {
+  opacity: 0;
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+#intro-overlay .intro-avatar {
+  opacity: 0;
+  filter: blur(18px);
+  transform: scale(0.92);
+  transition: opacity 0.9s ease, filter 0.9s ease, transform 0.9s ease;
+}
+
+#intro-overlay .intro-avatar.intro-in {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+#intro-overlay .intro-eyebrow {
+  margin: 0;
+  opacity: 0;
+  transform: translateY(48px);
+  transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+#intro-overlay .intro-eyebrow.intro-in {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ============================================================
@@ -1465,6 +1510,16 @@ ul {
   line-height: 1.0;
   color: var(--text-primary);
   margin-bottom: 48px;
+}
+
+.contact-desc {
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 480px;
+  margin: 0 auto 40px;
 }
 
 .contact-email-btn {
