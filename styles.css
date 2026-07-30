@@ -244,7 +244,7 @@ ul {
 }
 */
 
-/* Animated gradient orbs */
+/* Animated gradient orbs — disabled for now, kept here to re-enable easily. */
 .hero-orbs {
   display: none;
 }
@@ -422,6 +422,11 @@ ul {
   color: var(--text-primary);
   max-width: 839px;
   margin: 0 auto 28px;
+}
+
+/* Key hero words in the hero-eyebrow's blue */
+.hl-mark {
+  color: #0a7cf5;
 }
 
 .hero-reveal {
