@@ -788,7 +788,7 @@ ul {
     padding: 48px clamp(20px, 6vw, 40px);
   }
   .carousel-slide:first-child {
-    padding-top: calc(52px + clamp(45px, 6vw, 75px));
+    padding-top: calc(52px + clamp(45px, 6vw, 75px) + 35px);
   }
   /* Same specificity as .carousel-slide above — keep this rule after it
      so the Experimental slide's own padding (handled by .carousel-scroll
@@ -801,6 +801,7 @@ ul {
     grid-auto-rows: min-content;
     row-gap: 24px;
     height: auto;
+    transform: none;
   }
   .featured-media {
     height: auto;
