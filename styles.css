@@ -649,11 +649,11 @@ ul {
   height: 100%;
 }
 
-/* Project images sized down a quarter from a full-bleed fit, so they
-   don't crowd the details column at an even 50/50 split */
+/* Project images sized down from a full-bleed fit, so they don't crowd
+   the details column at an even 50/50 split */
 .carousel-slide .featured-media img {
-  max-width: 75%;
-  max-height: 75%;
+  max-width: 86%;
+  max-height: 86%;
 }
 
 /* Apple — flat wordmark, not a screenshot; keep it modest and centered
