@@ -686,12 +686,18 @@ ul {
 
 .carousel-slide-inner {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 3fr 2fr;
   align-items: center;
   gap: clamp(16px, 2.5vw, 32px);
   width: 100%;
-  max-width: 1120px;
+  /* 1120px on typical laptop widths (~1200px viewport and below, where
+     this is already narrower than the container and has no effect),
+     growing fluidly on larger displays up to a 1900px ceiling so the
+     carousel — and the project image inside it — actually fills a big
+     27"+ monitor instead of sitting capped at a fixed width. */
+  max-width: clamp(1120px, 57vw + 440px, 1900px);
   height: 100%;
+  transform: translateY(-10%);
 }
 
 /* Project images sized down from a full-bleed fit, so they don't crowd
