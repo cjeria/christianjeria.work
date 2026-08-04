@@ -459,6 +459,12 @@ ul {
   display: block;
 }
 
+/* [hidden] would otherwise lose to the display:block rule above, since
+   an attribute selector alone doesn't out-specificity a class+element one */
+.hero-avatar img[hidden] {
+  display: none;
+}
+
 .hero-headline {
   font-size: clamp(34px, 4.7vw, 55px);
   font-weight: 700;

@@ -130,15 +130,38 @@
                 preload="auto"
                 aria-label="Christian Jeria"
               ></video>
+              <img
+                id="hero-avatar-still"
+                src="./cjeria-portrait.png"
+                alt="Christian Jeria"
+                hidden
+              />
             </div>
           </div>
         </div>
+
+        <!-- Safari's autoplay/media-pipeline behavior for this video is
+             unreliable (can get stuck showing a "tap to play" overlay even
+             after a user gesture) — swap in a static portrait there instead.
+             Runs synchronously, before the intro-overlay script below clones
+             this markup, so the clone picks up whichever element is active. -->
+        <script>
+          (function () {
+            var isSafari = /^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent);
+            if (isSafari) {
+              var video = document.getElementById('hero-avatar-video');
+              var still = document.getElementById('hero-avatar-still');
+              if (video && still) {
+                video.remove();
+                still.hidden = false;
+              }
+            }
+          })();
+        </script>
         <p class="hero-eyebrow hero-reveal" id="hero-message">Hi, I'm Christian! 👋</p>
         <h1 class="hero-headline hero-reveal">
-          Product designer creating thoughtful
-          <span class="hl-mark">fintech</span> experiences that earn
-          <span class="hl-mark">trust</span> through
-          <span class="hl-mark">considered design</span>.
+          Freelance designer specializing in UI/UX, web design, branding
+          and motion.
         </h1>
         <p class="hero-tagline hero-reveal">
           Previously at
@@ -193,6 +216,9 @@
 
           const clonedVideo = avatarClone.querySelector('video');
           if (clonedVideo) {
+            clonedVideo.muted = true;
+            clonedVideo.defaultMuted = true;
+            clonedVideo.playsInline = true;
             clonedVideo.currentTime = 0;
             const playAttempt = clonedVideo.play();
             if (playAttempt && typeof playAttempt.catch === 'function') playAttempt.catch(() => {});
@@ -241,28 +267,40 @@
 
         if (video) {
           const restFrame = 6;
+          // Safari's autoplay gate checks the muted *property*, not just
+          // the attribute — set it explicitly so play() isn't silently
+          // rejected there.
+          video.muted = true;
+          video.defaultMuted = true;
+
           const setRestFrame = () => { video.currentTime = restFrame; };
 
-          /* Mobile browsers won't decode/paint any frame until playback has
-             actually started once, so seeking alone leaves a blank frame.
-             Force a play, then immediately pause and seek to the rest frame. */
+          /* Pausing inside the play() *promise* callback — before Safari
+             has actually started decoding frames — can leave its media
+             pipeline in a broken state where every later play() call
+             (including the hover handler below) gets silently rejected.
+             Waiting for the real 'playing' event instead guarantees
+             playback genuinely started before we pause and seek. */
           const primeRestFrame = () => {
-            const playAttempt = video.play();
-            if (playAttempt && typeof playAttempt.then === 'function') {
-              playAttempt.then(() => {
-                video.pause();
-                setRestFrame();
-              }).catch(() => setRestFrame());
-            } else {
+            const onPlaying = () => {
+              video.removeEventListener('playing', onPlaying);
               video.pause();
               setRestFrame();
+            };
+            video.addEventListener('playing', onPlaying);
+            const playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.catch === 'function') {
+              playAttempt.catch(() => {
+                video.removeEventListener('playing', onPlaying);
+                setRestFrame();
+              });
             }
           };
 
-          if (video.readyState >= 2) {
+          if (video.readyState >= 3) {
             primeRestFrame();
           } else {
-            video.addEventListener('loadeddata', primeRestFrame, { once: true });
+            video.addEventListener('canplay', primeRestFrame, { once: true });
           }
 
           ring.addEventListener('mouseenter', () => {
