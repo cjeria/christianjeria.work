@@ -92,6 +92,47 @@
   const navLogo = nav ? nav.querySelector('.nav-logo') : null;
   const isHomePage = !!document.getElementById('hero');
 
+  /* ----------------------------------------------------------
+     1a. Homepage → Work — scrolling down on the homepage (wheel
+         or a touch swipe up) navigates to /work/, as if the user
+         clicked the Work nav link, using the same blur-out
+         transition. The hero fills the viewport with nothing to
+         actually scroll, so this is the only way "scrolling
+         down" can mean anything here.
+     ---------------------------------------------------------- */
+  if (isHomePage) {
+    const scrollReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SCROLL_THRESHOLD = 40;
+    let navigatingToWork = false;
+
+    function goToWorkPage() {
+      if (navigatingToWork) return;
+      navigatingToWork = true;
+      const dest = '/work/';
+      if (scrollReduceMotion) {
+        window.location.href = dest;
+        return;
+      }
+      document.body.classList.remove('is-ready');
+      setTimeout(() => { window.location.href = dest; }, 350);
+    }
+
+    window.addEventListener('wheel', (e) => {
+      if (e.deltaY > SCROLL_THRESHOLD) goToWorkPage();
+    }, { passive: true });
+
+    let touchStartY = null;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0]?.clientY ?? null;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (touchStartY === null) return;
+      const deltaY = touchStartY - (e.touches[0]?.clientY ?? touchStartY);
+      if (deltaY > SCROLL_THRESHOLD) goToWorkPage();
+    }, { passive: true });
+  }
+
   function onScroll() {
     if (window.scrollY > 40) {
       nav.classList.add('scrolled');
