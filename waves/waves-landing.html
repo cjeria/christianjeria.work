@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0e0702">
+<meta name="description" content="A quiet space for your mind. Follow slow, guided breaths and let the noise of the day fade away.">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="96x96" href="favicon/favicon-96x96.png">
+<link rel="icon" type="image/png" sizes="128x128" href="favicon/favicon-128x128.png">
+<link rel="icon" type="image/png" sizes="196x196" href="favicon/favicon-196x196.png">
+<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon-180x180.png">
+<link rel="manifest" href="favicon/site.webmanifest">
+<title>Waves</title>
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Waves">
+<meta property="og:url" content="https://www.trywaves.xyz/">
+<meta property="og:title" content="Waves">
+<meta property="og:description" content="A quiet space for your mind. Follow slow, guided breaths and let the noise of the day fade away.">
+<meta property="og:image" content="https://www.trywaves.xyz/favicon/android-chrome-512x512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Waves">
+<meta name="twitter:description" content="A quiet space for your mind. Follow slow, guided breaths and let the noise of the day fade away.">
+<meta name="twitter:image" content="https://www.trywaves.xyz/favicon/android-chrome-512x512.png">
+
+<style>
+@font-face {
+  font-family: 'Questrial';
+  src: url('font/Questrial-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --accent: #f2a35c;
+  --accent-2: #d97d4a;
+  --bg-1: #0e0702;
+}
+
+html, body {
+  min-height: 100%;
+  background: var(--bg-1);
+  overflow-x: hidden;
+}
+
+body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: 'Questrial', system-ui, sans-serif;
+  color: #f5e7d0;
+}
+
+/* flat dark base, with the waves SVG masked on top in the accent color —
+   same technique (and same tuning) as the app's animated background, so
+   the site reads as the same product before you ever open the app */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  z-index: 0;
+  background: var(--accent);
+  mask-image: url('images/bg_waves.svg');
+  -webkit-mask-image: url('images/bg_waves.svg');
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-position: -187.32225px 100%;
+  -webkit-mask-position: -187.32225px 100%;
+  mask-size: 749.289px 654.1696px;
+  -webkit-mask-size: 749.289px 654.1696px;
+  animation: wavesScroll 22.95s linear infinite, wavesPulse 22.95s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes wavesPulse {
+  0%, 100% {
+    mask-size: 789.98px 689.69px; -webkit-mask-size: 789.98px 689.69px;
+  }
+  50% {
+    mask-size: 749.289px 654.1696px; -webkit-mask-size: 749.289px 654.1696px;
+  }
+}
+@keyframes wavesScroll {
+  from {
+    mask-position: -187.32225px 100%; -webkit-mask-position: -187.32225px 100%;
+  }
+  to {
+    mask-position: -936.60975px 100%; -webkit-mask-position: -936.60975px 100%;
+  }
+}
+
+/* ── NAV ─────────────────────────────────────────── */
+.nav {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 28px 32px;
+  box-sizing: border-box;
+}
+.nav-logo { height: 40px; width: auto; display: block; }
+
+/* ── HERO ────────────────────────────────────────── */
+.hero {
+  position: relative;
+  z-index: 1;
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 48px;
+  max-width: 1180px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 32px 96px;
+}
+
+.hero-copy { flex: 1 1 330px; max-width: 520px; }
+
+h1 {
+  font-size: clamp(2.25rem, 5vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  margin-bottom: 20px;
+}
+
+p.tagline {
+  font-size: clamp(1rem, 1.6vw, 1.15rem);
+  line-height: 1.6;
+  color: rgba(245, 231, 208, 0.72);
+  max-width: 40ch;
+  margin-bottom: 36px;
+}
+
+.cta {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(160deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 34px 6px color-mix(in srgb, var(--accent) 20%, transparent);
+  color: #2a1608;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.cta:hover { transform: translateY(-1px); opacity: 0.92; }
+.cta:active { transform: translateY(0); }
+
+.hero-visual { flex: 1 1 320px; display: flex; justify-content: center; }
+
+/* ── HERO PHONE MOCK — a live, looping preview of the 4-7-8 breathing
+   exercise, using the same triangle-breathing engine as the app itself ── */
+.phone-mock {
+  position: relative;
+  /* every child in here is position:absolute, so nothing in normal flow
+     gives this box a size on its own — fixed, explicit px dimensions
+     (matching the app's real 402:874 canvas, close to an actual iPhone's
+     390:844) avoid the percentage/aspect-ratio tricks that kept getting
+     stretched by the surrounding flex layout */
+  width: 300px;
+  height: 652px;
+  flex: none;
+  border-radius: 40px;
+  overflow: hidden;
+  background: var(--bg-1);
+  box-shadow:
+    0 60px 100px rgba(0,0,0,.55),
+    0 0 0 1px rgba(255,255,255,.06),
+    inset 0 0 0 1px rgba(255,255,255,.05);
+}
+.phone-island {
+  position: absolute;
+  top: 8px; left: 50%; transform: translateX(-50%);
+  width: 94px; height: 27px;
+  border-radius: 15px;
+  background: #000;
+  z-index: 3;
+}
+.phone-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.phone-eyebrow {
+  position: absolute;
+  top: 56px; left: 0; right: 0;
+  text-align: center;
+  font-size: 10px; font-weight: 800;
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(245,231,208,.5);
+  z-index: 2;
+  pointer-events: none;
+}
+.phone-progress {
+  position: absolute;
+  left: 24px; right: 24px; bottom: 22px;
+  z-index: 2;
+  display: flex; gap: 5px;
+  pointer-events: none;
+}
+.phone-progress-seg { flex: 1; height: 3px; border-radius: 999px; background: rgba(245,231,208,.15); overflow: hidden; }
+.phone-progress-fill { height: 100%; width: 0%; background: var(--accent); border-radius: 999px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+  background: #160d06;
+  border-top: 1px solid rgba(245,231,208,.08);
+  padding: 28px 32px;
+}
+.footer-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: rgba(245, 231, 208, 0.4);
+}
+.footer-legal {
+  max-width: 1180px;
+  margin: 12px auto 0;
+  font-size: 0.75rem;
+  color: rgba(245, 231, 208, 0.28);
+}
+
+/* ── PAGE-LOAD ENTRANCE ──────────────────────────── */
+@keyframes sectionIn {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.nav, .hero-copy, .hero-visual, footer {
+  animation: sectionIn .7s ease both;
+}
+.nav         { animation-delay: 0s; }
+.hero-copy   { animation-delay: .15s; }
+.hero-visual { animation-delay: .3s; }
+footer       { animation-delay: .45s; }
+
+@media (max-width: 860px) {
+  .hero { flex-direction: column; text-align: center; gap: 24px; padding-top: 48px; }
+  .hero-copy { max-width: 440px; }
+  p.tagline { margin-left: auto; margin-right: auto; }
+  /* the desktop flex-grow on .hero-visual means "share horizontal space"
+     in a row layout — reversed to column here, that same grow would mean
+     "expand vertically," stretching the phone mock along with it, so it
+     needs to be turned off for this layout */
+  .hero-visual { flex: 0 0 auto; }
+  .phone-mock { width: 220px; height: 478px; }
+  /* scaled down by the same ratio as .phone-mock (220/300) so the notch
+     stays proportional to the smaller frame instead of looking oversized */
+  .phone-island { width: 69px; height: 20px; border-radius: 11px; top: 6px; }
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <img class="nav-logo" src="images/waves_logo.png" alt="Waves">
+</header>
+
+<main class="hero">
+  <div class="hero-copy">
+    <h1>Quiet your mind with breathing exercises.</h1>
+    <p class="tagline">A quiet space for your mind. Follow slow, guided breaths and let the noise of the day fade away.</p>
+    <a class="cta" href="https://app.trywaves.xyz">Try Now</a>
+  </div>
+  <div class="hero-visual">
+    <div class="phone-mock">
+      <span class="visually-hidden">Animated preview of the Waves app's 4-7-8 breathing exercise</span>
+      <div class="phone-island"></div>
+      <canvas class="phone-canvas" id="hero-canvas"></canvas>
+      <div class="phone-eyebrow">4-7-8 breathing</div>
+      <div class="phone-progress" id="hero-progress"></div>
+      <noscript><img src="images/app-screenshot.png" alt="The Waves app showing a grid of breathing exercises" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></noscript>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span>Waves</span>
+    <span>Designed and built by DSGNR LLC</span>
+  </div>
+  <div class="footer-legal">&copy; 2026 DSGNR LLC. All rights reserved.</div>
+</footer>
+
+<script>
+// A trimmed, always-looping copy of the app's 4-7-8 triangle-breathing
+// engine (app/index.html's BreathGame) — no start screen, no cycle cap,
+// just a live preview that plays forever for the hero mockup.
+(function () {
+  const canvas = document.getElementById('hero-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const rgb = { r: 242, g: 163, b: 92 };
+  const rgba = (a) => `rgba(${rgb.r},${rgb.g},${rgb.b},${a})`;
+
+  const phases = [
+    { label: 'Breathe in',  dur: 4, edge: 0, breath: 'in' },
+    { label: 'Hold',        dur: 7, edge: 1, breath: 'hold-max' },
+    { label: 'Breathe out', dur: 8, edge: 2, breath: 'out' },
+    { label: 'Rest',        dur: 3, edge: null, breath: 'hold-min' },
+  ];
+  const verts = [0, 120, 240].map(deg => {
+    const rad = deg * Math.PI / 180;
+    return { x: Math.sin(rad), y: -Math.cos(rad) };
+  });
+  const totalCycleDur = phases.reduce((s, p) => s + p.dur, 0);
+
+  let w, h, R, circleMinR, circleMaxR;
+  function resize() {
+    const r = canvas.getBoundingClientRect();
+    if (!r.width || !r.height) {
+      // layout not settled yet (seen on some mobile browsers) — try again
+      // next frame instead of giving up and leaving the canvas blank
+      requestAnimationFrame(resize);
+      return;
+    }
+    w = r.width; h = r.height;
+    canvas.width = Math.round(w * dpr);
+    canvas.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    R = Math.min(w, h) * 0.3;
+    circleMinR = R * 0.6;
+    circleMaxR = h * 0.4;
+  }
+  new ResizeObserver(resize).observe(canvas);
+  resize();
+
+  const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+  function circleRadius(phaseIndex, phaseT) {
+    const phase = phases[phaseIndex];
+    const t = ease(phaseT / phase.dur);
+    switch (phase.breath) {
+      case 'in':  return circleMinR + (circleMaxR - circleMinR) * t;
+      case 'out': return circleMaxR - (circleMaxR - circleMinR) * t;
+      case 'hold-max': return circleMaxR;
+      default: return circleMinR;
+    }
+  }
+  function markerPos(phaseIndex, phaseT) {
+    const phase = phases[phaseIndex];
+    if (phase.edge === null) return verts[0];
+    const a = verts[phase.edge], b = verts[(phase.edge + 1) % 3];
+    const t = ease(phaseT / phase.dur);
+    return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+  }
+
+  const CYCLE_SEGS = 3;
+  const progressEl = document.getElementById('hero-progress');
+  const fills = [];
+  if (progressEl) {
+    for (let i = 0; i < CYCLE_SEGS; i++) {
+      const seg = document.createElement('div');
+      seg.className = 'phone-progress-seg';
+      seg.innerHTML = '<div class="phone-progress-fill"></div>';
+      progressEl.appendChild(seg);
+      fills.push(seg.firstChild);
+    }
+  }
+
+  let phaseIndex = 0, phaseT = 0, cycle = 0, last = performance.now();
+
+  function draw() {
+    const cx = w / 2, cy = h / 2;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.fillStyle = rgba(0.07);
+    ctx.beginPath(); ctx.arc(cx, cy, circleRadius(phaseIndex, phaseT), 0, Math.PI * 2); ctx.fill();
+
+    ctx.strokeStyle = rgba(0.22);
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    verts.forEach((v, i) => {
+      const x = cx + v.x * R, y = cy + v.y * R;
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.closePath(); ctx.stroke();
+
+    const top = verts[0];
+    const tx = cx + top.x * R, ty = cy + top.y * R;
+    ctx.strokeStyle = rgba(0.5); ctx.lineWidth = 2;
+    ctx.beginPath(); ctx.arc(tx, ty, 10, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = rgba(0.85);
+    ctx.beginPath(); ctx.arc(tx, ty, 4, 0, Math.PI * 2); ctx.fill();
+
+    for (let i = 1; i < 3; i++) {
+      const v = verts[i];
+      ctx.fillStyle = rgba(0.35);
+      ctx.beginPath(); ctx.arc(cx + v.x * R, cy + v.y * R, 4, 0, Math.PI * 2); ctx.fill();
+    }
+
+    const m = markerPos(phaseIndex, phaseT);
+    const mx = cx + m.x * R, my = cy + m.y * R;
+    const glow = ctx.createRadialGradient(mx, my, 0, mx, my, 26);
+    glow.addColorStop(0, rgba(0.55)); glow.addColorStop(1, rgba(0));
+    ctx.fillStyle = glow;
+    ctx.beginPath(); ctx.arc(mx, my, 26, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = rgba(0.95);
+    ctx.beginPath(); ctx.arc(mx, my, 9, 0, Math.PI * 2); ctx.fill();
+
+    ctx.fillStyle = '#f5e7d0';
+    ctx.font = `700 ${Math.round(R * 0.12)}px 'Questrial', system-ui, sans-serif`;
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(phases[phaseIndex].label, cx, cy + 2);
+  }
+
+  function setProgress() {
+    let elapsed = phaseT;
+    for (let i = 0; i < phaseIndex; i++) elapsed += phases[i].dur;
+    const frac = Math.min(1, elapsed / totalCycleDur);
+    fills.forEach((f, i) => {
+      f.style.width = (i < cycle ? 100 : i === cycle ? frac * 100 : 0) + '%';
+    });
+  }
+
+  function loop(now) {
+    requestAnimationFrame(loop);
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    if (!R) return;
+
+    const dur = phases[phaseIndex].dur;
+    phaseT += dt;
+    if (phaseT >= dur) {
+      phaseT -= dur;
+      phaseIndex = (phaseIndex + 1) % phases.length;
+      if (phaseIndex === 0) cycle = (cycle + 1) % CYCLE_SEGS;
+    }
+    setProgress();
+    draw();
+  }
+  requestAnimationFrame(loop);
+})();
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
+
+</body>
+</html>

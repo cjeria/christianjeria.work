@@ -50,6 +50,59 @@
     <div class="carousel" id="work">
       <div class="carousel-track" id="carousel-track">
 
+        <!-- Waves -->
+        <section class="carousel-slide carousel-slide--waves" id="waves">
+          <div class="carousel-slide-inner">
+            <div class="featured-media">
+              <div
+                class="waves-phone-fan"
+                role="img"
+                aria-label="Overlapping live previews of the Waves app — its splash screen, Box Breathing, and 4-7-8 Breathing"
+              >
+                <div class="waves-phone-card waves-phone-card--left" aria-hidden="true">
+                  <div class="waves-phone-island"></div>
+                  <canvas class="waves-phone-canvas" id="waves-hero-canvas-box"></canvas>
+                  <div class="waves-phone-eyebrow">Box breathing</div>
+                  <div class="waves-phone-progress" id="waves-hero-progress-box"></div>
+                </div>
+                <div class="waves-phone-card waves-phone-card--right" aria-hidden="true">
+                  <div class="waves-phone-island"></div>
+                  <canvas class="waves-phone-canvas" id="waves-hero-canvas-478"></canvas>
+                  <div class="waves-phone-eyebrow">4-7-8 breathing</div>
+                  <div class="waves-phone-progress" id="waves-hero-progress-478"></div>
+                </div>
+                <div class="waves-phone-card waves-phone-card--center" aria-hidden="true">
+                  <div class="waves-phone-island"></div>
+                  <div class="waves-phone-onboard">
+                    <img src="/waves/waves_logo.svg" alt="" class="waves-phone-onboard-logo" />
+                    <p class="waves-phone-onboard-headline">Breathe.<br />Focus.<br />Relax.</p>
+                    <p class="waves-phone-onboard-body">
+                      Settle a busy mind with simple breathing exercises. A few
+                      slow breaths is all it takes.
+                    </p>
+                    <span class="waves-phone-onboard-btn">Get started</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="featured-details">
+              <h1 class="featured-title">Waves</h1>
+              <p class="featured-subtitle">Breathing exercise app to calm the mind</p>
+              <p class="featured-desc">
+                Waves is a breathing exercise app that guides slow, steady
+                breaths to calm the mind and relax the body.
+              </p>
+              <a
+                href="https://www.trywaves.xyz/"
+                class="featured-link"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Visit Waves <span aria-hidden="true">→</span></a
+              >
+            </div>
+          </div>
+        </section>
+
         <!-- MetaMask -->
         <section class="carousel-slide" id="metamask">
           <div class="carousel-slide-inner">
@@ -206,36 +259,6 @@
             </div>
 
             <div class="work-grid" id="work-grid">
-              <!-- Waves -->
-              <a
-                href="https://www.trywaves.xyz/"
-                class="project-card reveal"
-                data-category="prototypes"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <div class="card-thumbnail thumbnail-waves" style="height: 100%">
-                  <img
-                    src="/waves/sun_burst.svg"
-                    alt=""
-                    class="waves-sunburst"
-                    aria-hidden="true"
-                  />
-                  <img src="/waves/waves_logo.svg" alt="Waves" class="waves-card-logo" />
-                </div>
-                <div class="card-body">
-                  <div class="card-meta">
-                    <span class="tag">Prototype</span>
-                  </div>
-                  <h3 class="card-title">Waves</h3>
-                  <p class="card-subtitle">White noise app with calming games</p>
-                  <p class="card-desc">
-                    Waves is a sleep app that pairs ambient noise with silent,
-                    repetitive games to quiet your mind and help you fall asleep.
-                  </p>
-                </div>
-              </a>
-
               <!-- Gridberry -->
               <a
                 href="https://gridberry.app"
@@ -402,13 +425,14 @@
       </div>
 
       <div class="carousel-dots" id="carousel-dots" role="tablist" aria-label="Project slides">
-        <button class="carousel-dot active" type="button" data-index="0" role="tab" aria-selected="true" aria-label="MetaMask"></button>
-        <button class="carousel-dot" type="button" data-index="1" role="tab" aria-selected="false" aria-label="Intuition Systems"></button>
-        <button class="carousel-dot" type="button" data-index="2" role="tab" aria-selected="false" aria-label="Portal"></button>
-        <button class="carousel-dot" type="button" data-index="3" role="tab" aria-selected="false" aria-label="Origin Labs"></button>
-        <button class="carousel-dot" type="button" data-index="4" role="tab" aria-selected="false" aria-label="Apple"></button>
-        <button class="carousel-dot" type="button" data-index="5" role="tab" aria-selected="false" aria-label="Mobina"></button>
-        <button class="carousel-dot" type="button" data-index="6" role="tab" aria-selected="false" aria-label="Experimental"></button>
+        <button class="carousel-dot active" type="button" data-index="0" role="tab" aria-selected="true" aria-label="Waves"></button>
+        <button class="carousel-dot" type="button" data-index="1" role="tab" aria-selected="false" aria-label="MetaMask"></button>
+        <button class="carousel-dot" type="button" data-index="2" role="tab" aria-selected="false" aria-label="Intuition Systems"></button>
+        <button class="carousel-dot" type="button" data-index="3" role="tab" aria-selected="false" aria-label="Portal"></button>
+        <button class="carousel-dot" type="button" data-index="4" role="tab" aria-selected="false" aria-label="Origin Labs"></button>
+        <button class="carousel-dot" type="button" data-index="5" role="tab" aria-selected="false" aria-label="Apple"></button>
+        <button class="carousel-dot" type="button" data-index="6" role="tab" aria-selected="false" aria-label="Mobina"></button>
+        <button class="carousel-dot" type="button" data-index="7" role="tab" aria-selected="false" aria-label="Experimental"></button>
       </div>
     </div>
 
@@ -786,6 +810,215 @@
         desktopQuery.addEventListener('change', (e) => {
           if (e.matches) enterDesktopMode();
           else enterMobileMode();
+        });
+
+        // Safari can restore this page from bfcache instead of actually
+        // re-running this script when navigating back to it — e.g. the
+        // homepage's swipe-up-to-Work gesture (script.js) always sends
+        // you to a hash-less /work/, but a bfcache restore just repaints
+        // whichever slide/scroll position was frozen from a previous
+        // visit (Waves is the first slide now, but an earlier visit
+        // that scrolled to, say, MetaMask leaves `current` stuck there
+        // in memory — nothing re-runs to reset it). `pageshow` fires on
+        // both a normal load and a bfcache restore; `persisted` tells
+        // them apart, so this only re-syncs when it's actually needed.
+        window.addEventListener('pageshow', (e) => {
+          if (!e.persisted) return;
+          const idx = slideIds.indexOf(window.location.hash.slice(1));
+          current = idx > -1 ? idx : 0;
+          if (desktopQuery.matches) {
+            enterDesktopMode();
+          } else {
+            window.scrollTo(0, 0);
+            if (idx > -1) slides[idx].scrollIntoView({ block: 'start' });
+          }
+        });
+      })();
+    </script>
+    <script>
+      // Generalized from /waves/app/index.html's BreathGame class — the
+      // real app's canvas engine behind every one of its breathing
+      // exercises (a guide polygon a marker travels around, driving a
+      // breathing circle behind it; `sides`/`rotate`/`showPolygon` pick
+      // the guide shape, `phases` the timing). Two instances below, one
+      // for the left card (Box Breathing) and one for the back-right
+      // card (4-7-8 Breathing) — the center card is the app's splash
+      // screen instead, static markup, no canvas.
+      (function () {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const ease = (t) => t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+
+        function createBreathMock(canvasId, progressId, opts) {
+          const canvas = document.getElementById(canvasId);
+          if (!canvas) return;
+          const ctx = canvas.getContext('2d');
+          const dpr = window.devicePixelRatio || 1;
+          const rgb = { r: 242, g: 163, b: 92 };
+          const rgba = (a) => `rgba(${rgb.r},${rgb.g},${rgb.b},${a})`;
+
+          const phases = opts.phases;
+          const sides = opts.sides || 3;
+          const rotateDeg = opts.rotate || 0;
+          const showPolygon = opts.showPolygon !== false;
+          const verts = Array.from({ length: sides }, (_, i) => {
+            const rad = (i * 360 / sides + rotateDeg) * Math.PI / 180;
+            return { x: Math.sin(rad), y: -Math.cos(rad) };
+          });
+
+          let w, h, R, circleMinR, circleMaxR;
+          function resize() {
+            // offsetWidth/Height, not getBoundingClientRect — layout size,
+            // unaffected by the card's own rotate() transform.
+            const rw = canvas.offsetWidth, rh = canvas.offsetHeight;
+            if (!rw || !rh) {
+              requestAnimationFrame(resize);
+              return;
+            }
+            w = rw; h = rh;
+            canvas.width = Math.round(w * dpr);
+            canvas.height = Math.round(h * dpr);
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            R = Math.min(w, h) * 0.3;
+            circleMinR = R * 0.6;
+            circleMaxR = h * 0.4;
+          }
+          resize();
+
+          function circleRadius(phaseIndex, phaseT) {
+            const phase = phases[phaseIndex];
+            const t = ease(phaseT / phase.dur);
+            switch (phase.breath) {
+              case 'in':  return circleMinR + (circleMaxR - circleMinR) * t;
+              case 'out': return circleMaxR - (circleMaxR - circleMinR) * t;
+              case 'hold-max': return circleMaxR;
+              default: return circleMinR;
+            }
+          }
+          function markerPos(phaseIndex, phaseT) {
+            const phase = phases[phaseIndex];
+            if (phase.edge === null || phase.edge === undefined) return verts[0];
+            const a = verts[phase.edge], b = verts[(phase.edge + 1) % sides];
+            const t = ease(phaseT / phase.dur);
+            return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+          }
+
+          const CYCLE_SEGS = 3;
+          const progressEl = document.getElementById(progressId);
+          const fills = [];
+          if (progressEl) {
+            for (let i = 0; i < CYCLE_SEGS; i++) {
+              const seg = document.createElement('div');
+              seg.className = 'waves-phone-progress-seg';
+              seg.innerHTML = '<div class="waves-phone-progress-fill"></div>';
+              progressEl.appendChild(seg);
+              fills.push(seg.firstChild);
+            }
+          }
+
+          let phaseIndex = 0, phaseT = 0, cycle = 0, last = performance.now();
+
+          function draw() {
+            const cx = w / 2, cy = h / 2;
+            ctx.clearRect(0, 0, w, h);
+
+            ctx.fillStyle = rgba(0.07);
+            ctx.beginPath(); ctx.arc(cx, cy, circleRadius(phaseIndex, phaseT), 0, Math.PI * 2); ctx.fill();
+
+            if (showPolygon) {
+              ctx.strokeStyle = rgba(0.22);
+              ctx.lineWidth = 2;
+              ctx.beginPath();
+              verts.forEach((v, i) => {
+                const x = cx + v.x * R, y = cy + v.y * R;
+                if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+              });
+              ctx.closePath(); ctx.stroke();
+
+              const top = verts[0];
+              const tx = cx + top.x * R, ty = cy + top.y * R;
+              ctx.strokeStyle = rgba(0.5); ctx.lineWidth = 2;
+              ctx.beginPath(); ctx.arc(tx, ty, 10, 0, Math.PI * 2); ctx.stroke();
+              ctx.fillStyle = rgba(0.85);
+              ctx.beginPath(); ctx.arc(tx, ty, 4, 0, Math.PI * 2); ctx.fill();
+
+              for (let i = 1; i < sides; i++) {
+                const v = verts[i];
+                ctx.fillStyle = rgba(0.35);
+                ctx.beginPath(); ctx.arc(cx + v.x * R, cy + v.y * R, 4, 0, Math.PI * 2); ctx.fill();
+              }
+
+              const m = markerPos(phaseIndex, phaseT);
+              const mx = cx + m.x * R, my = cy + m.y * R;
+              const glow = ctx.createRadialGradient(mx, my, 0, mx, my, 26);
+              glow.addColorStop(0, rgba(0.55)); glow.addColorStop(1, rgba(0));
+              ctx.fillStyle = glow;
+              ctx.beginPath(); ctx.arc(mx, my, 26, 0, Math.PI * 2); ctx.fill();
+              ctx.fillStyle = rgba(0.95);
+              ctx.beginPath(); ctx.arc(mx, my, 9, 0, Math.PI * 2); ctx.fill();
+            }
+
+            ctx.fillStyle = '#f5e7d0';
+            ctx.font = `700 ${Math.round(R * 0.12)}px 'Questrial', system-ui, sans-serif`;
+            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+            ctx.fillText(phases[phaseIndex].label, cx, cy + 2);
+          }
+
+          function setProgress() {
+            const totalCycleDur = phases.reduce((s, p) => s + p.dur, 0);
+            let elapsed = phaseT;
+            for (let i = 0; i < phaseIndex; i++) elapsed += phases[i].dur;
+            const frac = Math.min(1, elapsed / totalCycleDur);
+            fills.forEach((f, i) => {
+              f.style.width = (i < cycle ? 100 : i === cycle ? frac * 100 : 0) + '%';
+            });
+          }
+
+          if (reduceMotion) {
+            requestAnimationFrame(() => { if (R) draw(); });
+            return;
+          }
+
+          function loop(now) {
+            requestAnimationFrame(loop);
+            const dt = Math.min(0.05, (now - last) / 1000);
+            last = now;
+            if (!R) return;
+
+            const dur = phases[phaseIndex].dur;
+            phaseT += dt;
+            if (phaseT >= dur) {
+              phaseT -= dur;
+              phaseIndex = (phaseIndex + 1) % phases.length;
+              if (phaseIndex === 0) cycle = (cycle + 1) % CYCLE_SEGS;
+            }
+            setProgress();
+            draw();
+          }
+          requestAnimationFrame(loop);
+        }
+
+        // 4-7-8 Breathing — back-right card. Triangle guide (the
+        // default 3 sides), matches game-breathe in app/index.html.
+        createBreathMock('waves-hero-canvas-478', 'waves-hero-progress-478', {
+          phases: [
+            { label: 'Breathe in',  dur: 4, edge: 0, breath: 'in' },
+            { label: 'Hold',        dur: 7, edge: 1, breath: 'hold-max' },
+            { label: 'Breathe out', dur: 8, edge: 2, breath: 'out' },
+            { label: 'Rest',        dur: 3, edge: null, breath: 'hold-min' },
+          ],
+        });
+
+        // Box Breathing — matches game-box: a 4-sided, 45°-rotated guide
+        // (flat-sided square) with four equal phases.
+        createBreathMock('waves-hero-canvas-box', 'waves-hero-progress-box', {
+          sides: 4,
+          rotate: 45,
+          phases: [
+            { label: 'Breathe in',  dur: 4, edge: 0, breath: 'in' },
+            { label: 'Hold',        dur: 4, edge: 1, breath: 'hold-max' },
+            { label: 'Breathe out', dur: 4, edge: 2, breath: 'out' },
+            { label: 'Hold',        dur: 4, edge: 3, breath: 'hold-min' },
+          ],
         });
       })();
     </script>

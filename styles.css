@@ -635,13 +635,20 @@ ul {
   transition: none;
 }
 
+/* Top/bottom padding is deliberately asymmetric, not equal — centering
+   the slide in the full 100vh would tuck it up under the fixed nav
+   pill (~76px tall, sitting 20px from the top) and crowd the paging
+   dots (~40px tall, 28px from the bottom). Reserving more room above
+   than below shifts the true center of the remaining box down by
+   (top − bottom) / 2 ≈ 20px, just enough to read as centered in the
+   space actually free of chrome rather than the raw viewport. */
 .carousel-slide {
   flex: 0 0 100vw;
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 120px clamp(20px, 5vw, 60px) 100px;
+  padding: 130px clamp(20px, 5vw, 60px) 90px;
   box-sizing: border-box;
 }
 
@@ -657,8 +664,13 @@ ul {
      carousel — and the project image inside it — actually fills a big
      27"+ monitor instead of sitting capped at a fixed width. */
   max-width: clamp(1120px, 57vw + 440px, 1900px);
+  /* Definite, not auto — .featured-media and its img below chain
+     percentage heights (86% of 86% of...) off of this, and those only
+     resolve against a definite ancestor height. Since this already
+     fills the slide's own (nav/dots-aware) padded box exactly, it's
+     already vertically centered on its own — no extra transform
+     needed on top, which is what was throwing centering off before. */
   height: 100%;
-  transform: translateY(-10%);
 }
 
 /* Project images sized down from a full-bleed fit, so they don't crowd
@@ -673,6 +685,261 @@ ul {
 .carousel-slide--apple .featured-media img {
   width: 28.5%;
   max-width: 165px;
+}
+
+/* Waves — three real screens from the app, fanned out as flat,
+   overlapping cards. The center card is the app's splash screen
+   (largest, full brightness, top z-index, static markup — see
+   .waves-phone-onboard below); Box Breathing (left) and 4-7-8
+   Breathing (back right) recede to either side, rotated, dimmed, and
+   slightly smaller — both driven by the same canvas engine as
+   /waves/app/index.html's BreathGame (a guide polygon a marker
+   travels around, driving a breathing circle behind it). */
+.carousel-slide--waves .featured-media {
+  padding: 0;
+}
+
+.waves-phone-fan {
+  --fan-h: clamp(380px, 54vh, 540px);
+  position: relative;
+  height: var(--fan-h);
+  width: calc(var(--fan-h) * 0.85);
+}
+
+.waves-phone-card {
+  position: absolute;
+  aspect-ratio: 300 / 652;
+  border-radius: 40px;
+  overflow: hidden;
+  background: #0e0702;
+  box-shadow:
+    0 40px 70px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.45s ease;
+}
+
+.waves-phone-card--left,
+.waves-phone-card--right {
+  height: 76%;
+  border-radius: 32px;
+  opacity: 0.75;
+}
+.waves-phone-card--left {
+  top: 6%;
+  left: 0;
+  transform: rotate(-13deg);
+  z-index: 1;
+}
+.waves-phone-card--right {
+  top: 12%;
+  right: 0;
+  transform: rotate(11deg);
+  z-index: 2;
+}
+.waves-phone-card--center {
+  top: 0;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 3;
+  box-shadow:
+    0 55px 95px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  /* one tile's width for the wave background's ::before below, scaled
+     down from the real app's own reference (749.289px at a ~402px-wide
+     device) to this card's much smaller footprint; every other number
+     in that background is derived from this via calc() so the exact
+     ratios from the app carry over untouched. */
+  --wp-wave-tile-w: 390px;
+  --wp-wave-tile-h: calc(var(--wp-wave-tile-w) * 654.1696 / 749.289);
+}
+
+/* Splash-screen wave background — same technique as #app::before in
+   /waves/app/index.html: the app's bg_waves.svg (5 stacked,
+   same-opacity wave bands) used as a mask over a flat accent fill, so
+   overlaps compound into bands. One animation drifts it sideways by
+   exactly one tile width (so the loop restart is invisible), a second
+   breathes its size — both looped forever, matching the app exactly. */
+.waves-phone-card--center::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #f2a35c;
+  mask-image: url('/waves/app/images/bg_waves.svg');
+  -webkit-mask-image: url('/waves/app/images/bg_waves.svg');
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  -webkit-mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  -webkit-mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  animation:
+    wavesScroll 22.95s linear infinite,
+    wavesPulse 22.95s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* pulse only touches mask-size, scroll only touches mask-position — same
+   split as the app, so they run independently without fighting over the
+   same keyframes; 1.0543 is the app's own peak/base size ratio. */
+@keyframes wavesPulse {
+  0%, 100% {
+    mask-size: calc(var(--wp-wave-tile-w) * 1.0543) calc(var(--wp-wave-tile-h) * 1.0543);
+    -webkit-mask-size: calc(var(--wp-wave-tile-w) * 1.0543) calc(var(--wp-wave-tile-h) * 1.0543);
+  }
+  50% {
+    mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+    -webkit-mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  }
+}
+@keyframes wavesScroll {
+  from {
+    mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+    -webkit-mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  }
+  to {
+    mask-position: calc(var(--wp-wave-tile-w) * -1.25) 100%;
+    -webkit-mask-position: calc(var(--wp-wave-tile-w) * -1.25) 100%;
+  }
+}
+
+/* Fan out on hover — triggered by the phones themselves, not the whole
+   slide, so it only reacts when the pointer is actually over the mock.
+   Each card just rotates further and slides away from center along
+   its own already-established lean, opening up the stack; the center
+   card lifts and grows slightly to stay the clear focal point. */
+.waves-phone-fan:hover .waves-phone-card--left {
+  transform: rotate(-26deg) translate(-20%, -8%);
+  opacity: 1;
+}
+.waves-phone-fan:hover .waves-phone-card--right {
+  transform: rotate(22deg) translate(20%, -4%);
+  opacity: 1;
+}
+.waves-phone-fan:hover .waves-phone-card--center {
+  transform: translateX(-50%) rotate(-2deg) translateY(-14px) scale(1.04);
+}
+
+.waves-phone-island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 31%;
+  height: 22px;
+  border-radius: 13px;
+  background: #000;
+  z-index: 3;
+}
+
+/* Splash screen, center card only — a scaled-down copy of
+   #page-onboarding in /waves/app/index.html (same bottom-aligned
+   layout, same copy, same CTA treatment), standing in for a live
+   canvas exercise since this card fronts the whole mockup. */
+.waves-phone-onboard {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 9% 12%;
+  box-sizing: border-box;
+}
+.waves-phone-onboard-logo {
+  height: 14px;
+  width: auto;
+  display: block;
+  margin: 0 0 12px;
+}
+.waves-phone-onboard-headline {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.18;
+  color: #f5e7d0;
+  margin: 0 0 9px;
+}
+.waves-phone-onboard-body {
+  font-size: 8px;
+  line-height: 1.55;
+  color: rgba(245, 231, 208, 0.65);
+  max-width: 92%;
+  margin: 0 0 11px;
+}
+.waves-phone-onboard-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #2a1608;
+  background: linear-gradient(160deg, #f2a35c, #d97d4a);
+  box-shadow: 0 0 16px 3px rgba(242, 163, 92, 0.25);
+  box-sizing: border-box;
+}
+
+.waves-phone-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.waves-phone-eyebrow {
+  position: absolute;
+  top: 8.6%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 231, 208, 0.5);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.waves-phone-progress {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 3.4%;
+  z-index: 2;
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+.waves-phone-progress-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(245, 231, 208, 0.15);
+  overflow: hidden;
+}
+.waves-phone-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #f2a35c;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waves-phone-card {
+    transition: none !important;
+  }
+  .waves-phone-card--center::before {
+    animation: none !important;
+  }
 }
 
 /* Experimental — the grid slide scrolls internally instead of using
@@ -762,7 +1029,6 @@ ul {
     grid-auto-rows: min-content;
     row-gap: 24px;
     height: auto;
-    transform: none;
   }
   .featured-media {
     height: auto;
@@ -1114,34 +1380,6 @@ ul {
 .thumbnail-tasklocal {
   background: #FFF6F1;
 }
-.thumbnail-waves {
-  background: #000000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Waves — sunburst glow behind a centered wordmark */
-.thumbnail-waves .waves-sunburst {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 180%;
-  height: 180%;
-  transform: translate(-50%, -50%);
-  object-fit: contain;
-  pointer-events: none;
-}
-.thumbnail-waves .waves-card-logo {
-  position: relative;
-  width: 63.75%;
-  max-width: 319px;
-  height: auto;
-  object-fit: contain;
-  transform: translateY(-10%);
-  z-index: 1;
-}
-
 /* Apple logo — centered via flex on .thumbnail-apple */
 .thumbnail-apple .apple-card-logo {
   position: static;

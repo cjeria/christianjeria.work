@@ -1,0 +1,2642 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="theme-color" content="#0e0702" />
+    <meta name="description" content="A silent game to help you drift off." />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="favicon/favicon-16x16.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="favicon/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="favicon/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="128x128"
+      href="favicon/favicon-128x128.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="196x196"
+      href="favicon/favicon-196x196.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="favicon/apple-touch-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="favicon/apple-touch-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="favicon/apple-touch-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="favicon/apple-touch-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="favicon/apple-touch-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="favicon/apple-touch-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="favicon/apple-touch-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="favicon/apple-touch-icon-180x180.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="192x192"
+      href="favicon/apple-touch-icon-192x192.png"
+    />
+    <link rel="manifest" href="favicon/site.webmanifest" />
+    <title>Waves</title>
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Waves" />
+    <meta property="og:url" content="https://app.trywaves.xyz/" />
+    <meta property="og:title" content="Waves" />
+    <meta
+      property="og:description"
+      content="A silent game to help you drift off."
+    />
+    <meta
+      property="og:image"
+      content="https://app.trywaves.xyz/favicon/android-chrome-512x512.png"
+    />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Waves" />
+    <meta
+      name="twitter:description"
+      content="A silent game to help you drift off."
+    />
+    <meta
+      name="twitter:image"
+      content="https://app.trywaves.xyz/favicon/android-chrome-512x512.png"
+    />
+
+    <style>
+      @font-face {
+        font-family: "Questrial";
+        src: url("font/Questrial-Regular.ttf") format("truetype");
+        font-weight: 400;
+        font-style: normal;
+        font-display: swap;
+      }
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      button {
+        touch-action: manipulation;
+      }
+
+      html {
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
+        background: #0e0702;
+      }
+
+      body {
+        height: 100%;
+        width: 100%;
+        margin: 0;
+        background: #0e0702;
+        font-family: "Questrial", system-ui, sans-serif;
+        color: #f5e7d0;
+        overflow-x: hidden;
+        overscroll-behavior: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      #phone-frame {
+        width: 100%;
+        height: 100%;
+      }
+
+      #dynamic-island {
+        display: none;
+      }
+
+      #app {
+        --accent: #f2a35c;
+        --accent-2: #d97d4a;
+        --bg-1: #0e0702;
+        --card-bg: rgba(45, 32, 22, 0.42);
+        position: relative;
+        width: 100%;
+        height: 100%;
+        max-width: 430px;
+        margin: 0 auto;
+        overflow: hidden;
+      }
+      /* flat dark base, with the waves SVG masked on top in the accent
+   color — the SVG is 5 overlapping same-opacity wave bands, so alpha
+   compounds where they overlap, giving a banded, bottom-anchored look.
+   mask-size is pinned to the SVG's own full (uncropped) bounding box,
+   749.289x654.1696 — the artwork's left/right edges sit at the same
+   height by design, so tiling at exactly that width is what makes it
+   seamless. mask-repeat tiles it edge-to-edge, and the animation shifts
+   mask-position by exactly one tile-width (fixed px, not %, so the math
+   is a literal translation) — that's what makes the loop restart
+   invisible. */
+      #app,
+      .page:not(#page-home),
+      .game-start {
+        background-color: var(--bg-1);
+      }
+      #app::before,
+      .page:not(#page-home):not(.game-page)::before,
+      .game-start::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--accent);
+        mask-image: url("images/bg_waves.svg");
+        -webkit-mask-image: url("images/bg_waves.svg");
+        mask-repeat: repeat-x;
+        -webkit-mask-repeat: repeat-x;
+        mask-position: -187.32225px 100%;
+        -webkit-mask-position: -187.32225px 100%;
+        mask-size: 749.289px 654.1696px;
+        -webkit-mask-size: 749.289px 654.1696px;
+        animation:
+          wavesScroll 22.95s linear infinite,
+          wavesPulse 22.95s ease-in-out infinite;
+        pointer-events: none;
+      }
+      /* pulse only touches mask-size, scroll only touches mask-position — kept as
+   separate animations on separate properties so they run independently
+   without fighting over the same keyframes. Duration matches wavesScroll
+   exactly (both start together, so they never drift out of phase) and the
+   peak sits at 0%/100% so the graphic is at max size right as the scroll
+   completes a full tile repeat. */
+      @keyframes wavesPulse {
+        0%,
+        100% {
+          mask-size: 789.98px 689.69px;
+          -webkit-mask-size: 789.98px 689.69px;
+        }
+        50% {
+          mask-size: 749.289px 654.1696px;
+          -webkit-mask-size: 749.289px 654.1696px;
+        }
+      }
+      @keyframes wavesScroll {
+        from {
+          mask-position: -187.32225px 100%;
+          -webkit-mask-position: -187.32225px 100%;
+        }
+        to {
+          mask-position: -936.60975px 100%;
+          -webkit-mask-position: -936.60975px 100%;
+        }
+      }
+
+      /* ── DESKTOP: show the app inside an iPhone frame ─── */
+      @media (min-width: 700px) {
+        body {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+          background: radial-gradient(
+            circle at 50% 30%,
+            #1c1108 0%,
+            #070402 75%
+          );
+          padding: 48px;
+        }
+        #phone-frame {
+          position: relative;
+          flex: none;
+          width: 342px;
+          height: 743px;
+          border-radius: 46px;
+          overflow: hidden;
+          background: #000;
+          box-shadow:
+            0 50px 100px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(255, 255, 255, 0.05),
+            inset 0 0 0 2px rgba(255, 255, 255, 0.08);
+        }
+        /* render #app at its natural 402x874 size, then scale the whole
+     rendered result down 15% to fit the smaller frame above — this
+     shrinks every internal size/spacing uniformly instead of just
+     cramming the unscaled content into a smaller box */
+        #app {
+          max-width: none;
+          width: 402px;
+          height: 874px;
+          margin: 0;
+          transform: scale(0.85);
+          transform-origin: top left;
+        }
+        #dynamic-island {
+          display: block;
+          position: absolute;
+          top: 9px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 107px;
+          height: 31px;
+          border-radius: 17px;
+          background: #000;
+          z-index: 100;
+        }
+        /* clear the fake dynamic island (bottom edge at 48px) — real devices
+     already get this space from env(safe-area-inset-top) */
+        #page-home .page-scroll,
+        #page-settings .page-scroll,
+        #page-onboarding .page-scroll {
+          padding-top: 70px;
+        }
+      }
+
+      /* ── PAGES / NAVIGATION ─────────────────────────── */
+      /* home is the permanent root; every other page is pushed over it and
+   slides in from the right / back out to the right (2-level stack) */
+      .page {
+        position: absolute;
+        inset: 0;
+      }
+      #page-home {
+        z-index: 1;
+      }
+      .page:not(#page-home) {
+        z-index: 2;
+        pointer-events: none;
+        transform: translateX(100%);
+        transition: transform 0.34s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .page:not(#page-home).active {
+        pointer-events: auto;
+        transform: translateX(0%);
+      }
+
+      /* onboarding fades away instead of sliding, since it isn't part of the
+   back/forward navigation stack. Specificity has to match/beat
+   .page:not(#page-home)(.active) above, so these repeat the .page class. */
+      #page-onboarding.page {
+        transform: none;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+      #page-onboarding.page.active {
+        opacity: 1;
+      }
+
+      .page-scroll {
+        height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: calc(env(safe-area-inset-top, 0px) + 28px) 20px
+          calc(env(safe-area-inset-bottom, 0px) + 150px);
+      }
+
+      .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .page-title {
+        font-size: 24px;
+        font-weight: 900;
+      }
+      .page-title.center {
+        text-align: center;
+        flex: 1;
+      }
+      .page-sub {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(245, 231, 208, 0.5);
+        margin-top: 2px;
+      }
+
+      .icon-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 999px;
+        border: none;
+        background: rgba(245, 231, 208, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        flex: none;
+        color: #f5e7d0;
+        transition: background 0.2s;
+      }
+      .icon-btn:active {
+        background: rgba(245, 231, 208, 0.16);
+      }
+      .icon-btn-spacer {
+        width: 40px;
+        height: 40px;
+        flex: none;
+      }
+
+      .page-back {
+        position: absolute;
+        top: calc(env(safe-area-inset-top, 0px) + 72px);
+        left: 16px;
+        z-index: 5;
+        background: rgba(24, 14, 8, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
+
+      /* ── GAME START SCREEN ─────────────────────────── */
+      .game-start {
+        position: absolute;
+        inset: 0;
+        z-index: 4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 32px;
+        gap: 14px;
+        transition:
+          opacity 0.3s ease,
+          visibility 0.3s;
+      }
+      .game-start.hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+      .game-start-icon {
+        width: 84px;
+        height: 84px;
+        border-radius: 22px;
+        flex: none;
+        display: block;
+        margin-bottom: 6px;
+      }
+      .game-start-title {
+        font-size: 22px;
+        font-weight: 900;
+      }
+      .game-start-desc {
+        font-size: 13.5px;
+        font-weight: 600;
+        line-height: 1.6;
+        color: rgba(245, 231, 208, 0.55);
+        max-width: 280px;
+      }
+      .game-start-btn {
+        margin-top: 12px;
+        padding: 17px 48px;
+        border-radius: 999px;
+        border: none;
+        font-size: 16px;
+        font-weight: 800;
+        font-family: inherit;
+        color: #2a1608;
+        background: linear-gradient(160deg, var(--accent), var(--accent-2));
+        box-shadow: 0 0 34px 6px
+          color-mix(in srgb, var(--accent) 20%, transparent);
+        cursor: pointer;
+        transition: transform 0.12s;
+      }
+      .game-start-btn:active {
+        transform: scale(0.95);
+      }
+
+      /* ── EXERCISE SUCCESS SCREEN ────────────────────── */
+      .success-icon {
+        width: 84px;
+        height: 84px;
+        border-radius: 22px;
+        flex: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 6px;
+        background: linear-gradient(160deg, var(--accent), var(--accent-2));
+      }
+      .game-secondary-btn {
+        margin-top: 4px;
+        padding: 15px 48px;
+        border-radius: 999px;
+        border: 1px solid rgba(245, 231, 208, 0.18);
+        background: rgba(245, 231, 208, 0.06);
+        font-size: 15px;
+        font-weight: 800;
+        font-family: inherit;
+        color: #f5e7d0;
+        cursor: pointer;
+        transition:
+          transform 0.12s,
+          background 0.15s;
+      }
+      .game-secondary-btn:active {
+        transform: scale(0.95);
+        background: rgba(245, 231, 208, 0.1);
+      }
+
+      /* ── ONBOARDING ─────────────────────────────────── */
+      #page-onboarding .page-scroll {
+        padding-left: 36px;
+        padding-right: 36px;
+        padding-bottom: calc(env(safe-area-inset-bottom, 0px) + 78px);
+      }
+      .onboard-scroll {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: flex-end;
+        text-align: left;
+        min-height: 100%;
+      }
+      .onboard-logo {
+        display: flex;
+        align-items: center;
+        margin-bottom: 34px;
+      }
+      .onboard-logo img {
+        height: 26px;
+        width: auto;
+        display: block;
+      }
+      .onboard-headline {
+        font-size: 44px;
+        font-weight: 400;
+        line-height: 1.18;
+        color: #f5e7d0;
+        margin-bottom: 22px;
+      }
+      .onboard-body {
+        font-size: 14.5px;
+        font-weight: 400;
+        line-height: 1.6;
+        color: rgba(245, 231, 208, 0.65);
+        max-width: 320px;
+        margin-bottom: 30px;
+      }
+      .onboard-btn {
+        width: 100%;
+      }
+
+      @keyframes onboardIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .onboard-logo,
+      .onboard-headline,
+      .onboard-body,
+      .onboard-btn {
+        animation: onboardIn 0.6s ease both;
+      }
+      .onboard-logo {
+        animation-delay: 0.05s;
+      }
+      .onboard-headline {
+        animation-delay: 0.2s;
+      }
+      .onboard-body {
+        animation-delay: 0.35s;
+      }
+      .onboard-btn {
+        animation-delay: 0.5s;
+      }
+
+      /* ── HOME LOGO ──────────────────────────────────── */
+      .home-logo {
+        height: 24px;
+        width: auto;
+        display: block;
+      }
+
+      /* ── EXERCISE GRID (home) ──────────────────────── */
+      .exercise-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 24px;
+      }
+      .exercise-card {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(242, 163, 92, 0.14);
+        background: rgba(245, 231, 208, 0.05);
+        cursor: pointer;
+        text-align: left;
+        font-family: inherit;
+        color: #f5e7d0;
+        transition: background 0.15s;
+      }
+      .exercise-card:active {
+        background: rgba(245, 231, 208, 0.09);
+      }
+      .exercise-card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        flex: none;
+        display: block;
+        margin-bottom: 16px;
+      }
+      .exercise-card-name {
+        font-size: 15px;
+        font-weight: 800;
+        line-height: 1.25;
+        margin-bottom: 6px;
+      }
+      .exercise-card-desc {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(245, 231, 208, 0.5);
+        line-height: 1.4;
+      }
+
+      /* ── SETTINGS ───────────────────────────────────── */
+      .settings-section {
+        margin-top: 30px;
+      }
+      .settings-section:first-child {
+        margin-top: 26px;
+      }
+
+      .color-swatch-row {
+        display: flex;
+        gap: 14px;
+        margin-top: 12px;
+      }
+      .color-swatch {
+        width: 38px;
+        height: 38px;
+        border-radius: 999px;
+        border: 2px solid transparent;
+        background: linear-gradient(160deg, var(--sw-a), var(--sw-b));
+        cursor: pointer;
+        padding: 0;
+      }
+      .color-swatch.active {
+        border-color: #f5e7d0;
+      }
+
+      .settings-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 14px 2px;
+        border-bottom: 1px solid rgba(245, 231, 208, 0.08);
+        font-size: 14px;
+        font-weight: 700;
+        background: none;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        color: #f5e7d0;
+        font-family: inherit;
+        text-align: left;
+        width: 100%;
+        cursor: pointer;
+      }
+      .settings-row:last-child {
+        border-bottom: none;
+      }
+      .settings-row-value {
+        font-size: 13px;
+        font-weight: 600;
+        color: rgba(245, 231, 208, 0.45);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .settings-about {
+        font-size: 13px;
+        font-weight: 600;
+        line-height: 1.6;
+        color: rgba(245, 231, 208, 0.5);
+        margin-top: 12px;
+      }
+
+      /* ── GAME CANVAS (shared by all games) ─────────── */
+      .game-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+        cursor: pointer;
+        display: block;
+      }
+      #breathe-canvas {
+        cursor: default;
+      }
+
+      .score-display {
+        position: absolute;
+        top: calc(env(safe-area-inset-top, 0px) + 72px);
+        left: 0;
+        right: 0;
+        text-align: center;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .score-eyebrow {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: rgba(245, 231, 208, 0.45);
+      }
+      .score-number {
+        font-size: 46px;
+        font-weight: 900;
+        line-height: 1.15;
+        color: #f5e7d0;
+      }
+      .score-best {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(245, 231, 208, 0.4);
+        margin-top: 10px;
+      }
+      .breathe-phase-text {
+        font-size: 30px;
+        font-weight: 900;
+        line-height: 1.25;
+        color: #f5e7d0;
+      }
+
+      /* ── CYCLE PROGRESS (bottom of each exercise) ──── */
+      .cycle-progress {
+        position: absolute;
+        left: 28px;
+        right: 28px;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 26px);
+        z-index: 3;
+        display: flex;
+        gap: 6px;
+        pointer-events: none;
+      }
+      .cycle-progress-seg {
+        flex: 1;
+        height: 3px;
+        border-radius: 999px;
+        background: rgba(245, 231, 208, 0.15);
+        overflow: hidden;
+      }
+      .cycle-progress-fill {
+        height: 100%;
+        width: 0%;
+        background: var(--accent);
+        border-radius: 999px;
+      }
+
+      /* ── FIXED SOUND PLAYER CARD ───────────────────── */
+      .player-bar {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        border-radius: 22px 22px 0 0;
+        background: var(--card-bg);
+        backdrop-filter: blur(28px) saturate(180%);
+        -webkit-backdrop-filter: blur(28px) saturate(180%);
+        border-top: 1px solid color-mix(in srgb, var(--accent) 18%, transparent);
+        box-shadow:
+          0 -8px 28px rgba(0, 0, 0, 0.35),
+          inset 1.5px 1.5px 1px rgba(255, 255, 255, 0.14),
+          inset -1px -1px 1px rgba(255, 255, 255, 0.05);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+        display: none; /* hidden for now — remove this line to bring the white noise card back */
+      }
+      /* hidden during onboarding — matches the provided design, which has no player bar */
+      #page-onboarding.active ~ .player-bar {
+        display: none;
+      }
+
+      .drag-handle {
+        width: 36px;
+        height: 4px;
+        border-radius: 999px;
+        background: rgba(245, 231, 208, 0.25);
+        margin: 10px auto 0;
+      }
+      .player-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 24px;
+        cursor: pointer;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      #big-play-btn {
+        width: 60px;
+        height: 60px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(160deg, var(--accent), var(--accent-2));
+        transition: transform 0.12s;
+        flex: none;
+      }
+      #big-play-btn:active {
+        transform: scale(0.92);
+      }
+      #big-play-btn.playing {
+        animation: emberglow 5s ease-in-out infinite;
+      }
+
+      .now-playing-info {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+      .now-playing-name {
+        font-size: 14.5px;
+        font-weight: 800;
+        color: #f5e7d0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .now-playing-status {
+        font-size: 12px;
+        font-weight: 600;
+        color: rgba(245, 231, 208, 0.5);
+        margin-top: 1px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .chev-btn {
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        border: none;
+        cursor: pointer;
+        flex: none;
+        background: rgba(245, 231, 208, 0.08);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.25s;
+      }
+      .chev-btn.open {
+        transform: rotate(180deg);
+      }
+
+      .player-sheet {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .player-sheet.open {
+        max-height: 320px;
+      }
+
+      .player-sheet-inner {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        padding: 24px;
+        opacity: 0;
+        transition: opacity 0.18s ease;
+      }
+      .player-sheet.open .player-sheet-inner {
+        opacity: 1;
+        transition: opacity 0.22s ease 0.08s;
+      }
+
+      .sheet-heading {
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(245, 231, 208, 0.45);
+      }
+
+      .chip-row {
+        display: flex;
+        gap: 6px;
+        margin-top: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding-bottom: 2px;
+      }
+      .chip-row::-webkit-scrollbar {
+        display: none;
+      }
+      .chip-btn {
+        flex: 0 0 auto;
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12.5px;
+        font-weight: 800;
+        font-family: inherit;
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background 0.2s,
+          color 0.2s,
+          border-color 0.2s;
+        border: 1px solid rgba(245, 231, 208, 0.16);
+        color: #cbb094;
+        background: rgba(245, 231, 208, 0.06);
+      }
+      .chip-btn.active {
+        background: var(--accent);
+        color: #2a1608;
+        border-color: transparent;
+      }
+
+      .vol-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px 0;
+      }
+      .vol-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: rgba(245, 231, 208, 0.55);
+        white-space: nowrap;
+        width: 52px;
+      }
+      .vol-pct {
+        font-size: 12px;
+        font-weight: 700;
+        color: rgba(245, 231, 208, 0.55);
+        width: 34px;
+        text-align: right;
+      }
+      input[type="range"] {
+        flex: 1;
+        -webkit-appearance: none;
+        appearance: none;
+        height: 44px;
+        background: transparent;
+        cursor: pointer;
+        margin: 0;
+      }
+      input[type="range"]::-webkit-slider-runnable-track {
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(
+          to right,
+          var(--accent) var(--fill, 55%),
+          rgba(245, 231, 208, 0.15) var(--fill, 55%)
+        );
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 44px;
+        height: 44px;
+        margin-top: -19px;
+        border-radius: 999px;
+        border: none;
+        background: var(--accent);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+      }
+      input[type="range"]::-moz-range-track {
+        height: 6px;
+        border-radius: 999px;
+        background: rgba(245, 231, 208, 0.15);
+      }
+      input[type="range"]::-moz-range-progress {
+        height: 6px;
+        border-radius: 999px;
+        background: var(--accent);
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 44px;
+        height: 44px;
+        border-radius: 999px;
+        border: none;
+        background: var(--accent);
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+        cursor: pointer;
+      }
+
+      /* ── KEYFRAMES ───────────────────────────── */
+      @keyframes breath {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.8;
+        }
+        50% {
+          transform: scale(1.1);
+          opacity: 1;
+        }
+      }
+      @keyframes emberglow {
+        0%,
+        100% {
+          box-shadow: 0 0 40px 8px
+            color-mix(in srgb, var(--accent) 28%, transparent);
+        }
+        50% {
+          box-shadow: 0 0 72px 20px
+            color-mix(in srgb, var(--accent) 45%, transparent);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="phone-frame">
+      <div id="dynamic-island"></div>
+      <div id="app">
+        <!-- ══ ONBOARDING ═════════════════════════════════ -->
+        <div class="page" id="page-onboarding">
+          <div class="page-scroll onboard-scroll">
+            <div class="onboard-logo">
+              <img src="images/waves_logo.png" alt="Waves" />
+            </div>
+            <div class="onboard-headline">Breathe.<br />Focus.<br />Relax.</div>
+            <div class="onboard-body">
+              Settle a busy mind with simple breathing exercises. A few slow
+              breaths is all it takes.
+            </div>
+            <button
+              class="game-start-btn onboard-btn"
+              onclick="finishOnboarding()"
+            >
+              Get started
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ HOME · game list ══════════════════════════ -->
+        <div class="page active" id="page-home">
+          <div class="page-scroll">
+            <div class="page-header">
+              <img class="home-logo" src="images/waves_logo.png" alt="Waves" />
+              <button
+                class="icon-btn"
+                onclick="showPage('settings')"
+                aria-label="Settings"
+              >
+                <svg width="18" height="18" viewBox="0 0 16 16" fill="none">
+                  <path
+                    fill-rule="evenodd"
+                    clip-rule="evenodd"
+                    d="M13.653 6.35L15.709 6.686C15.7901 6.69986 15.8637 6.74184 15.9169 6.80456C15.9701 6.86729 15.9995 6.94675 16 7.029V8.942C15.9994 9.02365 15.9703 9.10253 15.9177 9.16498C15.8651 9.22744 15.7924 9.26954 15.712 9.284L13.654 9.646C13.535 10.0579 13.3706 10.4553 13.164 10.831L14.381 12.521C14.4291 12.5882 14.4518 12.6702 14.4452 12.7526C14.4387 12.8349 14.4031 12.9123 14.345 12.971L12.992 14.323C12.9341 14.3805 12.858 14.4159 12.7767 14.4232C12.6955 14.4305 12.6142 14.4092 12.547 14.363L10.84 13.165C10.4627 13.375 10.065 13.5417 9.647 13.665L9.284 15.713C9.2693 15.7933 9.22696 15.866 9.16432 15.9184C9.10168 15.9708 9.02268 15.9997 8.941 16H7.028C6.94589 15.9996 6.86655 15.9703 6.80384 15.9173C6.74114 15.8643 6.69908 15.7909 6.685 15.71L6.345 13.671C5.92931 13.5497 5.52797 13.3837 5.148 13.176L3.454 14.362C3.38693 14.4088 3.3056 14.4306 3.22413 14.4236C3.14266 14.4167 3.0662 14.3814 3.008 14.324L1.655 12.97C1.59736 12.9114 1.56217 12.8345 1.55559 12.7525C1.54901 12.6706 1.57146 12.589 1.619 12.522L2.816 10.848C2.6061 10.466 2.43844 10.0623 2.316 9.644L0.287 9.284C0.206824 9.26933 0.134282 9.22714 0.0818877 9.1647C0.0294933 9.10227 0.000532047 9.02351 0 8.942V7.029C0 6.859 0.123 6.714 0.29 6.686L2.32 6.348C2.442 5.928 2.60867 5.527 2.82 5.145L1.636 3.453C1.58963 3.3859 1.56816 3.30472 1.57528 3.22347C1.5824 3.14222 1.61767 3.06601 1.675 3.008L3.027 1.656C3.147 1.536 3.337 1.52 3.475 1.619L5.155 2.819C5.53482 2.61273 5.93581 2.44811 6.351 2.328L6.684 0.292C6.69768 0.21057 6.73971 0.136601 6.80266 0.0831661C6.86561 0.0297317 6.94543 0.000273936 7.028 0H8.941C9.111 0 9.255 0.122 9.284 0.288L9.643 2.335C10.059 2.45633 10.4567 2.622 10.836 2.832L12.521 1.621C12.5882 1.57292 12.6702 1.55016 12.7526 1.55675C12.8349 1.56334 12.9123 1.59885 12.971 1.657L14.323 3.009C14.443 3.129 14.459 3.317 14.362 3.455L13.162 5.165C13.3687 5.54167 13.533 5.93667 13.653 6.35ZM5.565 8C5.565 8.31977 5.62798 8.63641 5.75035 8.93183C5.87272 9.22726 6.05208 9.49569 6.2782 9.7218C6.50431 9.94792 6.77274 10.1273 7.06817 10.2496C7.36359 10.372 7.68023 10.435 8 10.435C8.31977 10.435 8.63641 10.372 8.93183 10.2496C9.22726 10.1273 9.49569 9.94792 9.7218 9.7218C9.94792 9.49569 10.1273 9.22726 10.2496 8.93183C10.372 8.63641 10.435 8.31977 10.435 8C10.435 7.3542 10.1785 6.73485 9.7218 6.2782C9.26515 5.82154 8.6458 5.565 8 5.565C7.3542 5.565 6.73485 5.82154 6.2782 6.2782C5.82154 6.73485 5.565 7.3542 5.565 8Z"
+                    fill="#f5e7d0"
+                  />
+                </svg>
+              </button>
+            </div>
+
+            <div class="exercise-grid">
+              <button class="exercise-card" onclick="showPage('game-box')">
+                <img
+                  class="exercise-card-icon"
+                  src="images/exercise-icon-box.png"
+                  alt=""
+                />
+                <div class="exercise-card-name">Box Breathing</div>
+                <div class="exercise-card-desc">
+                  Follow the box: in 4s, hold 4s, out 4s, hold 4s
+                </div>
+              </button>
+
+              <button class="exercise-card" onclick="showPage('game-breathe')">
+                <img
+                  class="exercise-card-icon"
+                  src="images/exercise-icon-478.png"
+                  alt=""
+                />
+                <div class="exercise-card-name">4-7-8 Breathing</div>
+                <div class="exercise-card-desc">
+                  Follow the triangle: in 4s, hold 7s, out 8s
+                </div>
+              </button>
+
+              <button class="exercise-card" onclick="showPage('game-resonant')">
+                <img
+                  class="exercise-card-icon"
+                  src="images/exercise-icon-reso.png"
+                  alt=""
+                />
+                <div class="exercise-card-name">Resonant Breathing</div>
+                <div class="exercise-card-desc">
+                  A steady 5-6 breaths per minute
+                </div>
+              </button>
+
+              <button class="exercise-card" onclick="showPage('game-counting')">
+                <img
+                  class="exercise-card-icon"
+                  src="images/exercise-icon-counting.png"
+                  alt=""
+                />
+                <div class="exercise-card-name">Breath Counting</div>
+                <div class="exercise-card-desc">
+                  Count each breath up to build focus
+                </div>
+              </button>
+
+              <button
+                class="exercise-card"
+                onclick="showPage('game-visualization')"
+              >
+                <img
+                  class="exercise-card-icon"
+                  src="images/exercise-icon-visualize.png"
+                  alt=""
+                />
+                <div class="exercise-card-name">
+                  Visualization-Mantra Breathing
+                </div>
+                <div class="exercise-card-desc">
+                  Pair each breath with a calming word
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ SETTINGS ═══════════════════════════════════ -->
+        <div class="page" id="page-settings">
+          <div class="page-scroll">
+            <div class="page-header">
+              <button
+                class="icon-btn"
+                onclick="showPage('home')"
+                aria-label="Back"
+              >
+                <svg width="10" height="16" viewBox="0 0 10 16">
+                  <path
+                    d="M9 1L2 8l7 7"
+                    fill="none"
+                    stroke="#f5e7d0"
+                    stroke-width="2.2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div class="page-title center">Settings</div>
+              <div class="icon-btn-spacer"></div>
+            </div>
+
+            <div class="settings-section">
+              <div class="sheet-heading">Theme</div>
+              <div class="color-swatch-row" id="color-swatch-row">
+                <button
+                  class="color-swatch active"
+                  style="--sw-a: #f2a35c; --sw-b: #d97d4a"
+                  data-theme="ember"
+                  onclick="pickTheme('ember')"
+                  aria-label="Ember"
+                ></button>
+                <button
+                  class="color-swatch"
+                  style="--sw-a: #f28ba0; --sw-b: #d9607a"
+                  data-theme="rose"
+                  onclick="pickTheme('rose')"
+                  aria-label="Rose"
+                ></button>
+                <button
+                  class="color-swatch"
+                  style="--sw-a: #e8785a; --sw-b: #c2543a"
+                  data-theme="terracotta"
+                  onclick="pickTheme('terracotta')"
+                  aria-label="Terracotta"
+                ></button>
+                <button
+                  class="color-swatch"
+                  style="--sw-a: #a8cf8a; --sw-b: #7fab63"
+                  data-theme="sage"
+                  onclick="pickTheme('sage')"
+                  aria-label="Sage"
+                ></button>
+                <button
+                  class="color-swatch"
+                  style="--sw-a: #c98cf2; --sw-b: #9c5fd9"
+                  data-theme="plum"
+                  onclick="pickTheme('plum')"
+                  aria-label="Plum"
+                ></button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="sheet-heading">General</div>
+              <button class="settings-row" onclick="cycleLanguage()">
+                <span>Language</span>
+                <span class="settings-row-value" id="language-value"
+                  >English
+                  <svg width="7" height="12" viewBox="0 0 9 15">
+                    <path
+                      d="M1 1l6 6-6 6"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    /></svg
+                ></span>
+              </button>
+              <div class="settings-row" style="cursor: default">
+                <span>Appearance</span>
+                <span class="settings-row-value" id="theme-value"
+                  >Ember · Dark</span
+                >
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <div class="sheet-heading">About</div>
+              <div class="settings-about">
+                Version 1.0
+                <br />Designed and built by DSGNR LLC
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ GAME · Box Breathing ═══════════════════════ -->
+        <div class="page game-page" id="page-game-box">
+          <button
+            class="icon-btn page-back"
+            onclick="showPage('home')"
+            aria-label="Back"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16">
+              <path
+                d="M9 1L2 8l7 7"
+                fill="none"
+                stroke="#f5e7d0"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <canvas class="game-canvas" id="box-canvas"></canvas>
+          <div class="cycle-progress" id="progress-box"></div>
+          <div class="score-display">
+            <div class="score-eyebrow">box breathing</div>
+            <div class="score-best" id="cycle-box">cycle 1</div>
+          </div>
+          <div class="game-start" id="start-game-box">
+            <img
+              class="game-start-icon"
+              src="images/exercise-icon-box.png"
+              alt=""
+            />
+            <div class="game-start-title">Box Breathing</div>
+            <div class="game-start-desc">
+              Inhale for four seconds, hold for four, exhale for four, and hold
+              empty for four. Follow the dot around the box as it loops.
+            </div>
+            <button class="game-start-btn" onclick="startGame('game-box')">
+              Start
+            </button>
+          </div>
+          <div class="game-start hidden" id="success-game-box">
+            <div class="success-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24">
+                <path
+                  d="M5 13l4 4L19 7"
+                  fill="none"
+                  stroke="#2a1608"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="game-start-title">Well done</div>
+            <div class="game-start-desc">
+              You completed 3 cycles of box breathing.
+            </div>
+            <button class="game-start-btn" onclick="retryExercise('game-box')">
+              Try Again
+            </button>
+            <button class="game-secondary-btn" onclick="showPage('home')">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ GAME · Resonant Breathing ══════════════════ -->
+        <div class="page game-page" id="page-game-resonant">
+          <button
+            class="icon-btn page-back"
+            onclick="showPage('home')"
+            aria-label="Back"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16">
+              <path
+                d="M9 1L2 8l7 7"
+                fill="none"
+                stroke="#f5e7d0"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <canvas class="game-canvas" id="resonant-canvas"></canvas>
+          <div class="cycle-progress" id="progress-resonant"></div>
+          <div class="score-display">
+            <div class="score-eyebrow">resonant breathing</div>
+            <div class="score-best" id="cycle-resonant">cycle 1</div>
+          </div>
+          <div class="game-start" id="start-game-resonant">
+            <img
+              class="game-start-icon"
+              src="images/exercise-icon-reso.png"
+              alt=""
+            />
+            <div class="game-start-title">Resonant Breathing</div>
+            <div class="game-start-desc">
+              Breathe at a steady rate of about five to six breaths per minute
+              to balance heart rate variability. Follow the circle as it slowly
+              grows and falls.
+            </div>
+            <button class="game-start-btn" onclick="startGame('game-resonant')">
+              Start
+            </button>
+          </div>
+          <div class="game-start hidden" id="success-game-resonant">
+            <div class="success-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24">
+                <path
+                  d="M5 13l4 4L19 7"
+                  fill="none"
+                  stroke="#2a1608"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="game-start-title">Well done</div>
+            <div class="game-start-desc">
+              You completed 3 cycles of resonant breathing.
+            </div>
+            <button
+              class="game-start-btn"
+              onclick="retryExercise('game-resonant')"
+            >
+              Try Again
+            </button>
+            <button class="game-secondary-btn" onclick="showPage('home')">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ GAME · Breath Counting ═════════════════════ -->
+        <div class="page game-page" id="page-game-counting">
+          <button
+            class="icon-btn page-back"
+            onclick="showPage('home')"
+            aria-label="Back"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16">
+              <path
+                d="M9 1L2 8l7 7"
+                fill="none"
+                stroke="#f5e7d0"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <canvas class="game-canvas" id="counting-canvas"></canvas>
+          <div class="cycle-progress" id="progress-counting"></div>
+          <div class="score-display">
+            <div class="score-eyebrow">breath counting</div>
+            <div class="breathe-phase-text" id="phase-counting">1</div>
+            <div class="score-best" id="cycle-counting">cycle 1</div>
+          </div>
+          <div class="game-start" id="start-game-counting">
+            <img
+              class="game-start-icon"
+              src="images/exercise-icon-counting.png"
+              alt=""
+            />
+            <div class="game-start-title">Breath Counting</div>
+            <div class="game-start-desc">
+              Inhale and count "one," exhale, then count up to ten to build
+              focus, restarting once you reach the top.
+            </div>
+            <button class="game-start-btn" onclick="startGame('game-counting')">
+              Start
+            </button>
+          </div>
+          <div class="game-start hidden" id="success-game-counting">
+            <div class="success-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24">
+                <path
+                  d="M5 13l4 4L19 7"
+                  fill="none"
+                  stroke="#2a1608"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="game-start-title">Well done</div>
+            <div class="game-start-desc">
+              You completed 3 cycles of breath counting.
+            </div>
+            <button
+              class="game-start-btn"
+              onclick="retryExercise('game-counting')"
+            >
+              Try Again
+            </button>
+            <button class="game-secondary-btn" onclick="showPage('home')">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ GAME · Visualization-Mantra Breathing ══════ -->
+        <div class="page game-page" id="page-game-visualization">
+          <button
+            class="icon-btn page-back"
+            onclick="showPage('home')"
+            aria-label="Back"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16">
+              <path
+                d="M9 1L2 8l7 7"
+                fill="none"
+                stroke="#f5e7d0"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <canvas class="game-canvas" id="visualization-canvas"></canvas>
+          <div class="cycle-progress" id="progress-visualization"></div>
+          <div class="score-display">
+            <div class="score-eyebrow">visualization · mantra</div>
+            <div class="score-best" id="cycle-visualization">cycle 1</div>
+          </div>
+          <div class="game-start" id="start-game-visualization">
+            <img
+              class="game-start-icon"
+              src="images/exercise-icon-visualize.png"
+              alt=""
+            />
+            <div class="game-start-title">Visualization-Mantra Breathing</div>
+            <div class="game-start-desc">
+              Pair slow deep breaths with a mental image or a calming word. A
+              new word settles in with each breath.
+            </div>
+            <button
+              class="game-start-btn"
+              onclick="startGame('game-visualization')"
+            >
+              Start
+            </button>
+          </div>
+          <div class="game-start hidden" id="success-game-visualization">
+            <div class="success-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24">
+                <path
+                  d="M5 13l4 4L19 7"
+                  fill="none"
+                  stroke="#2a1608"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="game-start-title">Well done</div>
+            <div class="game-start-desc">
+              You completed 3 cycles of visualization-mantra breathing.
+            </div>
+            <button
+              class="game-start-btn"
+              onclick="retryExercise('game-visualization')"
+            >
+              Try Again
+            </button>
+            <button class="game-secondary-btn" onclick="showPage('home')">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ GAME · 4-7-8 Breathing ═════════════════════ -->
+        <div class="page game-page" id="page-game-breathe">
+          <button
+            class="icon-btn page-back"
+            onclick="showPage('home')"
+            aria-label="Back"
+          >
+            <svg width="10" height="16" viewBox="0 0 10 16">
+              <path
+                d="M9 1L2 8l7 7"
+                fill="none"
+                stroke="#f5e7d0"
+                stroke-width="2.2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+          <canvas class="game-canvas" id="breathe-canvas"></canvas>
+          <div class="cycle-progress" id="progress-breathe"></div>
+          <div class="score-display">
+            <div class="score-eyebrow">4-7-8 breathing</div>
+            <div class="score-best" id="breathe-cycle">cycle 1</div>
+          </div>
+          <div class="game-start" id="start-game-breathe">
+            <img
+              class="game-start-icon"
+              src="images/exercise-icon-478.png"
+              alt=""
+            />
+            <div class="game-start-title">4-7-8 Breathing</div>
+            <div class="game-start-desc">
+              Inhale through the nose for four seconds, hold the breath for
+              seven, and exhale through the mouth for eight. Follow the dot
+              around the triangle, resting briefly at the top before it loops
+              again.
+            </div>
+            <button class="game-start-btn" onclick="startGame('game-breathe')">
+              Start
+            </button>
+          </div>
+          <div class="game-start hidden" id="success-game-breathe">
+            <div class="success-icon">
+              <svg width="34" height="34" viewBox="0 0 24 24">
+                <path
+                  d="M5 13l4 4L19 7"
+                  fill="none"
+                  stroke="#2a1608"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </div>
+            <div class="game-start-title">Well done</div>
+            <div class="game-start-desc">
+              You completed 3 cycles of 4-7-8 breathing.
+            </div>
+            <button
+              class="game-start-btn"
+              onclick="retryExercise('game-breathe')"
+            >
+              Try Again
+            </button>
+            <button class="game-secondary-btn" onclick="showPage('home')">
+              Close
+            </button>
+          </div>
+        </div>
+
+        <!-- ══ FIXED SOUND PLAYER CARD ══════════════════ -->
+        <div class="player-bar">
+          <div class="drag-handle"></div>
+          <div class="player-row" id="player-row">
+            <button
+              id="big-play-btn"
+              onclick="
+                event.stopPropagation();
+                togglePlay();
+              "
+            >
+              <svg id="icon-play" width="27" height="27" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z" fill="#2a1608" />
+              </svg>
+              <svg
+                id="icon-pause"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                style="display: none"
+              >
+                <rect
+                  x="6"
+                  y="5"
+                  width="4"
+                  height="14"
+                  rx="1.5"
+                  fill="#2a1608"
+                />
+                <rect
+                  x="14"
+                  y="5"
+                  width="4"
+                  height="14"
+                  rx="1.5"
+                  fill="#2a1608"
+                />
+              </svg>
+            </button>
+            <div class="now-playing-info">
+              <div class="now-playing-name" id="now-playing-name">
+                White noise
+              </div>
+              <div class="now-playing-status" id="now-playing-status">
+                paused
+              </div>
+            </div>
+            <button
+              class="chev-btn"
+              id="chev-btn"
+              onclick="
+                event.stopPropagation();
+                toggleSheet();
+              "
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24">
+                <path
+                  d="M6 15l6-6 6 6"
+                  fill="none"
+                  stroke="#cbb094"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+
+          <div class="player-sheet" id="player-sheet">
+            <div class="player-sheet-inner" id="player-sheet-inner">
+              <div>
+                <div class="sheet-heading">Noise type</div>
+                <div class="chip-row">
+                  <button
+                    class="chip-btn active"
+                    data-type="white"
+                    onclick="pickNoise('white')"
+                  >
+                    White
+                  </button>
+                  <button
+                    class="chip-btn"
+                    data-type="pink"
+                    onclick="pickNoise('pink')"
+                  >
+                    Pink
+                  </button>
+                  <button
+                    class="chip-btn"
+                    data-type="brown"
+                    onclick="pickNoise('brown')"
+                  >
+                    Brown
+                  </button>
+                  <button
+                    class="chip-btn"
+                    data-type="blue"
+                    onclick="pickNoise('blue')"
+                  >
+                    Blue
+                  </button>
+                  <button
+                    class="chip-btn"
+                    data-type="violet"
+                    onclick="pickNoise('violet')"
+                  >
+                    Violet
+                  </button>
+                  <button
+                    class="chip-btn"
+                    data-type="grey"
+                    onclick="pickNoise('grey')"
+                  >
+                    Grey
+                  </button>
+                </div>
+              </div>
+              <div class="vol-row">
+                <span class="vol-label">Volume</span>
+                <input
+                  type="range"
+                  id="vol-slider"
+                  min="0"
+                  max="100"
+                  value="55"
+                  style="--fill: 55%"
+                  oninput="onVol(this)"
+                />
+                <span class="vol-pct" id="vol-pct">55%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // ══════════════════════════════════════════════════
+      // NOISE ENGINE  (Web Audio API)
+      // ══════════════════════════════════════════════════
+      class NoiseEngine {
+        constructor() {
+          this.ctx = null;
+          this.src = null;
+          this.gain = null;
+          this._cache = {}; // pre-generated noise buffers keyed by type
+
+          // Unlock AudioContext on the very first touch (fires before onclick).
+          // iOS requires a silent buffer played inside a real touch event to open
+          // the audio session; waiting until the play button's onclick is too late.
+          document.addEventListener("touchstart", () => this._unlock(), {
+            once: true,
+            passive: true,
+          });
+        }
+
+        _createCtx() {
+          if (this.ctx) return;
+          this.ctx = new (window.AudioContext || window.webkitAudioContext)();
+          this.gain = this.ctx.createGain();
+          this.gain.gain.value = 0;
+          this.gain.connect(this.ctx.destination);
+        }
+
+        _unlock() {
+          this._createCtx();
+          // Play a 1-sample silent buffer — this is what opens the iOS audio session
+          const silent = this.ctx.createBuffer(1, 1, this.ctx.sampleRate);
+          const s = this.ctx.createBufferSource();
+          s.buffer = silent;
+          s.connect(this.ctx.destination);
+          s.start(0);
+          // Resume (synchronously inside the touch event), then pre-cache all buffers
+          this.ctx.resume().then(() => {
+            ["white", "pink", "brown", "blue", "violet", "grey"].forEach(
+              (t) => {
+                if (!this._cache[t]) this._cache[t] = this._generate(t);
+              },
+            );
+          });
+        }
+
+        _generate(type) {
+          const sr = this.ctx.sampleRate;
+          const len = sr * 2; // 2 s loop — half the work, still seamlessly loopable
+          const buf = this.ctx.createBuffer(1, len, sr);
+          const d = buf.getChannelData(0);
+          if (type === "white") {
+            for (let i = 0; i < len; i++) d[i] = (Math.random() * 2 - 1) * 0.6;
+          } else if (type === "pink") {
+            let b0 = 0,
+              b1 = 0,
+              b2 = 0,
+              b3 = 0,
+              b4 = 0,
+              b5 = 0,
+              b6 = 0;
+            for (let i = 0; i < len; i++) {
+              const w = Math.random() * 2 - 1;
+              b0 = 0.99886 * b0 + w * 0.0555179;
+              b1 = 0.99332 * b1 + w * 0.0750759;
+              b2 = 0.969 * b2 + w * 0.153852;
+              b3 = 0.8665 * b3 + w * 0.3104856;
+              b4 = 0.55 * b4 + w * 0.5329522;
+              b5 = -0.7616 * b5 - w * 0.016898;
+              d[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + w * 0.5362) * 0.11;
+              b6 = w * 0.115926;
+            }
+          } else if (type === "brown") {
+            let last = 0;
+            for (let i = 0; i < len; i++) {
+              last = (last + 0.02 * (Math.random() * 2 - 1)) / 1.02;
+              d[i] = last * 3.2;
+            }
+          } else if (type === "blue") {
+            // blue = white noise differentiated once — energy rises with frequency
+            let prev = 0;
+            for (let i = 0; i < len; i++) {
+              const w = Math.random() * 2 - 1;
+              d[i] = (w - prev) * 0.5;
+              prev = w;
+            }
+          } else if (type === "violet") {
+            // violet = differentiated twice — steeper high-frequency emphasis than blue
+            let p1 = 0,
+              p2 = 0;
+            for (let i = 0; i < len; i++) {
+              const w = Math.random() * 2 - 1;
+              const d1 = w - p1;
+              d[i] = (d1 - p2) * 0.3;
+              p2 = d1;
+              p1 = w;
+            }
+          } else {
+            // grey — blend of a light pink filter and raw white, approximating flat perceived loudness
+            let b0 = 0,
+              b1 = 0,
+              b2 = 0;
+            for (let i = 0; i < len; i++) {
+              const w = Math.random() * 2 - 1;
+              b0 = 0.997 * b0 + w * 0.05;
+              b1 = 0.985 * b1 + w * 0.12;
+              b2 = 0.94 * b2 + w * 0.25;
+              d[i] = ((b0 + b1 + b2) * 0.18 + w * 0.4) * 0.8;
+            }
+          }
+          return buf;
+        }
+
+        play(type, vol = 0.5) {
+          this._createCtx();
+          if (this.src) {
+            try {
+              this.src.stop();
+            } catch (e) {}
+            this.src = null;
+          }
+
+          // Get buffer from cache (pre-generated) or build it on demand
+          const buf =
+            this._cache[type] || (this._cache[type] = this._generate(type));
+
+          const startAudio = () => {
+            const s = this.ctx.createBufferSource();
+            s.buffer = buf;
+            s.loop = true;
+            s.connect(this.gain);
+            s.start(0);
+            this.src = s;
+            const t = this.ctx.currentTime;
+            this.gain.gain.cancelScheduledValues(t);
+            this.gain.gain.setValueAtTime(this.gain.gain.value, t);
+            this.gain.gain.linearRampToValueAtTime(vol, t + 0.7);
+          };
+
+          // Resume first (synchronously within gesture), then start audio node
+          if (this.ctx.state === "suspended") {
+            this.ctx.resume().then(startAudio);
+          } else {
+            startAudio();
+          }
+        }
+
+        setVolume(v) {
+          if (!this.ctx) return;
+          const t = this.ctx.currentTime;
+          this.gain.gain.cancelScheduledValues(t);
+          this.gain.gain.setValueAtTime(this.gain.gain.value, t);
+          this.gain.gain.linearRampToValueAtTime(v, t + 0.15);
+        }
+
+        stop() {
+          if (!this.ctx || !this.src) return;
+          const s = this.src,
+            t = this.ctx.currentTime;
+          this.gain.gain.cancelScheduledValues(t);
+          this.gain.gain.setValueAtTime(this.gain.gain.value, t);
+          this.gain.gain.linearRampToValueAtTime(0, t + 0.5);
+          setTimeout(() => {
+            try {
+              s.stop();
+            } catch (e) {}
+          }, 650);
+          this.src = null;
+        }
+      }
+
+      // ══════════════════════════════════════════════════
+      // BREATHING EXERCISES  (canvas)
+      // Generalized from the original 4-7-8 triangle engine: `sides` picks the
+      // guide polygon (3 = triangle, 4 = box; 0 disables the polygon entirely for
+      // the plain-circle exercises), each phase's `breath` drives the background
+      // circle (grow / hold / shrink), and `centerMode` swaps what's drawn in the
+      // middle — a seconds countdown, a running breath count, or a mantra word.
+      // ══════════════════════════════════════════════════
+      class BreathGame {
+        constructor(
+          canvas,
+          {
+            speed = 1,
+            hue = 15,
+            rgb = { r: 242, g: 163, b: 92 },
+            onPhase,
+            onProgress,
+            onComplete,
+            phases,
+            sides = 3,
+            rotate = 0,
+            showPolygon = true,
+            centerMode = "seconds",
+            countCap = 10,
+            cycleCap = 3,
+            words = ["Calm", "Peace", "Ease", "Still", "Soften", "Release"],
+          } = {},
+        ) {
+          this.cv = canvas;
+          this.ctx = canvas.getContext("2d");
+          this.onPhase = onPhase || (() => {});
+          this.onProgress = onProgress || (() => {});
+          this.onComplete = onComplete || (() => {});
+          this.cycleCap = cycleCap;
+          this.speedMul = speed;
+          this.hue = hue;
+          this.rgb = rgb;
+          this.dpr = window.devicePixelRatio || 1;
+          // one phase per side of the guide polygon, each with its own duration,
+          // a `breath` direction (in / hold-max / out / hold-min) driving the
+          // background circle, and (when showPolygon) an `edge` to travel along
+          this.phases = phases || [
+            { label: "Breathe in", dur: 4, edge: 0, breath: "in" },
+            { label: "Hold", dur: 7, edge: 1, breath: "hold-max" },
+            { label: "Breathe out", dur: 8, edge: 2, breath: "out" },
+            { label: "Rest", dur: 3, edge: null, breath: "hold-min" },
+          ];
+          this.showPolygon = showPolygon;
+          this.centerMode = centerMode;
+          this.countCap = countCap;
+          this.words = words;
+          this.count = 1;
+          this.wordIndex = 0;
+          // guide polygon vertices as unit vectors — `sides` picks triangle vs.
+          // box, `rotate` (degrees) spins it (45° turns a diamond into a
+          // flat-sided square), starting at the top and going clockwise; index 0
+          // is also the loop-back point
+          this.sides = sides;
+          this.verts = Array.from({ length: sides }, (_, i) => {
+            const rad = (((i * 360) / sides + rotate) * Math.PI) / 180;
+            return { x: Math.sin(rad), y: -Math.cos(rad) };
+          });
+          this.totalCycleDur = this.phases.reduce((s, p) => s + p.dur, 0);
+          this.phaseIndex = 0;
+          this.phaseT = 0;
+          this.cycle = 1;
+          this._loop = this._loop.bind(this);
+          this._resize = this._resize.bind(this);
+          this.ro = new ResizeObserver(this._resize);
+          this.ro.observe(canvas);
+          this._resize();
+          this.onPhase(this.phases[0].label, this.cycle, this.count);
+          this.onProgress(0, 0);
+          this.last = performance.now();
+          this.raf = requestAnimationFrame(this._loop);
+        }
+
+        setSpeed(m) {
+          this.speedMul = m;
+        }
+        setTheme(hue, rgb) {
+          this.hue = hue;
+          this.rgb = rgb;
+        }
+        _rgba(a) {
+          return `rgba(${this.rgb.r},${this.rgb.g},${this.rgb.b},${a})`;
+        }
+
+        _resize() {
+          const r = this.cv.getBoundingClientRect();
+          if (!r.width || !r.height) return;
+          this.w = r.width;
+          this.h = r.height;
+          this.cv.width = Math.round(r.width * this.dpr);
+          this.cv.height = Math.round(r.height * this.dpr);
+          this.ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
+          this.R = Math.min(this.w, this.h) * 0.3;
+          // background breathing circle: starts small enough to sit inside the
+          // guide polygon, grows well past the viewport edges at its largest
+          this.circleMinR = this.R * 0.6;
+          this.circleMaxR = this.h * 0.4; // diameter = 80% of viewport height
+        }
+
+        // 0..1 progress within the current phase, eased
+        _ease(t) {
+          return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+        }
+
+        // background circle radius, driven by the current phase's breath direction
+        _circleRadius() {
+          const phase = this.phases[this.phaseIndex];
+          const t = this._ease(this.phaseT / phase.dur);
+          switch (phase.breath) {
+            case "in":
+              return this.circleMinR + (this.circleMaxR - this.circleMinR) * t;
+            case "out":
+              return this.circleMaxR - (this.circleMaxR - this.circleMinR) * t;
+            case "hold-max":
+              return this.circleMaxR;
+            default:
+              return this.circleMinR; // 'hold-min'
+          }
+        }
+
+        // where the breath marker sits — traveling an edge, or resting at the top
+        _markerPos() {
+          const phase = this.phases[this.phaseIndex];
+          if (phase.edge === null || phase.edge === undefined)
+            return this.verts[0];
+          const a = this.verts[phase.edge];
+          const b = this.verts[(phase.edge + 1) % this.sides];
+          const t = this._ease(this.phaseT / phase.dur);
+          return { x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t };
+        }
+
+        _loop(now) {
+          this.raf = requestAnimationFrame(this._loop);
+          const dt = Math.min(0.05, (now - this.last) / 1000) * this.speedMul;
+          this.last = now;
+          if (!this.R) return;
+
+          const dur = this.phases[this.phaseIndex].dur;
+          this.phaseT += dt;
+          if (this.phaseT >= dur) {
+            const atLastPhase = this.phaseIndex === this.phases.length - 1;
+            if (atLastPhase && this.cycle >= this.cycleCap) {
+              // capped — freeze on the final frame instead of looping into a new cycle
+              this.phaseT = dur;
+              this.onProgress(this.cycleCap - 1, 1);
+              this._draw();
+              this.onComplete();
+              this.pause();
+              return;
+            }
+            this.phaseT -= dur;
+            this.phaseIndex = (this.phaseIndex + 1) % this.phases.length;
+            if (this.phaseIndex === 0) {
+              this.cycle++;
+              if (this.centerMode === "count") {
+                this.count = this.count >= this.countCap ? 1 : this.count + 1;
+              } else if (this.centerMode === "word") {
+                this.wordIndex = (this.wordIndex + 1) % this.words.length;
+              }
+            }
+            this.onPhase(
+              this.phases[this.phaseIndex].label,
+              this.cycle,
+              this.count,
+            );
+          }
+
+          // progress within the current cycle (0..1), for the segmented cycle bar
+          let elapsed = this.phaseT;
+          for (let i = 0; i < this.phaseIndex; i++)
+            elapsed += this.phases[i].dur;
+          this.onProgress(
+            this.cycle - 1,
+            Math.min(1, elapsed / this.totalCycleDur),
+          );
+
+          this._draw();
+        }
+
+        reset() {
+          this.phaseIndex = 0;
+          this.phaseT = 0;
+          this.cycle = 1;
+          this.count = 1;
+          this.wordIndex = 0;
+          this.onPhase(this.phases[0].label, this.cycle, this.count);
+          this.onProgress(0, 0);
+        }
+
+        _draw() {
+          const ctx = this.ctx,
+            w = this.w,
+            h = this.h,
+            cx = w / 2,
+            cy = h / 2,
+            R = this.R;
+          ctx.clearRect(0, 0, w, h);
+
+          // background breathing circle, behind everything else
+          ctx.fillStyle = this._rgba(0.07);
+          ctx.beginPath();
+          ctx.arc(cx, cy, this._circleRadius(), 0, Math.PI * 2);
+          ctx.fill();
+
+          if (this.showPolygon) {
+            // guide polygon
+            ctx.strokeStyle = this._rgba(0.22);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            this.verts.forEach((v, i) => {
+              const x = cx + v.x * R,
+                y = cy + v.y * R;
+              if (i === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            });
+            ctx.closePath();
+            ctx.stroke();
+
+            // loop-back affordance — the top vertex is where each cycle restarts
+            const top = this.verts[0];
+            const tx = cx + top.x * R,
+              ty = cy + top.y * R;
+            ctx.strokeStyle = this._rgba(0.5);
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(tx, ty, 10, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fillStyle = this._rgba(0.85);
+            ctx.beginPath();
+            ctx.arc(tx, ty, 4, 0, Math.PI * 2);
+            ctx.fill();
+
+            // the other vertices, plain dots
+            for (let i = 1; i < this.verts.length; i++) {
+              const v = this.verts[i];
+              ctx.fillStyle = this._rgba(0.35);
+              ctx.beginPath();
+              ctx.arc(cx + v.x * R, cy + v.y * R, 4, 0, Math.PI * 2);
+              ctx.fill();
+            }
+
+            // breath marker traveling the current edge
+            const m = this._markerPos();
+            const mx = cx + m.x * R,
+              my = cy + m.y * R;
+            const glow = ctx.createRadialGradient(mx, my, 0, mx, my, 26);
+            glow.addColorStop(0, this._rgba(0.55));
+            glow.addColorStop(1, this._rgba(0));
+            ctx.fillStyle = glow;
+            ctx.beginPath();
+            ctx.arc(mx, my, 26, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = this._rgba(0.95);
+            ctx.beginPath();
+            ctx.arc(mx, my, 9, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          // center text — the phase label ("Breathe in" / "Hold" / etc.) sits
+          // inside the shape itself; a mantra word takes its place in word mode
+          let centerText, sizeRatio;
+          if (this.centerMode === "word") {
+            centerText = this.words[this.wordIndex];
+            sizeRatio = 0.1;
+          } else {
+            centerText = this.phases[this.phaseIndex].label;
+            sizeRatio = 0.12;
+          }
+          ctx.fillStyle = "#f5e7d0";
+          ctx.font = `700 ${Math.round(R * sizeRatio)}px 'Questrial', system-ui, sans-serif`;
+          ctx.textAlign = "center";
+          ctx.textBaseline = "middle";
+          ctx.fillText(centerText, cx, cy + 2);
+        }
+
+        pause() {
+          cancelAnimationFrame(this.raf);
+        }
+        resume() {
+          this.last = performance.now();
+          this.raf = requestAnimationFrame(this._loop);
+        }
+
+        destroy() {
+          cancelAnimationFrame(this.raf);
+          this.ro.disconnect();
+        }
+      }
+
+      // ══════════════════════════════════════════════════
+      // APP STATE
+      // ══════════════════════════════════════════════════
+      const LABELS = {
+        white: "White noise",
+        pink: "Pink noise",
+        brown: "Brown noise",
+        blue: "Blue noise",
+        violet: "Violet noise",
+        grey: "Grey noise",
+      };
+
+      const engine = new NoiseEngine();
+      const games = {}; // lazily-created game engine instances, keyed by page id
+
+      const state = {
+        noise: "white",
+        playing: false,
+        vol: 0.55,
+        sheetOpen: false,
+        page: "home",
+      };
+
+      // ── Actions ──────────────────────────────────────
+
+      function togglePlay() {
+        if (state.playing) {
+          engine.stop();
+          state.playing = false;
+        } else {
+          engine.play(state.noise, state.vol);
+          state.playing = true;
+        }
+        syncPlayUI();
+      }
+
+      function pickNoise(type) {
+        state.noise = type;
+        if (state.playing) engine.play(type, state.vol);
+        syncChips();
+        syncNowPlaying();
+      }
+
+      function onVol(slider) {
+        const v = slider.value / 100;
+        state.vol = v;
+        document.getElementById("vol-pct").textContent = slider.value + "%";
+        slider.style.setProperty("--fill", slider.value + "%");
+        if (state.playing) engine.setVolume(v);
+      }
+
+      const playerRow = document.getElementById("player-row");
+      const playerSheet = document.getElementById("player-sheet");
+      const sheetInner = document.getElementById("player-sheet-inner");
+      const chevBtn = document.getElementById("chev-btn");
+
+      function setSheet(open) {
+        state.sheetOpen = open;
+        playerSheet.classList.toggle("open", open);
+        chevBtn.classList.toggle("open", open);
+      }
+
+      function toggleSheet() {
+        setSheet(!state.sheetOpen);
+      }
+
+      // ── Drag-to-open / drag-to-close ──────────────────
+      let dragStartY = 0,
+        dragBaseHeight = 0,
+        dragOpenHeight = 0,
+        dragActive = false,
+        dragMoved = false;
+
+      playerRow.addEventListener("pointerdown", (e) => {
+        if (e.target.closest("#big-play-btn, .chev-btn")) return;
+        dragActive = true;
+        dragMoved = false;
+        dragStartY = e.clientY;
+        dragOpenHeight = sheetInner.scrollHeight;
+        dragBaseHeight = state.sheetOpen ? dragOpenHeight : 0;
+        playerRow.setPointerCapture(e.pointerId);
+      });
+
+      playerRow.addEventListener("pointermove", (e) => {
+        if (!dragActive) return;
+        const delta = dragStartY - e.clientY;
+        if (!dragMoved) {
+          if (Math.abs(delta) < 6) return;
+          dragMoved = true;
+          playerSheet.style.transition = "none";
+          sheetInner.style.transition = "none";
+        }
+        const h = Math.max(0, Math.min(dragOpenHeight, dragBaseHeight + delta));
+        playerSheet.style.maxHeight = h + "px";
+        sheetInner.style.opacity = dragOpenHeight ? h / dragOpenHeight : 0;
+      });
+
+      function endDrag(e) {
+        if (!dragActive) return;
+        dragActive = false;
+
+        if (!dragMoved) {
+          setSheet(!state.sheetOpen);
+          return;
+        }
+
+        const delta = dragStartY - e.clientY;
+        const h = Math.max(0, Math.min(dragOpenHeight, dragBaseHeight + delta));
+        setSheet(dragOpenHeight > 0 && h > dragOpenHeight * 0.5);
+
+        // release the drag override next frame so the snap animates from the
+        // drag position instead of jumping back to the pre-drag CSS state first
+        requestAnimationFrame(() => {
+          playerSheet.style.transition = "";
+          sheetInner.style.transition = "";
+          playerSheet.style.maxHeight = "";
+          sheetInner.style.opacity = "";
+        });
+      }
+      playerRow.addEventListener("pointerup", endDrag);
+      playerRow.addEventListener("pointercancel", endDrag);
+
+      // ── Tap outside the card closes it ────────────────
+      document.addEventListener(
+        "pointerdown",
+        (e) => {
+          if (state.sheetOpen && !e.target.closest(".player-bar")) {
+            e.stopPropagation();
+            setSheet(false);
+          }
+        },
+        { capture: true },
+      );
+
+      // ── UI sync helpers ───────────────────────────────
+
+      function syncPlayUI() {
+        const p = state.playing;
+        document.getElementById("icon-play").style.display = p ? "none" : "";
+        document.getElementById("icon-pause").style.display = p ? "" : "none";
+        document.getElementById("big-play-btn").classList.toggle("playing", p);
+        syncNowPlaying();
+      }
+
+      function syncChips() {
+        document.querySelectorAll(".chip-btn").forEach((btn) => {
+          btn.classList.toggle("active", btn.dataset.type === state.noise);
+        });
+      }
+
+      function syncNowPlaying() {
+        document.getElementById("now-playing-name").textContent =
+          LABELS[state.noise];
+        document.getElementById("now-playing-status").textContent =
+          state.playing ? "playing softly" : "paused";
+      }
+
+      // ── Pages ──────────────────────────────────────────
+
+      // the game canvases derive their palette from the current theme's accent
+      let gameHue = 15;
+      let gameRgb = { r: 242, g: 163, b: 92 };
+
+      // ── Cycle progress bar (shared by every breathing exercise) ─────────
+      const CYCLE_CAP = 3;
+
+      function buildProgressBar(id) {
+        const el = document.getElementById("progress-" + id);
+        if (!el) return;
+        el.innerHTML = "";
+        for (let i = 0; i < CYCLE_CAP; i++) {
+          const seg = document.createElement("div");
+          seg.className = "cycle-progress-seg";
+          seg.innerHTML = '<div class="cycle-progress-fill"></div>';
+          el.appendChild(seg);
+        }
+      }
+
+      function setProgress(id, cycleIndex, fraction) {
+        const el = document.getElementById("progress-" + id);
+        if (!el) return;
+        el.querySelectorAll(".cycle-progress-fill").forEach((fill, i) => {
+          fill.style.width =
+            (i < cycleIndex ? 100 : i === cycleIndex ? fraction * 100 : 0) +
+            "%";
+        });
+      }
+
+      // shows the success screen once an exercise finishes its capped cycles
+      function finishExercise(id) {
+        const successEl = document.getElementById("success-" + id);
+        if (successEl) successEl.classList.remove("hidden");
+      }
+
+      function retryExercise(id) {
+        const successEl = document.getElementById("success-" + id);
+        if (successEl) successEl.classList.add("hidden");
+        startGame(id);
+      }
+
+      const GAME_PAGES = {
+        "game-breathe": {
+          canvas: "breathe-canvas",
+          build: (canvas) =>
+            new BreathGame(canvas, {
+              hue: gameHue,
+              rgb: gameRgb,
+              cycleCap: CYCLE_CAP,
+              onPhase: (label, cycle) => {
+                document.getElementById("breathe-cycle").textContent =
+                  "cycle " + cycle;
+              },
+              onProgress: (cycleIndex, fraction) =>
+                setProgress("breathe", cycleIndex, fraction),
+              onComplete: () => finishExercise("game-breathe"),
+            }),
+        },
+        "game-box": {
+          canvas: "box-canvas",
+          build: (canvas) =>
+            new BreathGame(canvas, {
+              hue: gameHue,
+              rgb: gameRgb,
+              cycleCap: CYCLE_CAP,
+              sides: 4,
+              rotate: 45,
+              phases: [
+                { label: "Breathe in", dur: 4, edge: 0, breath: "in" },
+                { label: "Hold", dur: 4, edge: 1, breath: "hold-max" },
+                { label: "Breathe out", dur: 4, edge: 2, breath: "out" },
+                { label: "Hold", dur: 4, edge: 3, breath: "hold-min" },
+              ],
+              onPhase: (label, cycle) => {
+                document.getElementById("cycle-box").textContent =
+                  "cycle " + cycle;
+              },
+              onProgress: (cycleIndex, fraction) =>
+                setProgress("box", cycleIndex, fraction),
+              onComplete: () => finishExercise("game-box"),
+            }),
+        },
+        "game-resonant": {
+          canvas: "resonant-canvas",
+          build: (canvas) =>
+            new BreathGame(canvas, {
+              hue: gameHue,
+              rgb: gameRgb,
+              cycleCap: CYCLE_CAP,
+              showPolygon: false,
+              phases: [
+                { label: "Breathe in", dur: 5.5, breath: "in" },
+                { label: "Breathe out", dur: 5.5, breath: "out" },
+              ],
+              onPhase: (label, cycle) => {
+                document.getElementById("cycle-resonant").textContent =
+                  "cycle " + cycle;
+              },
+              onProgress: (cycleIndex, fraction) =>
+                setProgress("resonant", cycleIndex, fraction),
+              onComplete: () => finishExercise("game-resonant"),
+            }),
+        },
+        "game-counting": {
+          canvas: "counting-canvas",
+          build: (canvas) =>
+            new BreathGame(canvas, {
+              hue: gameHue,
+              rgb: gameRgb,
+              cycleCap: CYCLE_CAP,
+              showPolygon: false,
+              centerMode: "count",
+              countCap: 10,
+              phases: [
+                { label: "Breathe in", dur: 4, breath: "in" },
+                { label: "Breathe out", dur: 6, breath: "out" },
+              ],
+              onPhase: (label, cycle, count) => {
+                document.getElementById("phase-counting").textContent = count;
+                document.getElementById("cycle-counting").textContent =
+                  "cycle " + cycle;
+              },
+              onProgress: (cycleIndex, fraction) =>
+                setProgress("counting", cycleIndex, fraction),
+              onComplete: () => finishExercise("game-counting"),
+            }),
+        },
+        "game-visualization": {
+          canvas: "visualization-canvas",
+          build: (canvas) =>
+            new BreathGame(canvas, {
+              hue: gameHue,
+              rgb: gameRgb,
+              cycleCap: CYCLE_CAP,
+              showPolygon: false,
+              centerMode: "word",
+              words: ["Calm", "Peace", "Ease", "Still", "Soften", "Release"],
+              phases: [
+                { label: "Breathe in", dur: 5, breath: "in" },
+                { label: "Breathe out", dur: 7, breath: "out" },
+              ],
+              onPhase: (label, cycle) => {
+                document.getElementById("cycle-visualization").textContent =
+                  "cycle " + cycle;
+              },
+              onProgress: (cycleIndex, fraction) =>
+                setProgress("visualization", cycleIndex, fraction),
+              onComplete: () => finishExercise("game-visualization"),
+            }),
+        },
+      };
+
+      function showPage(id) {
+        const prev = state.page;
+        document.querySelectorAll(".page").forEach((p) => {
+          p.classList.toggle("active", p.id === "page-" + id);
+        });
+        state.page = id;
+
+        if (GAME_PAGES[prev] && games[prev]) games[prev].pause();
+
+        // re-arm the start screen (and hide any success screen) every time a
+        // game page is entered
+        if (GAME_PAGES[id]) {
+          const startEl = document.getElementById("start-" + id);
+          if (startEl) startEl.classList.remove("hidden");
+          const successEl = document.getElementById("success-" + id);
+          if (successEl) successEl.classList.add("hidden");
+        }
+      }
+
+      function startGame(id) {
+        const startEl = document.getElementById("start-" + id);
+        if (startEl) startEl.classList.add("hidden");
+
+        const cfg = GAME_PAGES[id];
+        if (!cfg) return;
+        requestAnimationFrame(() => {
+          if (!games[id]) {
+            games[id] = cfg.build(document.getElementById(cfg.canvas));
+          } else {
+            games[id].reset();
+            games[id].resume();
+          }
+        });
+      }
+
+      // ── Settings ───────────────────────────────────────
+
+      function hexToRgb(hex) {
+        return {
+          r: parseInt(hex.slice(1, 3), 16),
+          g: parseInt(hex.slice(3, 5), 16),
+          b: parseInt(hex.slice(5, 7), 16),
+        };
+      }
+
+      function hexToHue(hex) {
+        const { r, g, b } = hexToRgb(hex);
+        const rn = r / 255,
+          gn = g / 255,
+          bn = b / 255;
+        const max = Math.max(rn, gn, bn),
+          min = Math.min(rn, gn, bn);
+        if (max === min) return 0;
+        const d = max - min;
+        let h;
+        switch (max) {
+          case rn:
+            h = (gn - bn) / d + (gn < bn ? 6 : 0);
+            break;
+          case gn:
+            h = (bn - rn) / d + 2;
+            break;
+          default:
+            h = (rn - gn) / d + 4;
+        }
+        return h * 60;
+      }
+
+      // bg1 (darkest, outer rings) → bg5 (brightest, innermost ring near the "sun")
+      const THEMES = {
+        ember: {
+          label: "Ember",
+          accent: "#f2a35c",
+          accent2: "#d97d4a",
+          bg1: "#0e0702",
+          card: "rgba(45,32,22,.42)",
+        },
+        rose: {
+          label: "Rose",
+          accent: "#f28ba0",
+          accent2: "#d9607a",
+          bg1: "#0f0608",
+          card: "rgba(48,26,32,.42)",
+        },
+        terracotta: {
+          label: "Terracotta",
+          accent: "#e8785a",
+          accent2: "#c2543a",
+          bg1: "#100802",
+          card: "rgba(48,30,20,.42)",
+        },
+        sage: {
+          label: "Sage",
+          accent: "#a8cf8a",
+          accent2: "#7fab63",
+          bg1: "#070d05",
+          card: "rgba(28,38,24,.42)",
+        },
+        plum: {
+          label: "Plum",
+          accent: "#c98cf2",
+          accent2: "#9c5fd9",
+          bg1: "#0c0710",
+          card: "rgba(40,28,48,.42)",
+        },
+      };
+
+      function pickTheme(name) {
+        const t = THEMES[name];
+        if (!t) return;
+        const app = document.getElementById("app");
+        app.style.setProperty("--accent", t.accent);
+        app.style.setProperty("--accent-2", t.accent2);
+        app.style.setProperty("--bg-1", t.bg1);
+        app.style.setProperty("--card-bg", t.card);
+        document.querySelectorAll(".color-swatch").forEach((sw) => {
+          sw.classList.toggle("active", sw.dataset.theme === name);
+        });
+        document.getElementById("theme-value").textContent =
+          t.label + " · Dark";
+
+        gameHue = hexToHue(t.accent);
+        gameRgb = hexToRgb(t.accent);
+        Object.values(games).forEach(
+          (g) => g.setTheme && g.setTheme(gameHue, gameRgb),
+        );
+
+        try {
+          localStorage.setItem("wavesTheme", name);
+        } catch (e) {}
+      }
+
+      const LANGUAGES = ["English", "Español", "Français", "Deutsch", "日本語"];
+      let languageIndex = 0;
+      function cycleLanguage() {
+        languageIndex = (languageIndex + 1) % LANGUAGES.length;
+        document.getElementById("language-value").firstChild.textContent =
+          LANGUAGES[languageIndex] + " ";
+      }
+
+      // ── Onboarding ─────────────────────────────────────
+
+      function finishOnboarding() {
+        showPage("home");
+      }
+
+      // ── Boot ─────────────────────────────────────────
+      let bootTheme = "ember";
+      try {
+        const saved = localStorage.getItem("wavesTheme");
+        if (saved && THEMES[saved]) bootTheme = saved;
+      } catch (e) {}
+      pickTheme(bootTheme);
+      syncPlayUI();
+      Object.keys(GAME_PAGES).forEach((id) =>
+        buildProgressBar(id.replace("game-", "")),
+      );
+      showPage("onboarding");
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </body>
+</html>
