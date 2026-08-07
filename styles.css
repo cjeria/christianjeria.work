@@ -161,6 +161,12 @@ ul {
   color: var(--text-primary);
 }
 
+.nav-logo-mark {
+  display: block;
+  height: 18px;
+  width: auto;
+}
+
 .nav-sep {
   width: 1px;
   height: 16px;
@@ -178,6 +184,14 @@ ul {
 .nav-links li {
   display: flex;
   align-items: center;
+}
+
+/* Services hidden for now — remove this rule to bring it back.
+   Hiding the whole <li> (not just the link) keeps it out of both the
+   desktop pill's layout and the mobile equal-width flex row below,
+   rather than leaving a blank gap where it used to be. */
+.nav-links li:has(a[href="/services/"]) {
+  display: none;
 }
 
 .nav-links a {
@@ -212,6 +226,9 @@ ul {
   .nav-logo {
     font-size: 18px;
     padding: 7px 12px;
+  }
+  .nav-logo-mark {
+    height: 20px;
   }
   .nav-sep {
     height: 18px;
@@ -446,6 +463,33 @@ ul {
   transform: translateY(0);
 }
 
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px 9px 14px;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.status-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  flex-shrink: 0;
+  animation: wip-pulse 1.8s ease-in-out infinite;
+}
+
 .hero-eyebrow {
   display: inline-block;
   position: relative;
@@ -650,6 +694,10 @@ ul {
   justify-content: center;
   padding: 130px clamp(20px, 5vw, 60px) 90px;
   box-sizing: border-box;
+  /* Own containment, not just the .carousel wrapper's — rotated content
+     (the Waves phone fan, e.g.) can visually extend past its own box on
+     hover, and this keeps that from ever reaching the slide's edge. */
+  overflow: hidden;
 }
 
 .carousel-slide-inner {
@@ -823,9 +871,9 @@ ul {
   top: 10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 31%;
-  height: 22px;
-  border-radius: 13px;
+  width: 15.5%;
+  height: 11px;
+  border-radius: 6.5px;
   background: #000;
   z-index: 3;
 }
@@ -1038,6 +1086,24 @@ ul {
   }
   .featured-desc {
     max-width: none;
+  }
+  /* Waves mockups, scaled down for mobile only — desktop keeps its
+     original vh-driven size untouched. Sized off viewport width here
+     (not height) since that's the tighter constraint on a phone, and
+     the corner radius is scaled proportionally with it via calc()
+     rather than left at the desktop's fixed 40px/32px, which read as
+     oversized/blobby once the cards themselves got this much smaller. */
+  .waves-phone-fan {
+    /* 32% up from the original mobile size (200/58vw/260) — a 20%
+       bump, then another 10% on top of that */
+    --fan-h: clamp(264px, 76.56vw, 343.2px);
+  }
+  .waves-phone-card {
+    border-radius: calc(var(--fan-h) * 0.074);
+  }
+  .waves-phone-card--left,
+  .waves-phone-card--right {
+    border-radius: calc(var(--fan-h) * 0.059);
   }
   .carousel-scroll {
     height: auto;
@@ -1692,15 +1758,6 @@ ul {
   margin: 0 auto;
 }
 
-.contact-eyebrow {
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  margin-bottom: 20px;
-}
-
 .contact-heading {
   font-size: clamp(44px, 7vw, 80px);
   font-weight: 700;
@@ -1779,6 +1836,82 @@ ul {
   transform: translateY(-3px);
   border-color: var(--glass-border-hover);
   box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.service-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 32px 28px;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--glass-border-hover);
+}
+
+.services-grid .service-card:nth-child(1) { transition-delay: 0.05s; }
+.services-grid .service-card:nth-child(2) { transition-delay: 0.12s; }
+.services-grid .service-card:nth-child(3) { transition-delay: 0.19s; }
+.services-grid .service-card:nth-child(4) { transition-delay: 0.26s; }
+
+.service-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.service-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.service-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.services-cta {
+  text-align: center;
+}
+
+.services-cta-inner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.services-cta-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 28px;
 }
 
 /* ============================================================
@@ -2554,6 +2687,11 @@ ul {
     font-size: 18px;
   }
   .nav-links {
+    /* Must equal the number of *visible* <li>s below (Services is
+       hidden for now — see the :has() rule above) — nav-logo is
+       flex: 1, so this value is what keeps each link the same width
+       as the logo (and each other). Update this if a link is ever
+       added/removed/unhidden. */
     flex: 3;
     justify-content: space-between;
     gap: 0;
@@ -2568,7 +2706,10 @@ ul {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 15px;
+    /* Dropped from 15px now that a 4th item (Services) shares the row —
+       keeps "Services" from wrapping/crowding on the narrowest phones. */
+    font-size: 13px;
+    white-space: nowrap;
     /* Padding (not font-size) makes up the difference to a 44px
        tappable area per Apple's HIG, without changing how the nav
        looks — 15px line-height-1 text + 15px top/bottom = 45px */
