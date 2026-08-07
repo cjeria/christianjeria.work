@@ -664,13 +664,6 @@ ul {
      carousel — and the project image inside it — actually fills a big
      27"+ monitor instead of sitting capped at a fixed width. */
   max-width: clamp(1120px, 57vw + 440px, 1900px);
-  /* Definite, not auto — .featured-media and its img below chain
-     percentage heights (86% of 86% of...) off of this, and those only
-     resolve against a definite ancestor height. Since this already
-     fills the slide's own (nav/dots-aware) padded box exactly, it's
-     already vertically centered on its own — no extra transform
-     needed on top, which is what was throwing centering off before. */
-  height: 100%;
 }
 
 /* Project images sized down from a full-bleed fit, so they don't crowd
@@ -1028,7 +1021,6 @@ ul {
     grid-template-columns: 1fr;
     grid-auto-rows: min-content;
     row-gap: 24px;
-    height: auto;
   }
   .featured-media {
     height: auto;
