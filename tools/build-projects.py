@@ -116,7 +116,7 @@ HEAD = """<!doctype html>
   <div class="wrap">
 
     <header class="site-head">
-      <a class="wordmark" href="/">studio <em>jeria</em></a>
+      <a class="wordmark" href="/">christian <em>jeria</em></a>
       <nav class="site-nav" aria-label="Primary">
         <a href="/#work">work</a>
         <a href="/#built">built</a>
