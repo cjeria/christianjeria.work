@@ -155,9 +155,9 @@ def render(p, projects):
     # Highlights sit straight in the body container; only a pair gets a row to sit side by side.
     shots = []
     for sh in p["shots"]:
-        media = "".join(clean_media(m) for m in sh["media"])
-        shots.append(f'        <div class="case-pair">{media}</div>' if sh["pair"] else f"        {media}")
-    gallery = ('\n      <div class="case-gallery">\n' + "\n".join(shots) + "\n      </div>") if shots else ""
+        shot = "".join(clean_media(m) for m in sh["media"])
+        shots.append(f'        <div class="case-pair">{shot}</div>' if sh["pair"] else f"        {shot}")
+    gallery = ('\n    <section class="case-body" aria-label="Highlights">\n      <div class="case-gallery">\n' + "\n".join(shots) + "\n      </div>\n    </section>\n") if shots else ""
     rows = []
     for o in projects:
         here = o["slug"] == p["slug"]
@@ -181,8 +181,7 @@ def render(p, projects):
       </figure>
     </section>
 
-    <section class="case-body" aria-labelledby="overview-h">
-      <div class="case-overview">
+    <section class="case-overview" aria-labelledby="overview-h">
       <div class="case-text">
         <h2 id="overview-h" class="case-label">[overview]</h2>
 {overview}
@@ -191,9 +190,8 @@ def render(p, projects):
 {facts}
           <div class="case-fact case-tags"><dt>Focus</dt><dd>{tags}</dd></div>
       </dl>
-      </div>{gallery}
     </section>
-    <section class="built case-more" aria-labelledby="more-h">
+{gallery}    <section class="built case-more" aria-labelledby="more-h">
       <div class="sec-head">
         <h2 id="more-h">more <em>work</em></h2>
         <p>[06 case studies, in order]</p>
