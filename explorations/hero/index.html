@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Hero options, compared</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <style>
+    .cmp-wrap{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+    .cmp-intro h1{margin:0;font-weight:400;font-size:clamp(40px,5vw,64px);letter-spacing:-.02em}
+    .cmp-intro p{margin:8px 0 0;font-family:var(--mono);font-size:14px;color:var(--muted);max-width:70ch;line-height:1.6}
+    .cmp{background:var(--panel);border:1px solid var(--line);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px}
+    .cmp-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px}
+    .cmp-num{margin:0;font-family:var(--mono);font-size:13px;color:var(--accent)}
+    .cmp h2{margin:2px 0 0;font-weight:400;font-size:36px;letter-spacing:-.01em}
+    .cmp-links{margin:0;font-family:var(--mono);font-size:14px}
+    .cmp-links a{text-decoration:none}
+    .cmp-why{margin:0;font-family:var(--mono);font-size:14px;line-height:1.6;color:var(--muted);max-width:90ch}
+    .cmp-views{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:16px;align-items:start}
+    .frame{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:14px;background:var(--bg)}
+    .frame iframe{position:absolute;top:0;left:0;border:0;transform-origin:0 0;pointer-events:none}
+    @media (max-width:760px){ .cmp-views{grid-template-columns:minmax(0,1fr)} .frame-phone{max-width:220px} }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="cmp-wrap">
+    <header class="cmp-intro">
+      <h1>Nav and hero, <em>five ways</em></h1>
+      <p>Each option keeps the product drawing, its hover interactions and the rest of the homepage exactly as they are; only the nav and the text around the drawing change. Previews show the top of each page at desktop and phone size. Open one to try it for real.</p>
+    </header>
+
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">current</p><h2>Current homepage</h2></div>
+        <p class="cmp-links"><a href="/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">What is on the redesign branch now, for reference.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/" title="Current homepage, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/" title="Current homepage, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">option 1</p><h2>Centered masthead</h2></div>
+        <p class="cmp-links"><a href="/explorations/hero/option-1/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">Name and nav centered like a magazine masthead; the headline sits centered over the drawing, so the page reads as one symmetrical poster.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/explorations/hero/option-1/" title="Centered masthead, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/explorations/hero/option-1/" title="Centered masthead, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">option 2</p><h2>Name as the headline</h2></div>
+        <p class="cmp-links"><a href="/explorations/hero/option-2/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">A slim utility bar for the nav, your name set very large as the hero, and role, focus and background in a three-column row. The drawing sits straight on the page with no panel around it.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/explorations/hero/option-2/" title="Name as the headline, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/explorations/hero/option-2/" title="Name as the headline, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">option 3</p><h2>Index grid</h2></div>
+        <p class="cmp-links"><a href="/explorations/hero/option-3/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">The nav becomes a Swiss-style index strip (name, role, place and status, links) between two rules. The headline gets two big lines, and the focus has its own labeled column.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/explorations/hero/option-3/" title="Index grid, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/explorations/hero/option-3/" title="Index grid, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">option 4</p><h2>Title block</h2></div>
+        <p class="cmp-links"><a href="/explorations/hero/option-4/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">Drawing first. The headline is set into the empty sky at the top of the drawing, and an architect-style title block in the corner holds the details, leaning into the drawn-in-line idea.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/explorations/hero/option-4/" title="Title block, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/explorations/hero/option-4/" title="Title block, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+    <article class="cmp">
+      <div class="cmp-head">
+        <div><p class="cmp-num">option 5</p><h2>Pill nav with calls to action</h2></div>
+        <p class="cmp-links"><a href="/explorations/hero/option-5/" target="_blank" rel="noopener">open ↗</a></p>
+      </div>
+      <p class="cmp-why">A floating pill nav that stays put as you scroll, with a solid contact button. The hero splits into a three-line headline and a right column with the focus, availability and two clear next steps.</p>
+      <div class="cmp-views">
+        <div class="frame frame-desktop" data-w="1440" data-h="900"><iframe src="/explorations/hero/option-5/" title="Pill nav with calls to action, desktop" loading="lazy" tabindex="-1"></iframe></div>
+        <div class="frame frame-phone" data-w="390" data-h="844"><iframe src="/explorations/hero/option-5/" title="Pill nav with calls to action, phone" loading="lazy" tabindex="-1"></iframe></div>
+      </div>
+    </article>
+  </div>
+</div>
+<script>
+  // Scale each 1440x900 (or 390x844) page down to fit its preview box.
+  function fit() {
+    document.querySelectorAll(".frame").forEach((f) => {
+      const w = +f.dataset.w, h = +f.dataset.h, s = f.clientWidth / w;
+      f.style.height = h * s + "px";
+      const i = f.querySelector("iframe");
+      i.style.width = w + "px"; i.style.height = h + "px"; i.style.transform = `scale(${s})`;
+    });
+  }
+  addEventListener("resize", fit); fit();
+</script>
+</body>
+</html>
