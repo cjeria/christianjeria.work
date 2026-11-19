@@ -577,5 +577,33 @@
 
   </div>
 </div>
+<script>
+  // Hero focus: the product under the pointer comes to the front and the rest
+  // of the row, labels included, fades to 30%. Everything resets on the way out.
+  (() => {
+    const row = document.querySelector(".timeline .tl-items");
+    if (!row) return;
+    const items = [...row.children];
+    const colOf = (item) => item.querySelector(".tl-dot")?.getAttribute("cx");
+    const cols = new Set(items.map(colOf));
+    const labels = [...document.querySelectorAll(".timeline text")].filter((t) => cols.has(t.getAttribute("x")));
+    let current = null;
+    function focus(item) {
+      if (item === current) return;
+      current = item;
+      items.forEach((i) => row.appendChild(i)); // original stacking order
+      if (item) row.appendChild(item); // drawn last, so it sits on top
+      row.classList.toggle("is-focusing", !!item);
+      items.forEach((i) => i.classList.toggle("is-focus", i === item));
+      const x = item && colOf(item);
+      labels.forEach((t) => t.classList.toggle("tl-dim", !!item && t.getAttribute("x") !== x));
+    }
+    row.addEventListener("pointerover", (e) => {
+      const item = e.target.closest(".tl-item");
+      if (item) focus(item);
+    });
+    row.addEventListener("pointerleave", () => focus(null));
+  })();
+</script>
 </body>
 </html>

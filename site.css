@@ -86,8 +86,8 @@ main{display:flex;flex-direction:column;gap:20px}
 @property --amp{syntax:"<number>";inherits:true;initial-value:0}
 @property --t{syntax:"<number>";inherits:false;initial-value:0}
 .tl-item{--rise:calc(var(--lift) + var(--t) * var(--amp));
-  transition:--lift .55s cubic-bezier(.2,.9,.25,1.15),--amp .7s ease}
-:is(.tl-item:hover,.card:hover .tl-item){--lift:22;--amp:6}
+  transition:--lift .55s cubic-bezier(.2,.9,.25,1.15),--amp .7s ease,opacity .35s ease}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item){--lift:22;--amp:6}
 .tl-float,.tl-lead,.tl-shadow{animation:tl-bob 2.6s ease-in-out var(--d,0s) infinite alternate}
 @keyframes tl-bob{from{--t:0}to{--t:1}}
 .tl-float{transform:translateY(calc(var(--lift) * -1px - var(--t) * var(--amp) * 1px))}
@@ -105,54 +105,54 @@ main{display:flex;flex-direction:column;gap:20px}
    Units are the drawing's own (SVG user units). */
 .tl-item [class^="an-"]{transform-box:fill-box}
 .an-tile{opacity:0;transform:translate(54px,0)}
-:is(.tl-item:hover,.card:hover .tl-item) .an-tile{opacity:1;animation:an-tile 3s steps(1,end) infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-tile{opacity:1;animation:an-tile 3s steps(1,end) infinite}
 @keyframes an-tile{0%{transform:translate(54px,0)}20%{transform:translate(108px,0)}40%{transform:translate(108px,54px)}60%{transform:translate(54px,54px)}80%{transform:translate(0,54px)}}
-:is(.tl-item:hover,.card:hover .tl-item) .an-shapes{animation:an-bob 1.2s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-shapes{animation:an-bob 1.2s ease-in-out infinite alternate}
 @keyframes an-bob{to{transform:translateY(-4px)}}
 
-:is(.tl-item:hover,.card:hover .tl-item) .an-head{animation:an-head 1.6s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-head{animation:an-head 1.6s ease-in-out infinite alternate}
 @keyframes an-head{from{transform:translateX(-44px)}to{transform:translateX(44px)}}
 .an-print{transform-origin:50% 100%}
-:is(.tl-item:hover,.card:hover .tl-item) .an-print{animation:an-print 3.2s ease-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-print{animation:an-print 3.2s ease-out infinite}
 @keyframes an-print{0%{transform:scaleY(.15)}85%,100%{transform:scaleY(1)}}
 .an-bar{transform-origin:0 50%}
-:is(.tl-item:hover,.card:hover .tl-item) .an-bar{animation:an-fill 3.2s ease-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-bar{animation:an-fill 3.2s ease-out infinite}
 @keyframes an-fill{0%{transform:scaleX(.1)}85%,100%{transform:scaleX(1)}}
 
 .an-core,.an-node{transform-origin:center}
 .an-fox{transform-origin:center;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
-:is(.tl-item:hover,.card:hover .tl-item) .an-fox{transform:scale(1.08)}
-:is(.tl-item:hover,.card:hover .tl-item) .an-row{animation:an-row .6s calc(var(--i) * .12s) cubic-bezier(.2,.8,.2,1) both}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-fox{transform:scale(1.08)}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-row{animation:an-row .6s calc(var(--i) * .12s) cubic-bezier(.2,.8,.2,1) both}
 @keyframes an-row{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 @keyframes an-pulse{50%{transform:scale(1.12)}}
-:is(.tl-item:hover,.card:hover .tl-item) .an-key{animation:an-key 1.8s calc(var(--i) * .18s) ease-in-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-key{animation:an-key 1.8s calc(var(--i) * .18s) ease-in-out infinite}
 @keyframes an-key{0%,40%,100%{fill:none}12%,24%{fill:currentColor}}
 
-:is(.tl-item:hover,.card:hover .tl-item) .an-card{animation:an-card 1.8s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-card{animation:an-card 1.8s ease-in-out infinite alternate}
 @keyframes an-card{to{transform:translate(10px,-6px) rotate(-2deg)}}
-:is(.tl-item:hover,.card:hover .tl-item) .an-c1{animation:an-c1 1.8s ease-in-out infinite alternate}
-:is(.tl-item:hover,.card:hover .tl-item) .an-c2{animation:an-c2 1.8s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-c1{animation:an-c1 1.8s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-c2{animation:an-c2 1.8s ease-in-out infinite alternate}
 @keyframes an-c1{to{transform:translateX(-5px)}}
 @keyframes an-c2{to{transform:translateX(5px)}}
 
-:is(.tl-item:hover,.card:hover .tl-item) .an-core{animation:an-pulse 1.6s ease-in-out infinite}
-:is(.tl-item:hover,.card:hover .tl-item) .an-node{animation:an-node 1.6s calc(var(--i) * .22s) ease-in-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-core{animation:an-pulse 1.6s ease-in-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-node{animation:an-node 1.6s calc(var(--i) * .22s) ease-in-out infinite}
 @keyframes an-node{0%,60%,100%{transform:scale(1)}25%{transform:scale(1.3)}}
 
 .an-code{transform-origin:0 50%}
-:is(.tl-item:hover,.card:hover .tl-item) .an-code{animation:an-type 2.8s calc(var(--i) * .2s) steps(6,end) infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-code{animation:an-type 2.8s calc(var(--i) * .2s) steps(6,end) infinite}
 @keyframes an-type{0%{transform:scaleX(0)}45%,100%{transform:scaleX(1)}}
-:is(.tl-item:hover,.card:hover .tl-item) .an-pop{animation:an-bob 1.3s ease-in-out infinite alternate}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-pop{animation:an-bob 1.3s ease-in-out infinite alternate}
 
 @media (prefers-reduced-motion:reduce){
-  :is(.tl-item:hover,.card:hover .tl-item) [class^="an-"]{animation:none}
+  :is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) [class^="an-"]{animation:none}
 }
 
 /* Mobina: the film plays, the progress bar runs */
 .an-play{transform-origin:center}
-:is(.tl-item:hover,.card:hover .tl-item) .an-play{animation:an-pulse 1.6s ease-in-out infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-play{animation:an-pulse 1.6s ease-in-out infinite}
 .an-progress{transform-origin:0 50%}
-:is(.tl-item:hover,.card:hover .tl-item) .an-progress{animation:an-fill 3.6s linear infinite}
+:is(.tl-item:hover,.tl-item.is-focus,.card:hover .tl-item) .an-progress{animation:an-fill 3.6s linear infinite}
 .card-art{overflow:visible}
 
 /* ---------------------------------------------------------------------------
@@ -249,3 +249,12 @@ main{display:flex;flex-direction:column;gap:20px}
   .fan-wrap{padding:24px 0 8px}
   .contact-email{font-size:14px;padding:12px 16px;white-space:nowrap}
 }
+
+/* Hero focus: the script at the end of index.html marks the product under the
+   pointer (.is-focus), brings it in front of overlapping neighbours, and fades
+   the rest of the row and their labels to 30%. Driven by classes rather than
+   :hover because moving an element can drop its hover state in some browsers. */
+.timeline text{transition:opacity .35s ease}
+.tl-items.is-focusing .tl-item:not(.is-focus){opacity:.3}
+.timeline text.tl-dim{opacity:.3}
+@media (prefers-reduced-motion:reduce){ .timeline text{transition:none} }
