@@ -1,0 +1,2739 @@
+/* ============================================================
+   CHRISTIAN JERIA — iCloud-inspired Design Portfolio
+   ============================================================ */
+
+/* --- Reset & Base ------------------------------------------ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --bg-base: #f5f5f7;
+  --bg-gradient: linear-gradient(160deg, #e8f4fd 0%, #f5f5f7 40%, #faf0ff 100%);
+  --accent: #0071e3;
+  --accent-hover: #0077ed;
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-border-hover: rgba(0, 113, 227, 0.3);
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --radius-card: 24px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --font: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', system-ui, sans-serif;
+  --shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.10);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.14);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: var(--font);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Blur/focus transition lives on body's other children (not body itself)
+   so #nav — a direct child of body — never sits inside a filtered
+   containing block, which would break its position: fixed on scroll. */
+body > *:not(#nav) {
+  opacity: 0;
+  filter: blur(18px);
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+body.is-ready > *:not(#nav) {
+  opacity: 1;
+  filter: blur(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body > *:not(#nav) {
+    transition: none;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+/* --- Layout Helpers ---------------------------------------- */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 60px);
+}
+
+.section {
+  padding: clamp(40px, 5vw, 70px) 0;
+}
+
+/* First section on a page with no hero above it needs extra top
+   padding to clear the fixed nav bar — same formula as .project-hero */
+.section.section-top {
+  padding-top: calc(52px + clamp(45px, 6vw, 75px));
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+#nav {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.62);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 9999px;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.75);
+  transition: background var(--transition), box-shadow var(--transition);
+  white-space: nowrap;
+}
+
+#nav.scrolled {
+  background: rgba(255, 255, 255, 0.80);
+  box-shadow:
+    0 8px 40px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  position: relative;
+}
+
+.nav-blob {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.07);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0;
+  transition: left 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              top 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              width 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.2s ease;
+}
+
+.nav-logo {
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--text-secondary);
+  padding: 6px 10px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  transition: color var(--transition), opacity var(--transition);
+}
+.nav-logo.is-home {
+  color: var(--text-primary);
+}
+.nav-logo:hover {
+  color: var(--text-primary);
+}
+
+.nav-logo-mark {
+  display: block;
+  height: 18px;
+  width: auto;
+}
+
+.nav-sep {
+  width: 1px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 0 6px;
+  flex-shrink: 0;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-links li {
+  display: flex;
+  align-items: center;
+}
+
+/* Services hidden for now — remove this rule to bring it back.
+   Hiding the whole <li> (not just the link) keeps it out of both the
+   desktop pill's layout and the mobile equal-width flex row below,
+   rather than leaving a blank gap where it used to be. */
+.nav-links li:has(a[href="/services/"]) {
+  display: none;
+}
+
+.nav-links a {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding: 6px 12px;
+  border-radius: 10px;
+  position: relative;
+  z-index: 1;
+  transition: color var(--transition);
+  letter-spacing: -0.2px;
+  line-height: 1;
+}
+.nav-links a:hover {
+  color: var(--text-primary);
+}
+.nav-links a.active {
+  color: var(--text-primary);
+}
+
+/* Nav ~15% larger on real desktop widths only — iPad (768–1024px)
+   keeps the same nav sizing as before, only phones/small-tablet
+   (<=767px) and desktop (>=1025px) diverge from the base rules above */
+@media (min-width: 1025px) {
+  .nav-inner {
+    gap: 5px;
+    padding: 9px 14px;
+  }
+  .nav-logo {
+    font-size: 18px;
+    padding: 7px 12px;
+  }
+  .nav-logo-mark {
+    height: 20px;
+  }
+  .nav-sep {
+    height: 18px;
+    margin: 0 7px;
+  }
+  .nav-links a {
+    font-size: 16px;
+    padding: 7px 14px;
+  }
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--bg-base);
+}
+
+/* Animated gradient — disabled for now, kept here to re-enable easily.
+@keyframes heroGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+*/
+
+/* Animated gradient orbs — disabled for now, kept here to re-enable easily. */
+.hero-orbs {
+  display: none;
+}
+
+.orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.55;
+}
+
+.orb-1 {
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #b3d9f7 0%, #c8e8ff 50%, transparent 80%);
+  top: -150px;
+  left: -100px;
+  animation: orbFloat1 12s ease-in-out infinite;
+}
+
+.orb-2 {
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, #e0d4f7 0%, #d8c9ff 50%, transparent 80%);
+  bottom: -100px;
+  right: -80px;
+  animation: orbFloat2 15s ease-in-out infinite;
+}
+
+.orb-3 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #d4ecff 0%, #bce0fa 50%, transparent 80%);
+  top: 40%;
+  left: 55%;
+  animation: orbFloat3 10s ease-in-out infinite;
+}
+
+@keyframes orbFloat1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  33%       { transform: translate(40px, 30px) scale(1.05); }
+  66%       { transform: translate(-20px, 50px) scale(0.96); }
+}
+
+@keyframes orbFloat2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  40%       { transform: translate(-50px, -30px) scale(1.08); }
+  70%       { transform: translate(20px, -60px) scale(0.95); }
+}
+
+@keyframes orbFloat3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%       { transform: translate(-30px, 40px) scale(1.1); }
+}
+
+/* Hero content */
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 120px 24px 80px;
+}
+
+.hero-avatar-ring {
+  width: 142px;
+  height: 142px;
+  border-radius: 42% 58% 63% 37% / 41% 42% 58% 59%;
+  animation: blob-morph 13.5s ease-in-out infinite;
+  margin: 0 auto 36px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s var(--ease, cubic-bezier(0.4,0,0.2,1));
+}
+
+.hero-avatar-ring:active,
+.hero-avatar-ring.is-pressed {
+  transform: scale(0.9);
+}
+
+@keyframes blob-morph {
+  0%, 100% { border-radius: 42% 58% 63% 37% / 41% 42% 58% 59%; }
+  25%      { border-radius: 58% 42% 39% 61% / 59% 51% 49% 41%; }
+  50%      { border-radius: 50% 50% 34% 66% / 56% 68% 32% 44%; }
+  75%      { border-radius: 63% 37% 55% 45% / 40% 62% 38% 60%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-avatar-ring,
+  .hero-avatar-ring::before,
+  .hero-avatar,
+  .avatar-particle-layer,
+  .avatar-glare {
+    animation: none !important;
+    border-radius: 50% !important;
+  }
+}
+
+.hero-avatar-ring::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: conic-gradient(from 0deg, #b3d9f7, #d4b8f0, #bce0fa, #e0d4f7, #b3d9f7);
+  animation: spin-border 12s linear infinite, blob-morph 12s ease-in-out infinite;
+  will-change: transform;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.hero-avatar-ring:hover::before {
+  animation: spin-border 6s linear infinite, blob-morph 6s ease-in-out infinite;
+}
+
+@keyframes spin-border {
+  to { transform: rotate(360deg); }
+}
+
+/* Particle layer sits between the spinning border and the portrait */
+.avatar-particle-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+  border-radius: inherit;
+}
+
+.hero-avatar {
+  width: 137px;
+  height: 137px;
+  border-radius: inherit;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 16px 16px 0 rgba(12, 12, 13, 0.10),
+    0 4px 4px 0 rgba(12, 12, 13, 0.05);
+  transition: box-shadow 0.3s var(--ease, cubic-bezier(0.4,0,0.2,1));
+}
+
+.hero-avatar-ring:hover .hero-avatar {
+  box-shadow:
+    0 20px 40px rgba(12, 12, 13, 0.18),
+    0 8px 16px rgba(12, 12, 13, 0.10);
+}
+
+.avatar-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.hero-avatar:hover .avatar-glare {
+  opacity: 1;
+}
+
+.hero-avatar img,
+.hero-avatar video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* [hidden] would otherwise lose to the display:block rule above, since
+   an attribute selector alone doesn't out-specificity a class+element one */
+.hero-avatar img[hidden] {
+  display: none;
+}
+
+.hero-headline {
+  font-size: clamp(34px, 4.7vw, 55px);
+  font-weight: 700;
+  letter-spacing: -0.05em;
+  line-height: 1;
+  color: var(--text-primary);
+  max-width: 839px;
+  margin: 0 auto 28px;
+}
+
+/* Key hero words in the hero-eyebrow's blue */
+.hl-mark {
+  color: #0a7cf5;
+}
+
+.hero-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.25s ease-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px 9px 14px;
+  border-radius: 9999px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.1px;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.status-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34c759;
+  flex-shrink: 0;
+  animation: wip-pulse 1.8s ease-in-out infinite;
+}
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.hero-name {
+  font-size: clamp(56px, 9vw, 104px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+}
+
+.hero-tagline {
+  font-size: clamp(17px, 2.2vw, 22px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 44px;
+  letter-spacing: -0.01em;
+}
+
+.brand-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 10px 3px 12px;
+  border-radius: 9999px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.brand-pill {
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.brand-pill-apple {
+  background: rgba(0, 0, 0, 0.07);
+  color: #1d1d1f;
+}
+
+.brand-pill-apple:hover {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.brand-pill-metamask {
+  background: rgba(246, 133, 27, 0.12);
+  color: var(--text-primary);
+}
+
+.brand-pill-metamask:hover {
+  background: rgba(246, 133, 27, 0.2);
+}
+
+.inline-brand-logo {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 32px;
+  background: var(--text-primary);
+  color: #fff;
+  border-radius: 980px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.28);
+}
+.hero-cta:hover {
+  background: #000;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.36);
+}
+
+.hero-cta.hero-reveal {
+  transition: opacity 0.25s ease-out, transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero-cta.hero-reveal.is-visible {
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+/* Hero entrance animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+.delay-4 { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================================
+   SECTION HEADERS
+   ============================================================ */
+.section-header {
+  margin-bottom: clamp(40px, 6vw, 64px);
+  text-align: center;
+}
+
+.section-title {
+  font-size: clamp(34px, 5vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: clamp(15px, 1.8vw, 18px);
+  color: var(--text-secondary);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* ============================================================
+   WORK CAROUSEL — full-page, one project per slide, paging dots
+   ============================================================ */
+.carousel {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Slide position is driven entirely by a JS-set `transform`, not native
+   scrolling — changing a CSS transition's target mid-flight always
+   retargets smoothly from wherever it currently is, so a new scroll
+   input never has to wait for the previous slide to finish landing. */
+.carousel-track {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  touch-action: pan-y;
+  transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.carousel-track.is-dragging {
+  transition: none;
+}
+
+/* Top/bottom padding is deliberately asymmetric, not equal — centering
+   the slide in the full 100vh would tuck it up under the fixed nav
+   pill (~76px tall, sitting 20px from the top) and crowd the paging
+   dots (~40px tall, 28px from the bottom). Reserving more room above
+   than below shifts the true center of the remaining box down by
+   (top − bottom) / 2 ≈ 20px, just enough to read as centered in the
+   space actually free of chrome rather than the raw viewport. */
+.carousel-slide {
+  flex: 0 0 100vw;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 130px clamp(20px, 5vw, 60px) 90px;
+  box-sizing: border-box;
+  /* Own containment, not just the .carousel wrapper's — rotated content
+     (the Waves phone fan, e.g.) can visually extend past its own box on
+     hover, and this keeps that from ever reaching the slide's edge. */
+  overflow: hidden;
+}
+
+.carousel-slide-inner {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  align-items: center;
+  gap: clamp(16px, 2.5vw, 32px);
+  width: 100%;
+  /* 1120px on typical laptop widths (~1200px viewport and below, where
+     this is already narrower than the container and has no effect),
+     growing fluidly on larger displays up to a 1900px ceiling so the
+     carousel — and the project image inside it — actually fills a big
+     27"+ monitor instead of sitting capped at a fixed width. */
+  max-width: clamp(1120px, 57vw + 440px, 1900px);
+}
+
+/* Project images sized down from a full-bleed fit, so they don't crowd
+   the details column at an even 50/50 split */
+.carousel-slide .featured-media img {
+  max-width: 86%;
+  max-height: 86%;
+}
+
+/* Apple — flat wordmark, not a screenshot; keep it modest and centered
+   rather than stretching it to the same scale as the other slides */
+.carousel-slide--apple .featured-media img {
+  width: 28.5%;
+  max-width: 165px;
+}
+
+/* Waves — three real screens from the app, fanned out as flat,
+   overlapping cards. The center card is the app's splash screen
+   (largest, full brightness, top z-index, static markup — see
+   .waves-phone-onboard below); Box Breathing (left) and 4-7-8
+   Breathing (back right) recede to either side, rotated, dimmed, and
+   slightly smaller — both driven by the same canvas engine as
+   /waves/app/index.html's BreathGame (a guide polygon a marker
+   travels around, driving a breathing circle behind it). */
+.carousel-slide--waves .featured-media {
+  padding: 0;
+}
+
+.waves-phone-fan {
+  --fan-h: clamp(380px, 54vh, 540px);
+  position: relative;
+  height: var(--fan-h);
+  width: calc(var(--fan-h) * 0.85);
+}
+
+.waves-phone-card {
+  position: absolute;
+  aspect-ratio: 300 / 652;
+  border-radius: 40px;
+  overflow: hidden;
+  background: #0e0702;
+  box-shadow:
+    0 40px 70px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+  transition:
+    transform 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.45s ease;
+}
+
+.waves-phone-card--left,
+.waves-phone-card--right {
+  height: 76%;
+  border-radius: 32px;
+  opacity: 0.75;
+}
+.waves-phone-card--left {
+  top: 6%;
+  left: 0;
+  transform: rotate(-13deg);
+  z-index: 1;
+}
+.waves-phone-card--right {
+  top: 12%;
+  right: 0;
+  transform: rotate(11deg);
+  z-index: 2;
+}
+.waves-phone-card--center {
+  top: 0;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%) rotate(-2deg);
+  z-index: 3;
+  box-shadow:
+    0 55px 95px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  /* one tile's width for the wave background's ::before below, scaled
+     down from the real app's own reference (749.289px at a ~402px-wide
+     device) to this card's much smaller footprint; every other number
+     in that background is derived from this via calc() so the exact
+     ratios from the app carry over untouched. */
+  --wp-wave-tile-w: 390px;
+  --wp-wave-tile-h: calc(var(--wp-wave-tile-w) * 654.1696 / 749.289);
+}
+
+/* Splash-screen wave background — same technique as #app::before in
+   /waves/app/index.html: the app's bg_waves.svg (5 stacked,
+   same-opacity wave bands) used as a mask over a flat accent fill, so
+   overlaps compound into bands. One animation drifts it sideways by
+   exactly one tile width (so the loop restart is invisible), a second
+   breathes its size — both looped forever, matching the app exactly. */
+.waves-phone-card--center::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #f2a35c;
+  mask-image: url('/v1/waves/app/images/bg_waves.svg');
+  -webkit-mask-image: url('/v1/waves/app/images/bg_waves.svg');
+  mask-repeat: repeat-x;
+  -webkit-mask-repeat: repeat-x;
+  mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  -webkit-mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  -webkit-mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  animation:
+    wavesScroll 22.95s linear infinite,
+    wavesPulse 22.95s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* pulse only touches mask-size, scroll only touches mask-position — same
+   split as the app, so they run independently without fighting over the
+   same keyframes; 1.0543 is the app's own peak/base size ratio. */
+@keyframes wavesPulse {
+  0%, 100% {
+    mask-size: calc(var(--wp-wave-tile-w) * 1.0543) calc(var(--wp-wave-tile-h) * 1.0543);
+    -webkit-mask-size: calc(var(--wp-wave-tile-w) * 1.0543) calc(var(--wp-wave-tile-h) * 1.0543);
+  }
+  50% {
+    mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+    -webkit-mask-size: var(--wp-wave-tile-w) var(--wp-wave-tile-h);
+  }
+}
+@keyframes wavesScroll {
+  from {
+    mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+    -webkit-mask-position: calc(var(--wp-wave-tile-w) / -4) 100%;
+  }
+  to {
+    mask-position: calc(var(--wp-wave-tile-w) * -1.25) 100%;
+    -webkit-mask-position: calc(var(--wp-wave-tile-w) * -1.25) 100%;
+  }
+}
+
+/* Fan out on hover — triggered by the phones themselves, not the whole
+   slide, so it only reacts when the pointer is actually over the mock.
+   Each card just rotates further and slides away from center along
+   its own already-established lean, opening up the stack; the center
+   card lifts and grows slightly to stay the clear focal point. */
+.waves-phone-fan:hover .waves-phone-card--left {
+  transform: rotate(-26deg) translate(-20%, -8%);
+  opacity: 1;
+}
+.waves-phone-fan:hover .waves-phone-card--right {
+  transform: rotate(22deg) translate(20%, -4%);
+  opacity: 1;
+}
+.waves-phone-fan:hover .waves-phone-card--center {
+  transform: translateX(-50%) rotate(-2deg) translateY(-14px) scale(1.04);
+}
+
+.waves-phone-island {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 15.5%;
+  height: 11px;
+  border-radius: 6.5px;
+  background: #000;
+  z-index: 3;
+}
+
+/* Splash screen, center card only — a scaled-down copy of
+   #page-onboarding in /waves/app/index.html (same bottom-aligned
+   layout, same copy, same CTA treatment), standing in for a live
+   canvas exercise since this card fronts the whole mockup. */
+.waves-phone-onboard {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 0 9% 12%;
+  box-sizing: border-box;
+}
+.waves-phone-onboard-logo {
+  height: 14px;
+  width: auto;
+  display: block;
+  margin: 0 0 12px;
+}
+.waves-phone-onboard-headline {
+  font-size: 19px;
+  font-weight: 400;
+  line-height: 1.18;
+  color: #f5e7d0;
+  margin: 0 0 9px;
+}
+.waves-phone-onboard-body {
+  font-size: 8px;
+  line-height: 1.55;
+  color: rgba(245, 231, 208, 0.65);
+  max-width: 92%;
+  margin: 0 0 11px;
+}
+.waves-phone-onboard-btn {
+  display: block;
+  width: 100%;
+  padding: 8px 0;
+  border-radius: 999px;
+  text-align: center;
+  font-size: 9px;
+  font-weight: 800;
+  color: #2a1608;
+  background: linear-gradient(160deg, #f2a35c, #d97d4a);
+  box-shadow: 0 0 16px 3px rgba(242, 163, 92, 0.25);
+  box-sizing: border-box;
+}
+
+.waves-phone-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.waves-phone-eyebrow {
+  position: absolute;
+  top: 8.6%;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(245, 231, 208, 0.5);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.waves-phone-progress {
+  position: absolute;
+  left: 8%;
+  right: 8%;
+  bottom: 3.4%;
+  z-index: 2;
+  display: flex;
+  gap: 5px;
+  pointer-events: none;
+}
+.waves-phone-progress-seg {
+  flex: 1;
+  height: 3px;
+  border-radius: 999px;
+  background: rgba(245, 231, 208, 0.15);
+  overflow: hidden;
+}
+.waves-phone-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: #f2a35c;
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waves-phone-card {
+    transition: none !important;
+  }
+  .waves-phone-card--center::before {
+    animation: none !important;
+  }
+}
+
+/* Experimental — the grid slide scrolls internally instead of using
+   the two-column image/details layout the case-study slides use */
+.carousel-slide--experimental {
+  display: block;
+  padding: 0;
+}
+
+.carousel-scroll {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  padding: 120px 0 140px;
+  box-sizing: border-box;
+}
+
+/* ── The one new visual element: paging dots ── */
+.carousel-dots {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 50;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.18);
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+}
+.carousel-dot:hover {
+  background: rgba(0, 0, 0, 0.34);
+}
+.carousel-dot.active {
+  background: var(--text-primary);
+  transform: scale(1.3);
+}
+
+/* Below this width the carousel isn't a carousel at all — no horizontal
+   paging, no dots, just every project stacked in normal document flow
+   so the page scrolls like any other. The desktop-only mechanics (JS
+   transform paging, wheel/touch handlers) are gated off in script; the
+   `transform: none !important` here is the CSS-side backstop in case
+   any of that fires anyway. */
+@media (max-width: 820px) {
+  .carousel {
+    height: auto;
+    overflow: visible;
+  }
+  .carousel-track {
+    display: block;
+    transform: none !important;
+    transition: none;
+    touch-action: auto;
+  }
+  .carousel-dots {
+    display: none;
+  }
+  .carousel-slide {
+    flex: none;
+    height: auto;
+    padding: 48px clamp(20px, 6vw, 40px);
+  }
+  .carousel-slide:first-child {
+    padding-top: calc(52px + clamp(45px, 6vw, 75px) + 35px);
+  }
+  /* Same specificity as .carousel-slide above — keep this rule after it
+     so the Experimental slide's own padding (handled by .carousel-scroll
+     instead) wins the tie. */
+  .carousel-slide--experimental {
+    padding: 0;
+  }
+  .carousel-slide-inner {
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+    row-gap: 24px;
+  }
+  .featured-media {
+    height: auto;
+    padding: 0;
+  }
+  /* Stacked layout means the image no longer shares row height with
+     the details column — let it use the slide's full padded width
+     (rather than the desktop 75% cap) and grow tall enough to be the
+     dominant element, while still leaving safe room underneath for
+     the title, description, and button to fit without overflowing
+     the slide on the shortest common phone screens. */
+  .carousel-slide .featured-media img {
+    max-width: 100%;
+    max-height: 38vh;
+  }
+  .featured-desc {
+    max-width: none;
+  }
+  /* Waves mockups, scaled down for mobile only — desktop keeps its
+     original vh-driven size untouched. Sized off viewport width here
+     (not height) since that's the tighter constraint on a phone, and
+     the corner radius is scaled proportionally with it via calc()
+     rather than left at the desktop's fixed 40px/32px, which read as
+     oversized/blobby once the cards themselves got this much smaller. */
+  .waves-phone-fan {
+    /* 32% up from the original mobile size (200/58vw/260) — a 20%
+       bump, then another 10% on top of that */
+    --fan-h: clamp(264px, 76.56vw, 343.2px);
+  }
+  .waves-phone-card {
+    border-radius: calc(var(--fan-h) * 0.074);
+  }
+  .waves-phone-card--left,
+  .waves-phone-card--right {
+    border-radius: calc(var(--fan-h) * 0.059);
+  }
+  .carousel-scroll {
+    height: auto;
+    overflow: visible;
+    touch-action: auto;
+    overscroll-behavior-y: auto;
+    padding: 0 0 48px;
+  }
+}
+
+.featured-media {
+  height: 100%;
+  padding: 32px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.featured-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.16));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide:hover .featured-media img {
+  transform: translateY(-6px) scale(1.02);
+}
+
+.featured-title {
+  font-size: clamp(28px, 3.6vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.featured-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.featured-desc {
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 420px;
+  margin-bottom: 26px;
+}
+
+.featured-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: 980px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-primary);
+  box-shadow: var(--shadow-sm);
+  text-decoration: none;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.featured-link:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.featured-link span {
+  transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-block;
+}
+
+.featured-link:hover span {
+  transform: translateX(4px);
+}
+
+/* ============================================================
+   WORK GRID
+   ============================================================ */
+
+/* Filter tabs */
+.work-filters {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 0;
+}
+
+.filter-desc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  height: 42px;
+  margin: 0;
+  padding: 60px 0;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 260ms ease;
+}
+
+.filter-desc.is-active {
+  opacity: 1;
+}
+
+.filter-tab {
+  font-family: var(--font);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: rgba(0, 0, 0, 0.05);
+  border: none;
+  border-radius: 9999px;
+  padding: 8px 18px;
+  cursor: pointer;
+  transition: background var(--transition), color var(--transition);
+}
+
+.filter-tab:hover {
+  background: rgba(0, 0, 0, 0.09);
+  color: var(--text-primary);
+}
+
+.filter-tab.active {
+  background: var(--text-primary);
+  color: #fff;
+}
+
+/* Filter JS manages visibility via inline style.display — no classes needed */
+
+/* Bento grid — full width of the page, not capped by .container */
+.work-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 220px;
+  grid-auto-flow: dense;
+  gap: 16px;
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 clamp(20px, 5vw, 60px);
+}
+
+.work-grid .project-card {
+  grid-column: span 2;
+}
+
+/* big: 2 cols wide, 2 rows tall — the hero tiles */
+.card-big {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+/* wide: 2 cols, 1 row */
+.card-wide {
+  grid-column: span 2;
+}
+
+.card-big .card-title {
+  font-size: clamp(20px, 2.4vw, 24px);
+  letter-spacing: -0.02em;
+}
+
+.card-big .card-subtitle {
+  font-size: 15px;
+}
+
+@media (max-width: 1000px) {
+  .work-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .card-big,
+  .card-wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .work-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .card-big {
+    grid-row: span 2;
+  }
+
+  .work-filters {
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 60px));
+    padding: 0 clamp(20px, 5vw, 60px) 4px;
+  }
+  .work-filters::-webkit-scrollbar {
+    display: none;
+  }
+  .filter-tab {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 560px) {
+  .work-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto;
+    gap: 16px;
+  }
+  .card-big,
+  .card-wide {
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+  .project-card {
+    grid-column: span 1;
+    height: auto;
+    aspect-ratio: 2 / 1;
+  }
+}
+
+/* Project cards — full-bleed overlay */
+.project-card {
+  display: block;
+  position: relative;
+  height: 100%;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition:
+    opacity 0.28s ease,
+    transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.project-card:hover {
+  transform: translateY(-6px) scale(1.015);
+  box-shadow: var(--shadow-lg);
+}
+
+/* External link indicator for apps + prototypes */
+.project-card[data-category="apps"] .card-title::after,
+.project-card[data-category="prototypes"] .card-title::after {
+  content: '↗';
+  font-size: 13px;
+  margin-left: 5px;
+  color: rgba(255, 255, 255, 0.55);
+  display: inline-block;
+  transition: color 0.2s ease, transform 0.2s ease;
+  vertical-align: middle;
+}
+.project-card[data-category="apps"]:hover .card-title::after,
+.project-card[data-category="prototypes"]:hover .card-title::after {
+  color: #fff;
+  transform: translate(2px, -2px);
+}
+
+/* Card thumbnails — fill full card */
+.card-thumbnail {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  overflow: hidden;
+}
+/* Dark gradient overlay */
+.card-thumbnail::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10,10,20,0.84) 0%, rgba(10,10,20,0.2) 55%, transparent 100%);
+  z-index: 1;
+}
+
+.thumbnail-inner {
+  position: absolute;
+  inset: 0;
+}
+
+.card-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  display: block;
+}
+
+/* Placeholder gradient tiles mimicking iCloud app tiles */
+.thumbnail-1 {
+  background: linear-gradient(135deg, #d4ecf5 0%, #c4e2f0 50%, #b9daed 100%);
+}
+.thumbnail-2 {
+  background: linear-gradient(135deg, #e4d4f8 0%, #d8c7f4 50%, #cfbcf0 100%);
+}
+.thumbnail-3 {
+  background: linear-gradient(135deg, #d4f6e2 0%, #bfead2 50%, #afe2c8 100%);
+}
+.thumbnail-4 {
+  background: linear-gradient(135deg, #f8e2c5 0%, #f4d5b5 50%, #efcba8 100%);
+}
+.thumbnail-5 {
+  background: linear-gradient(135deg, #dde8ff 0%, #cdd8ff 50%, #bdc8ff 100%);
+}
+.thumbnail-apple {
+  background: linear-gradient(135deg, #e8e8ed 0%, #d1d1d6 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.thumbnail-steady-hands {
+  background: linear-gradient(135deg, #0d1117 0%, #131c2e 100%);
+}
+.thumbnail-tasklocal {
+  background: #FFF6F1;
+}
+/* Apple logo — centered via flex on .thumbnail-apple */
+.thumbnail-apple .apple-card-logo {
+  position: static;
+  width: 44%;
+  height: auto;
+  object-fit: contain;
+  padding: 0;
+  opacity: 0.18;
+  transform: translateY(-10%);
+}
+.apple-hero-logo {
+  object-fit: contain !important;
+  max-height: 358px;
+  opacity: 0.25;
+  filter: invert(0);
+}
+
+/* Mobina — glowing orb behind a centered wordmark, hints at the video reel */
+.thumbnail-mobina {
+  background:
+    radial-gradient(circle at 32% 28%, rgba(138, 110, 255, 0.45), transparent 55%),
+    linear-gradient(160deg, #17123a 0%, #0c0920 60%, #050310 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mobina-mark {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+.mobina-wordmark {
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.mobina-play {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-mark {
+  gap: 0;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-wordmark {
+  font-size: 14px;
+}
+.project-nav-thumb.thumbnail-mobina .mobina-play {
+  display: none;
+}
+
+/* Decorative shapes inside thumbnails */
+.thumb-shape {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.35;
+}
+
+.shape-a {
+  width: 120px; height: 120px;
+  background: rgba(255,255,255,0.6);
+  top: -20px; right: 20px;
+}
+.shape-b {
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,0.4);
+  bottom: 10px; left: 30px;
+}
+.shape-c {
+  width: 160px; height: 160px;
+  background: rgba(255,255,255,0.5);
+  top: -40px; right: -20px;
+}
+.shape-d {
+  width: 100px; height: 100px;
+  background: rgba(255,255,255,0.35);
+  bottom: -10px; left: 60px;
+}
+.shape-e {
+  width: 130px; height: 130px;
+  background: rgba(255,255,255,0.55);
+  top: -30px; left: -20px;
+}
+.shape-f {
+  width: 70px; height: 70px;
+  background: rgba(255,255,255,0.4);
+  bottom: 15px; right: 40px;
+}
+.shape-g {
+  width: 110px; height: 110px;
+  background: rgba(255,255,255,0.5);
+  top: -20px; left: 40px;
+}
+.shape-h {
+  width: 85px; height: 85px;
+  background: rgba(255,255,255,0.35);
+  bottom: -5px; right: 20px;
+}
+
+.card-body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px 28px 28px;
+  z-index: 2;
+}
+
+.card-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(0, 113, 227, 0.08);
+  border-radius: 980px;
+  padding: 3px 10px;
+}
+
+.tag-wip {
+  background: rgba(52, 199, 89, 0.1);
+  color: #1a8a3c;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.tag-wip::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34c759;
+  animation: wip-pulse 1.8s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes wip-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(0.65); }
+}
+
+.year {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.card-title {
+  font-size: clamp(17px, 2vw, 20px);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+
+.card-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 1.55;
+  display: none;
+}
+
+.card-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.project-card .tag {
+  background: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.project-card .year {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   ABOUT
+   ============================================================ */
+#about {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.about-grid {
+  display: grid;
+  gap: clamp(40px, 6vw, 80px);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+}
+
+/* ── Photo fan (hover-to-expand, click-to-rotate) ──────────
+   Each card is a <button> positioned purely by its data-pos
+   attribute (0 = front/center, 1 = left, 2 = right). Resting
+   state is a tight cluster; hovering the fan widens it out.
+   Clicking the right card rotates the set right-to-left
+   (right→front, front→left, left→right); clicking the left
+   card rotates the opposite way. ────────────────────────── */
+.fan-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fan {
+  position: relative;
+  width: 220px;
+  height: 300px;
+  /* Let vertical page scroll pass through natively; the horizontal
+     drag/swipe is handled ourselves in JS */
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.fan-card {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transform-origin: 50% 115%;
+  transition: transform 0.22s cubic-bezier(0.34, 1.76, 0.64, 1), box-shadow 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+.fan-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+.fan-card:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* Slower transition while a click-rotation is in flight — the
+   hover expand/contract above stays snappy */
+.fan.is-rotating .fan-card {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+/* Resting — tight cluster */
+.fan .fan-card[data-pos="0"] { transform: translate(0, 0) rotate(0deg) scale(1); z-index: 3; }
+.fan .fan-card[data-pos="1"] { transform: translate(-24px, 8px) rotate(-4deg) scale(0.97); z-index: 2; }
+.fan .fan-card[data-pos="2"] { transform: translate(24px, 8px) rotate(4deg) scale(0.97); z-index: 1; }
+
+/* Hover the fan area — expand out (desktop only; touch devices can
+   get hover "stuck" after a tap, which would leave the mobile fan
+   expanded when it should stay in its tight resting cluster) */
+@media (min-width: 768px) {
+  .fan:hover .fan-card[data-pos="0"] { transform: translate(0, -12px) rotate(0deg) scale(1.02); box-shadow: var(--shadow-lg); }
+  .fan:hover .fan-card[data-pos="1"] { transform: translate(-72px, 20px) rotate(-11deg) scale(0.96); }
+  .fan:hover .fan-card[data-pos="2"] { transform: translate(72px, 20px) rotate(11deg) scale(0.96); }
+}
+
+.about-text .section-title {
+  margin-bottom: 28px;
+}
+
+.about-bio {
+  font-size: clamp(15px, 1.8vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 20px;
+  letter-spacing: -0.01em;
+}
+.about-bio:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+#contact {
+  background: var(--bg-base);
+  position: relative;
+  overflow: hidden;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.contact-inner {
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.contact-heading {
+  font-size: clamp(44px, 7vw, 80px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--text-primary);
+  margin-bottom: 48px;
+}
+
+.contact-desc {
+  font-size: clamp(16px, 1.8vw, 19px);
+  font-weight: 400;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  max-width: 480px;
+  margin: 0 auto 40px;
+}
+
+.contact-email-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 36px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  font-size: clamp(15px, 1.8vw, 18px);
+  font-weight: 500;
+  color: var(--accent);
+  box-shadow: var(--shadow-md);
+  letter-spacing: -0.02em;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition),
+    background var(--transition);
+  margin-bottom: 40px;
+}
+.contact-email-btn:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--glass-border-hover);
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--transition),
+    color var(--transition),
+    border-color var(--transition),
+    box-shadow var(--transition);
+}
+.social-link:hover {
+  color: var(--accent);
+  transform: translateY(-3px);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   SERVICES
+   ============================================================ */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+.service-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-sm);
+  padding: 32px 28px;
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+.service-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--glass-border-hover);
+}
+
+.services-grid .service-card:nth-child(1) { transition-delay: 0.05s; }
+.services-grid .service-card:nth-child(2) { transition-delay: 0.12s; }
+.services-grid .service-card:nth-child(3) { transition-delay: 0.19s; }
+.services-grid .service-card:nth-child(4) { transition-delay: 0.26s; }
+
+.service-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--accent);
+  margin-bottom: 20px;
+}
+
+.service-title {
+  font-size: 19px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.service-desc {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.services-cta {
+  text-align: center;
+}
+
+.services-cta-inner {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.services-cta-title {
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+#footer {
+  margin-top: auto;
+  padding: 32px 0;
+  border-top: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-copy {
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+.footer-nav {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-nav a {
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: color var(--transition);
+}
+.footer-nav a:hover { color: var(--text-primary); }
+
+/* ============================================================
+   SCROLL REVEAL ANIMATIONS
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delay for grid children */
+.work-grid .project-card:nth-child(1) { transition-delay: 0.05s; }
+.work-grid .project-card:nth-child(2) { transition-delay: 0.12s; }
+.work-grid .project-card:nth-child(3) { transition-delay: 0.19s; }
+.work-grid .project-card:nth-child(4) { transition-delay: 0.26s; }
+.work-grid .project-card:nth-child(5) { transition-delay: 0.33s; }
+
+/* ============================================================
+   PROJECT PAGES
+   ============================================================ */
+.project-hero {
+  position: relative;
+  padding-top: calc(52px + clamp(76px, 10.1vw, 126px));
+  padding-bottom: clamp(60px, 8vw, 100px);
+  overflow: hidden;
+  min-height: 420px;
+}
+
+/* Hero no longer uses the colored work-grid thumbnail background */
+.project-hero.thumbnail-1,
+.project-hero.thumbnail-2,
+.project-hero.thumbnail-3,
+.project-hero.thumbnail-4,
+.project-hero.thumbnail-apple,
+.project-hero.thumbnail-mobina {
+  background: none;
+}
+
+.project-hero-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+}
+
+.project-hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 640px;
+  margin: 0 auto clamp(68px, 10.1vw, 108px);
+}
+
+.project-hero-img-wrap {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-hero-img-wrap img {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Case studies — hero screenshot sized up from the standard project hero image (25%, then another 30%) */
+.project-hero.thumbnail-1 .project-hero-img-wrap,
+.project-hero.thumbnail-2 .project-hero-img-wrap,
+.project-hero.thumbnail-3 .project-hero-img-wrap,
+.project-hero.thumbnail-4 .project-hero-img-wrap {
+  max-width: 1040px;
+}
+.project-hero.thumbnail-1 .project-hero-img-wrap img,
+.project-hero.thumbnail-2 .project-hero-img-wrap img,
+.project-hero.thumbnail-3 .project-hero-img-wrap img,
+.project-hero.thumbnail-4 .project-hero-img-wrap img {
+  max-height: 618px;
+}
+
+.project-hero-video {
+  width: 100%;
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  background: #000;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-md);
+}
+
+/* Mobina — hero video shown at 2x size on desktop */
+@media (min-width: 768px) {
+  .project-hero-img-wrap.video-wide {
+    max-width: 1280px;
+  }
+  .project-hero-img-wrap.video-wide .project-hero-video {
+    max-height: 760px;
+  }
+}
+
+/* Origin Labs — 3 printers side by side */
+.hero-printer-trio {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  width: 100%;
+}
+
+.hero-printer-trio img {
+  width: calc(33.333% - 6px);
+  height: auto;
+  max-height: 380px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+@media (max-width: 767px) {
+  .project-hero {
+    padding-bottom: 32px;
+    min-height: unset;
+  }
+  .project-hero-text {
+    margin-bottom: 40px;
+  }
+  .project-hero-img-wrap img {
+    max-height: none;
+  }
+  .project-hero-video {
+    max-height: 200px;
+  }
+}
+
+.project-hero-shapes {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.project-hero-shapes::before,
+.project-hero-shapes::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.45);
+  opacity: 0.4;
+}
+
+.project-hero-shapes::before {
+  width: 320px;
+  height: 320px;
+  top: -80px;
+  right: 6%;
+}
+
+.project-hero-shapes::after {
+  width: 180px;
+  height: 180px;
+  bottom: 20px;
+  left: 8%;
+}
+
+.project-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgba(29, 29, 31, 0.6);
+  margin-bottom: 36px;
+  transition: color var(--transition), gap var(--transition);
+}
+.project-back:hover {
+  color: var(--text-primary);
+  gap: 10px;
+}
+
+.project-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.project-title {
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 1.0;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.project-desc {
+  font-size: clamp(16px, 1.8vw, 18px);
+  color: var(--text-secondary);
+  max-width: 560px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.project-content {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Overview — copy on the left, role details beside it */
+.project-overview-grid {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vw, 48px);
+}
+
+/* Mobile default: a clean stacked list of label/value pairs. Wrapping
+   these in a row (the old default) let long values like "Product
+   Designer, Illustrator, Webflow Developer" break unevenly next to
+   short ones like "Web" — a plain vertical list avoids that entirely. */
+.project-role-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-top: clamp(28px, 4vw, 40px);
+  border-top: 1px solid var(--glass-border);
+}
+
+@media (min-width: 900px) {
+  .project-overview-grid {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(40px, 6vw, 72px);
+  }
+  .project-overview-text {
+    flex: 1;
+    min-width: 0;
+  }
+  .project-role-details {
+    flex: 0 0 33%;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 24px;
+    padding-top: 0;
+    padding-left: clamp(28px, 4vw, 40px);
+    border-top: none;
+    border-left: 1px solid var(--glass-border);
+  }
+}
+
+.project-role-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.project-role-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.project-role-value {
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+.project-role-tags {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Highlights — full-bleed stacked gallery, alternating stage */
+.project-highlights {
+  width: 100%;
+  margin-top: 0;
+}
+
+.project-highlight {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: clamp(48px, 7vw, 96px) clamp(20px, 5vw, 60px);
+  background: var(--bg-base);
+}
+
+.project-highlight--dark {
+  background: #ffffff;
+}
+
+.project-highlight-img {
+  display: block;
+  width: 100%;
+  max-width: 960px;
+  height: auto;
+  border-radius: var(--radius-card);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-highlight-img:hover {
+  transform: translateY(-4px) scale(1.005);
+}
+
+.project-highlight-pair {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  width: 100%;
+  max-width: 960px;
+}
+
+.project-highlight-pair .project-highlight-img {
+  width: calc((50% - 12px) * 0.75);
+  max-width: none;
+}
+
+@media (max-width: 700px) {
+  .project-highlight-pair {
+    flex-direction: column;
+    align-items: center;
+  }
+  .project-highlight-pair .project-highlight-img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+.project-highlight-caption {
+  margin-top: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+
+.project-section {
+  margin-bottom: clamp(40px, 5vw, 60px);
+}
+.project-section:last-child {
+  margin-bottom: 0;
+}
+
+.project-section-title {
+  font-size: clamp(20px, 2.5vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.project-overview p + p {
+  margin-top: 20px;
+}
+
+.project-list {
+  list-style: none;
+  margin: 16px 0 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.project-list li {
+  font-size: clamp(15px, 1.8vw, 17px);
+  color: var(--text-secondary);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  padding-left: 20px;
+  position: relative;
+}
+
+.project-list li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.project-link {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+.project-link:hover {
+  opacity: 0.7;
+}
+
+/* Project — more work strip */
+.project-nav {
+  border-top: 1px solid var(--glass-border);
+  padding: clamp(32px, 5vw, 56px) 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.project-nav-heading {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.project-nav-scroll {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.project-nav-card {
+  display: block;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.project-nav-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--glass-border-hover);
+}
+
+.project-nav-card.active {
+  border-color: var(--accent);
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.project-nav-thumb {
+  height: 70px;
+  overflow: hidden;
+  position: relative;
+}
+
+.project-nav-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.project-nav-card:hover .project-nav-thumb img {
+  transform: scale(1.06);
+}
+
+.project-nav-info {
+  padding: 10px 12px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.project-nav-name {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  line-height: 1.25;
+}
+
+.project-nav-info .tag {
+  font-size: 10px;
+}
+
+/* ============================================================
+   LIGHTBOX
+   ============================================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: zoom-out;
+}
+
+.lightbox.is-open {
+  opacity: 1;
+}
+
+.lightbox-inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 60px 80px;
+  cursor: default;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.5);
+  user-select: none;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  z-index: 10;
+}
+.lightbox-close:hover {
+  background: rgba(255, 255, 255, 0.22);
+  transform: scale(1.1);
+}
+
+.lightbox-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition);
+  z-index: 10;
+}
+.lightbox-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+.lightbox-btn.prev { left: 20px; }
+.lightbox-btn.next { right: 20px; }
+.lightbox-btn:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+.lightbox-btn:disabled:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.lightbox-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 13px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.05em;
+}
+
+/* ============================================================
+   IN-PROGRESS PAGE — WIP LIST
+   ============================================================ */
+.wip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.wip-item {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-card);
+  padding: 0;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform var(--transition),
+    box-shadow var(--transition),
+    border-color var(--transition);
+}
+
+.wip-item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--glass-border-hover);
+}
+
+.wip-item-thumb {
+  flex: 0 0 200px;
+  background: linear-gradient(135deg, #dde8ff 0%, #cdd8ff 50%, #bdc8ff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.wip-item-thumb img {
+  max-height: 140px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+.wip-item-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 28px 32px;
+  flex: 1;
+}
+
+.wip-item-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.wip-item-name {
+  font-size: clamp(18px, 2.5vw, 24px);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--text-primary);
+  margin: 8px 0 6px;
+  line-height: 1.25;
+}
+
+.wip-item-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+  padding: 10px 20px;
+  border-radius: 980px;
+  border: 1.5px solid rgba(0, 113, 227, 0.25);
+  background: rgba(0, 113, 227, 0.06);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+.wip-item:hover .wip-item-cta {
+  background: rgba(0, 113, 227, 0.12);
+  border-color: rgba(0, 113, 227, 0.4);
+}
+
+@media (max-width: 600px) {
+  .wip-item {
+    flex-direction: column;
+  }
+  .wip-item-thumb {
+    height: 180px;
+    flex: none;
+  }
+  .wip-item-content {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px 24px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE — MOBILE
+   ============================================================ */
+@media (max-width: 767px) {
+  #nav {
+    top: 12px;
+    bottom: auto;
+    left: 16px;
+    right: 16px;
+    transform: none;
+  }
+
+  /* Equal-width items spread across the full pill */
+  .nav-inner {
+    justify-content: space-between;
+    padding: 10px 12px;
+    gap: 0;
+  }
+  .nav-sep {
+    display: none;
+  }
+  .nav-logo {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 12px 0;
+    font-size: 18px;
+  }
+  .nav-links {
+    /* Must equal the number of *visible* <li>s below (Services is
+       hidden for now — see the :has() rule above) — nav-logo is
+       flex: 1, so this value is what keeps each link the same width
+       as the logo (and each other). Update this if a link is ever
+       added/removed/unhidden. */
+    flex: 3;
+    justify-content: space-between;
+    gap: 0;
+    margin-left: 0;
+  }
+  .nav-links li {
+    flex: 1;
+  }
+  .nav-links a {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Dropped from 15px now that a 4th item (Services) shares the row —
+       keeps "Services" from wrapping/crowding on the narrowest phones. */
+    font-size: 13px;
+    white-space: nowrap;
+    /* Padding (not font-size) makes up the difference to a 44px
+       tappable area per Apple's HIG, without changing how the nav
+       looks — 15px line-height-1 text + 15px top/bottom = 45px */
+    padding: 15px 0;
+  }
+
+  .hero-name {
+    letter-spacing: -0.035em;
+  }
+
+  .project-nav-scroll {
+    display: flex;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    gap: 12px;
+    margin: 0 calc(-1 * clamp(20px, 5vw, 60px));
+    padding: 0 clamp(20px, 5vw, 60px) 8px;
+  }
+  .project-nav-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .project-nav-card {
+    flex: 0 0 160px;
+  }
+
+  .contact-email-btn {
+    padding: 16px 24px;
+    font-size: 15px;
+    word-break: break-all;
+    text-align: center;
+  }
+
+  .footer-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  /* 15% smaller than the 220x300 desktop size, then another 15%
+     on top of that (159x217) */
+  .fan {
+    width: 159px;
+    height: 217px;
+  }
+
+  /* Extra breathing room above the fan (below the nav) and below it
+     before the bio text starts (on top of .about-grid's own row gap,
+     stacked at this width) */
+  .fan-wrap {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+}

@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta name="robots" content="noindex" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Christian Jeria — Product Designer & Builder crafting digital experiences that feel inevitable."
+    />
+    <title>Christian Jeria — Product Designer & Builder</title>
+
+    <!-- Open Graph -->
+    <meta
+      property="og:title"
+      content="Christian Jeria — Product Designer & Builder"
+    />
+    <meta
+      property="og:description"
+      content="Crafting world class digital experiences at the intersection of design and emerging technology."
+    />
+    <meta
+      property="og:image"
+      content="https://christianjeria.work/og-image.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://christianjeria.work" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:logo"
+      content="https://christianjeria.work/apple-touch-icon.png"
+    />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Christian Jeria — Product Designer & Builder"
+    />
+    <meta
+      name="twitter:description"
+      content="Crafting world class digital experiences at the intersection of design and emerging technology."
+    />
+    <meta
+      name="twitter:image"
+      content="https://christianjeria.work/og-image.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Christian Jeria — Product Designer & Builder"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon-16x16.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://mcp.figma.com/mcp/html-to-design/capture.js"
+      async
+    ></script>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelectorAll(".reveal")
+          .forEach((el) => el.classList.add("visible"));
+      });
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav id="nav">
+      <div class="nav-inner">
+        <div class="nav-blob" id="nav-blob"></div>
+        <a href="#" class="nav-logo"><img src="/v1/cj-logo.svg" alt="Christian Jeria" class="nav-logo-mark" /></a>
+        <span class="nav-sep" aria-hidden="true"></span>
+        <ul class="nav-links">
+          <li><a href="/v1/work/">Work</a></li>
+          <li><a href="/v1/services/">Services</a></li>
+          <li><a href="/v1/about/">About</a></li>
+          <li><a href="/v1/contact/">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero">
+      <div class="hero-orbs" aria-hidden="true">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-avatar-entrance fade-in-up">
+          <div class="hero-avatar-ring" id="avatar-ring">
+            <div class="avatar-particle-layer" id="particle-layer"></div>
+            <div class="hero-avatar">
+              <video
+                id="hero-avatar-video"
+                src="./cj-avatar.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                aria-label="Christian Jeria"
+              ></video>
+              <img
+                id="hero-avatar-still"
+                src="./cjeria-portrait.png"
+                alt="Christian Jeria"
+                hidden
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Safari's autoplay/media-pipeline behavior for this video is
+             unreliable (can get stuck showing a "tap to play" overlay even
+             after a user gesture) — swap in a static portrait there instead. -->
+        <script>
+          (function () {
+            var isSafari = /^((?!chrome|android|crios|fxios|edg).)*safari/i.test(navigator.userAgent);
+            if (isSafari) {
+              var video = document.getElementById('hero-avatar-video');
+              var still = document.getElementById('hero-avatar-still');
+              if (video && still) {
+                video.remove();
+                still.hidden = false;
+              }
+            }
+          })();
+        </script>
+        <p class="hero-eyebrow hero-reveal" id="hero-message">Hi, I'm Christian! 👋</p>
+        <h1 class="hero-headline hero-reveal">
+          Freelance designer specializing in UI/UX, web design, branding
+          and motion.
+        </h1>
+        <p class="hero-tagline hero-reveal">
+          Previously at
+          <a href="https://apple.com" target="_blank" rel="noopener" class="brand-pill brand-pill-apple"><img src="./apple/apple-logo.svg" alt="" aria-hidden="true" class="inline-brand-logo" />Apple</a> &
+          <a href="https://metamask.io" target="_blank" rel="noopener" class="brand-pill brand-pill-metamask"
+            ><img src="./metamask/images/metamask-fox.svg" alt="" aria-hidden="true" class="inline-brand-logo" />MetaMask</a
+          >
+        </p>
+        <a href="/v1/work/" class="hero-cta hero-reveal">View Work</a>
+      </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+      (function () {
+        const revealItems = document.querySelectorAll('.hero-reveal');
+        if (revealItems.length) {
+          const runReveal = () => {
+            revealItems.forEach((el) => el.classList.add('is-visible'));
+          };
+          if (document.readyState === 'complete') {
+            runReveal();
+          } else {
+            window.addEventListener('load', runReveal, { once: true });
+          }
+        }
+
+        const ring  = document.getElementById('avatar-ring');
+        const layer = document.getElementById('particle-layer');
+        const video = document.getElementById('hero-avatar-video');
+        if (!ring || !layer) return;
+
+        if (video) {
+          const restFrame = 6;
+          // Safari's autoplay gate checks the muted *property*, not just
+          // the attribute — set it explicitly so play() isn't silently
+          // rejected there.
+          video.muted = true;
+          video.defaultMuted = true;
+
+          const setRestFrame = () => { video.currentTime = restFrame; };
+
+          /* Pausing inside the play() *promise* callback — before Safari
+             has actually started decoding frames — can leave its media
+             pipeline in a broken state where every later play() call
+             (including the hover handler below) gets silently rejected.
+             Waiting for the real 'playing' event instead guarantees
+             playback genuinely started before we pause and seek. */
+          const primeRestFrame = () => {
+            const onPlaying = () => {
+              video.removeEventListener('playing', onPlaying);
+              video.pause();
+              setRestFrame();
+            };
+            video.addEventListener('playing', onPlaying);
+            const playAttempt = video.play();
+            if (playAttempt && typeof playAttempt.catch === 'function') {
+              playAttempt.catch(() => {
+                video.removeEventListener('playing', onPlaying);
+                setRestFrame();
+              });
+            }
+          };
+
+          if (video.readyState >= 3) {
+            primeRestFrame();
+          } else {
+            video.addEventListener('canplay', primeRestFrame, { once: true });
+          }
+
+          ring.addEventListener('mouseenter', () => {
+            video.currentTime = restFrame;
+            video.play();
+          });
+          ring.addEventListener('mouseleave', () => {
+            video.pause();
+            setRestFrame();
+          });
+        }
+
+        const press = () => ring.classList.add('is-pressed');
+        const release = () => ring.classList.remove('is-pressed');
+        ring.addEventListener('mousedown', press);
+        ring.addEventListener('touchstart', press, { passive: true });
+        document.addEventListener('mouseup', release);
+        document.addEventListener('touchend', release);
+        document.addEventListener('touchcancel', release);
+        ring.addEventListener('mouseleave', release);
+
+        const emojis = ['📱', '💻', '🖥️', '⌨️', '🖱️', '✏️', '📐', '🎨', '🔍', '⚙️', '💡', '🖌️', '⌚', '🪄', '🤖'];
+
+        ring.addEventListener('click', function () {
+          const count = Math.floor(Math.random() * 5) + 8;
+
+          for (let i = 0; i < count; i++) {
+            const el = document.createElement('span');
+            el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.cssText = `
+              position:absolute;
+              left:50%;top:50%;
+              font-size:${Math.random() * 18 + 38}px;
+              pointer-events:none;user-select:none;
+              line-height:1;
+              transform:translate(-50%,-50%);
+            `;
+            layer.appendChild(el);
+
+            /* Radiate outward in all directions with gravity arc */
+            const angle   = Math.random() * Math.PI * 2;
+            const dist    = Math.random() * 200 + 900;
+            const dx      = Math.cos(angle) * dist;
+            const dy      = Math.sin(angle) * dist;
+            const gravity = 480; /* downward pull in px over normalized time */
+            const dur     = Math.random() * 400 + 1400;
+            const delay   = Math.random() * 80;
+
+            /* Bake parabolic arc into keyframes — physics: x=dx·t, y=dy·t+g·t² */
+            const steps  = 30;
+            const frames = Array.from({ length: steps + 1 }, (_, s) => {
+              const t  = s / steps;
+              const gx = dx * t;
+              const gy = dy * t + gravity * t * t;
+              return { transform: `translate(-50%,-50%) translate(${gx}px,${gy}px)` };
+            });
+
+            el.animate(frames, {
+              duration: dur,
+              delay,
+              easing: 'linear',
+              fill: 'forwards'
+            }).onfinish = () => el.remove();
+          }
+        });
+      })();
+    </script>
+
+  </body>
+</html>

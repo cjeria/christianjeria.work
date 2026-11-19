@@ -1,0 +1,496 @@
+/* ============================================================
+   CHRISTIAN JERIA — Portfolio Script
+   ============================================================ */
+
+(() => {
+  'use strict';
+
+  /* ----------------------------------------------------------
+     -1. Page blur transition — blur-in on load, blur-out then
+         navigate when a nav link is clicked, so the destination
+         page loads blurred and focuses in the same way
+     ---------------------------------------------------------- */
+  /* Double rAF: the script tag sits at the end of body, so by the time
+     it runs the browser may not have painted the blurred state yet — a
+     single rAF can land on that same first paint and the transition
+     never becomes visible. Waiting a frame, then another, guarantees
+     the blurred state is actually painted before we transition out. */
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.body.classList.add('is-ready');
+    });
+  });
+
+  /* Browser back/forward can restore this page from bfcache instead of
+     reloading it. A bfcache restore replays the DOM exactly as it was
+     when the user left — including the blurred-out state the click
+     handler below sets right before navigating away — but it does not
+     re-run this script, so the rAF above never fires again and the
+     page is left permanently blurred/blank. `pageshow` fires on both a
+     normal load and a bfcache restore; `event.persisted` tells them
+     apart, so we can re-add `is-ready` only when it's actually needed. */
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) {
+      document.body.classList.add('is-ready');
+    }
+  });
+
+  {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const navEl = document.getElementById('nav');
+    const navLinkEls = navEl
+      ? [navEl.querySelector('.nav-logo'), ...navEl.querySelectorAll('.nav-links a')].filter(Boolean)
+      : [];
+    const projectCardLinks = Array.from(document.querySelectorAll('a.project-card'));
+    const projectNavLinks = Array.from(document.querySelectorAll('a.project-nav-card'));
+    const heroCtaLinks = Array.from(document.querySelectorAll('a.hero-cta'));
+    const featuredLinks = Array.from(document.querySelectorAll('a.featured-link'));
+    const transitionLinkEls = [...navLinkEls, ...projectCardLinks, ...projectNavLinks, ...heroCtaLinks, ...featuredLinks];
+
+    transitionLinkEls.forEach((link) => {
+      const href = link.getAttribute('href');
+      if (!href || href === '#' || href.startsWith('#')) return;
+
+      link.addEventListener('click', (e) => {
+        if (e.defaultPrevented || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+
+        const destination = new URL(link.href, window.location.href);
+        if (destination.origin !== window.location.origin) return;
+        if (destination.href.split('#')[0] === window.location.href.split('#')[0]) return;
+
+        e.preventDefault();
+        if (reduceMotion) {
+          window.location.href = link.href;
+          return;
+        }
+        document.body.classList.remove('is-ready');
+        setTimeout(() => { window.location.href = link.href; }, 350);
+      });
+    });
+  }
+
+  /* ----------------------------------------------------------
+     0. Hash scroll offset — correct anchor position on page load
+        so the floating nav doesn't overlap the target section
+     ---------------------------------------------------------- */
+  if (window.location.hash) {
+    const target = document.querySelector(window.location.hash);
+    if (target) {
+      // Let the browser do its default jump first, then correct
+      requestAnimationFrame(() => {
+        const navHeight = document.getElementById('nav')?.offsetHeight || 0;
+        const targetY = target.getBoundingClientRect().top + window.scrollY - navHeight - 16;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+      });
+    }
+  }
+
+  /* ----------------------------------------------------------
+     1. Navigation — add .scrolled class after 40px scroll
+     ---------------------------------------------------------- */
+  const nav = document.getElementById('nav');
+  const navLogo = nav ? nav.querySelector('.nav-logo') : null;
+  const isHomePage = !!document.getElementById('hero');
+
+  /* ----------------------------------------------------------
+     1a. Homepage → Work — scrolling down on the homepage (wheel
+         or a touch swipe up) navigates to /work/, as if the user
+         clicked the Work nav link, using the same blur-out
+         transition. The hero fills the viewport with nothing to
+         actually scroll, so this is the only way "scrolling
+         down" can mean anything here.
+     ---------------------------------------------------------- */
+  if (isHomePage) {
+    const scrollReduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SCROLL_THRESHOLD = 40;
+    let navigatingToWork = false;
+
+    function goToWorkPage() {
+      if (navigatingToWork) return;
+      navigatingToWork = true;
+      const dest = '/v1/work/';
+      if (scrollReduceMotion) {
+        window.location.href = dest;
+        return;
+      }
+      document.body.classList.remove('is-ready');
+      setTimeout(() => { window.location.href = dest; }, 350);
+    }
+
+    window.addEventListener('wheel', (e) => {
+      if (e.deltaY > SCROLL_THRESHOLD) goToWorkPage();
+    }, { passive: true });
+
+    let touchStartY = null;
+    window.addEventListener('touchstart', (e) => {
+      touchStartY = e.touches[0]?.clientY ?? null;
+    }, { passive: true });
+
+    window.addEventListener('touchmove', (e) => {
+      if (touchStartY === null) return;
+      const deltaY = touchStartY - (e.touches[0]?.clientY ?? touchStartY);
+      if (deltaY > SCROLL_THRESHOLD) goToWorkPage();
+    }, { passive: true });
+  }
+
+  function onScroll() {
+    if (window.scrollY > 40) {
+      nav.classList.add('scrolled');
+    } else {
+      nav.classList.remove('scrolled');
+    }
+
+    // Home icon: full color only when near the top of the landing page
+    if (navLogo) {
+      if (isHomePage && window.scrollY < 80) {
+        navLogo.classList.add('is-home');
+      } else {
+        navLogo.classList.remove('is-home');
+      }
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll(); // run once on load in case page is already scrolled
+
+  /* ----------------------------------------------------------
+     1b. Nav blob — sliding active indicator
+     Runs on any page that has a #nav-blob element (not just the
+     homepage) — sub-pages mark their own nav-links entry with
+     class="active" statically in HTML, so this works unchanged.
+     ---------------------------------------------------------- */
+  {
+    const blob     = document.getElementById('nav-blob');
+    const navInner = nav ? nav.querySelector('.nav-inner') : null;
+
+    if (blob && navInner && navLogo) {
+      function positionBlob(el, animate) {
+        if (!animate) blob.style.transition = 'none';
+        blob.style.opacity = '1';
+        const nr = navInner.getBoundingClientRect();
+        const er = el.getBoundingClientRect();
+        blob.style.left   = `${er.left   - nr.left}px`;
+        blob.style.top    = `${er.top    - nr.top}px`;
+        blob.style.width  = `${er.width}px`;
+        blob.style.height = `${er.height}px`;
+        if (!animate) requestAnimationFrame(() => { blob.style.transition = ''; });
+      }
+
+      /* Only the logo counts as a "current page" fallback on the
+         homepage itself — on every other page without an active
+         nav-link (project/case-study pages, prototypes, etc.) there
+         is no current nav item, so the blob should stay hidden
+         rather than resting on the logo. */
+      function currentTarget() {
+        const activeLink = nav.querySelector('.nav-links a.active');
+        if (activeLink) return activeLink;
+        return isHomePage ? navLogo : null;
+      }
+
+      function syncBlob() {
+        const target = currentTarget();
+        if (target) {
+          positionBlob(target, true);
+        } else {
+          blob.style.opacity = '0';
+        }
+      }
+
+      /* Set initial position instantly (no slide-in on load) — must
+         reflect whichever link is already marked active in the static
+         HTML (e.g. sub-pages), not always default to the logo. */
+      requestAnimationFrame(() => {
+        const target = currentTarget();
+        if (target) positionBlob(target, false);
+      });
+
+      /* Watch for class changes on logo and all nav links */
+      const mo = new MutationObserver(syncBlob);
+      mo.observe(navLogo, { attributes: true, attributeFilter: ['class'] });
+      nav.querySelectorAll('.nav-links a').forEach(a => {
+        mo.observe(a, { attributes: true, attributeFilter: ['class'] });
+      });
+
+      /* Hover: blob follows the cursor between nav items (even on
+         pages with no current target), then snaps back to whichever
+         item is actually active on exit, or hides again if none is */
+      const hoverTargets = [navLogo, ...nav.querySelectorAll('.nav-links a')];
+      hoverTargets.forEach((el) => {
+        el.addEventListener('mouseenter', () => positionBlob(el, true));
+      });
+      navInner.addEventListener('mouseleave', syncBlob);
+    }
+  }
+
+  /* ----------------------------------------------------------
+     2. Intersection Observer — reveal elements on scroll
+     ---------------------------------------------------------- */
+  const revealElements = document.querySelectorAll('.reveal');
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target); // animate once only
+          }
+        });
+      },
+      {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px',
+      }
+    );
+
+    revealElements.forEach((el) => observer.observe(el));
+  } else {
+    // Fallback: show all immediately if IntersectionObserver not supported
+    revealElements.forEach((el) => el.classList.add('visible'));
+  }
+
+
+  /* ----------------------------------------------------------
+     3. Smooth scroll for all anchor links (href="#...")
+     ---------------------------------------------------------- */
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    anchor.addEventListener('click', (e) => {
+      const targetId = anchor.getAttribute('href');
+      if (targetId === '#') return; // skip bare # links
+
+      const target = document.querySelector(targetId);
+      if (!target) return;
+
+      e.preventDefault();
+
+      const navHeight = nav ? nav.offsetHeight : 0;
+      const targetY = target.getBoundingClientRect().top + window.scrollY - navHeight;
+
+      window.scrollTo({
+        top: targetY,
+        behavior: 'smooth',
+      });
+    });
+  });
+
+  /* ----------------------------------------------------------
+     4. Hero avatar tilt + glare on hover
+     ---------------------------------------------------------- */
+  const avatar = document.querySelector('.hero-avatar');
+  if (avatar) {
+    const glare = document.createElement('div');
+    glare.className = 'avatar-glare';
+    avatar.appendChild(glare);
+
+    let raf;
+    let rotX = 0, rotY = 0;
+    let tRotX = 0, tRotY = 0;
+    let active = false;
+
+    const lerp = (a, b, n) => a + (b - a) * n;
+
+    function animateAvatar() {
+      rotX = lerp(rotX, tRotX, 0.1);
+      rotY = lerp(rotY, tRotY, 0.1);
+
+      avatar.style.transform =
+        `perspective(600px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg)`;
+
+      const settling =
+        Math.abs(rotX - tRotX) > 0.05 ||
+        Math.abs(rotY - tRotY) > 0.05;
+
+      if (active || settling) {
+        raf = requestAnimationFrame(animateAvatar);
+      } else {
+        avatar.style.transform = '';
+      }
+    }
+
+    avatar.addEventListener('mouseenter', () => {
+      active = true;
+      avatar.style.transition = 'box-shadow 0.3s ease';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(animateAvatar);
+    });
+
+    avatar.addEventListener('mousemove', (e) => {
+      const r = avatar.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top)  / r.height;
+      tRotX = (y - 0.5) * -30;
+      tRotY = (x - 0.5) *  30;
+      glare.style.background =
+        `radial-gradient(circle at ${(x * 100).toFixed(1)}% ${(y * 100).toFixed(1)}%, rgba(255,255,255,0.245) 0%, transparent 65%)`;
+    });
+
+    avatar.addEventListener('mouseleave', () => {
+      active  = false;
+      tRotX   = 0;
+      tRotY   = 0;
+      avatar.style.transition = '';
+      glare.style.background  = '';
+    });
+  }
+
+
+  /* ----------------------------------------------------------
+     5. Project card tilt + glare on hover (Andy Merskin style)
+     ---------------------------------------------------------- */
+  document.querySelectorAll('.project-card').forEach((card) => {
+    // Inject glare overlay
+    const glare = document.createElement('div');
+    glare.className = 'card-glare';
+    card.appendChild(glare);
+
+    let raf;
+    let rotX = 0, rotY = 0, lift = 0;
+    let tRotX = 0, tRotY = 0, tLift = 0;
+    let active = false;
+
+    const lerp = (a, b, n) => a + (b - a) * n;
+
+    function animate() {
+      rotX = lerp(rotX, tRotX, 0.1);
+      rotY = lerp(rotY, tRotY, 0.1);
+      lift = lerp(lift, tLift,  0.1);
+
+      card.style.transform =
+        `perspective(800px) rotateX(${rotX.toFixed(3)}deg) rotateY(${rotY.toFixed(3)}deg) translateY(${lift.toFixed(3)}px)`;
+
+      const settling =
+        Math.abs(rotX - tRotX) > 0.05 ||
+        Math.abs(rotY - tRotY) > 0.05 ||
+        Math.abs(lift - tLift)  > 0.05;
+
+      if (active || settling) {
+        raf = requestAnimationFrame(animate);
+      } else {
+        card.style.transform   = '';
+        card.style.transition  = '';
+      }
+    }
+
+    card.addEventListener('mouseenter', () => {
+      active = true;
+      tLift  = -8;
+      // Override the .reveal transition so JS owns the transform
+      card.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(animate);
+    });
+
+    card.addEventListener('mousemove', (e) => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top)  / r.height;
+      tRotX = (y - 0.5) * -14;
+      tRotY = (x - 0.5) *  14;
+      glare.style.background =
+        `radial-gradient(circle at ${(x * 100).toFixed(1)}% ${(y * 100).toFixed(1)}%, rgba(255,255,255,0.28) 0%, transparent 65%)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      active = false;
+      tRotX  = 0;
+      tRotY  = 0;
+      tLift  = 0;
+      glare.style.background = '';
+    });
+  });
+
+
+  /* ----------------------------------------------------------
+     5. Lightbox — click project images to view in carousel
+     ---------------------------------------------------------- */
+  const projectImgs = Array.from(document.querySelectorAll('.project-img'));
+
+  if (projectImgs.length > 0) {
+    // Build lightbox DOM
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.setAttribute('role', 'dialog');
+    lightbox.setAttribute('aria-modal', 'true');
+    lightbox.innerHTML = `
+      <div class="lightbox-inner">
+        <img class="lightbox-img" src="" alt="" />
+        <button class="lightbox-close" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 1l14 14M15 1L1 15" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>
+          </svg>
+        </button>
+        <button class="lightbox-btn prev" aria-label="Previous image">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 2L4 8l6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button class="lightbox-btn next" aria-label="Next image">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6 2l6 6-6 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <span class="lightbox-counter"></span>
+      </div>
+    `;
+    document.body.appendChild(lightbox);
+
+    const lbImg     = lightbox.querySelector('.lightbox-img');
+    const lbClose   = lightbox.querySelector('.lightbox-close');
+    const lbPrev    = lightbox.querySelector('.lightbox-btn.prev');
+    const lbNext    = lightbox.querySelector('.lightbox-btn.next');
+    const lbCounter = lightbox.querySelector('.lightbox-counter');
+
+    let current = 0;
+
+    function openLightbox(index) {
+      current = index;
+      update();
+      lightbox.style.display = 'flex';
+      requestAnimationFrame(() => lightbox.classList.add('is-open'));
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('is-open');
+      lightbox.addEventListener('transitionend', () => {
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+      }, { once: true });
+    }
+
+    function update() {
+      const img = projectImgs[current];
+      lbImg.src = img.src;
+      lbImg.alt = img.alt;
+      lbCounter.textContent = `${current + 1} / ${projectImgs.length}`;
+      lbPrev.disabled = current === 0;
+      lbNext.disabled = current === projectImgs.length - 1;
+    }
+
+    // Click on any project image
+    projectImgs.forEach((img, i) => {
+      img.addEventListener('click', () => openLightbox(i));
+    });
+
+    // Controls
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', (e) => { e.stopPropagation(); if (current > 0) { current--; update(); } });
+    lbNext.addEventListener('click', (e) => { e.stopPropagation(); if (current < projectImgs.length - 1) { current++; update(); } });
+
+    // Click backdrop to close
+    lightbox.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('is-open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft'  && current > 0)                       { current--; update(); }
+      if (e.key === 'ArrowRight' && current < projectImgs.length - 1)  { current++; update(); }
+    });
+
+    // Hide initially
+    lightbox.style.display = 'none';
+  }
+
+
+})();
