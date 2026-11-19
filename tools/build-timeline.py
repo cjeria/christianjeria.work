@@ -241,8 +241,9 @@ assert n1 == 1 and n2 == 1, (n1, n2)
 # the same coordinates as the timeline so the art is reused unchanged.
 CARD_ART = [items[0], items[1], items[2], items[3], items[4], mobina]
 CARD_GEOM = [GEOM[0], GEOM[1], GEOM[2], GEOM[3], GEOM[4], GEOM[5]]
-card_svgs = []
-for art, (name, l0, r0, top, X, k, front) in zip(CARD_ART, CARD_GEOM):
+def product_svg(art, geom, cls):
+    """One product on a small slab of its own, in the timeline's coordinates."""
+    name, l0, r0, top, X, k, front = geom
     pad = 24
     vx, vy = l0 - pad - 20, top - 46
     vw, vh = (r0 - l0) + 2 * pad + 40, (BASE0 + 30) - vy
@@ -253,7 +254,7 @@ for art, (name, l0, r0, top, X, k, front) in zip(CARD_ART, CARD_GEOM):
 <polygon points="{a - 16},{BASE0 + 10} {a + 4},{BASE0 - 6} {b2 + 4},{BASE0 - 6} {b2 - 16},{BASE0 + 10}" fill="url(#tlGray)"></polygon>
 </g>"""
     cx = (l0 + r0) / 2
-    card_svgs.append(f"""<svg class="card-art" aria-hidden="true" viewBox="{vx:g} {vy:g} {vw:g} {vh:g}">
+    return f"""<svg class="{cls}" aria-hidden="true" viewBox="{vx:g} {vy:g} {vw:g} {vh:g}">
 {slab}
 <g class="tl-item">
 <ellipse class="tl-shadow" cx="{cx:g}" cy="{BASE0 + 2}" rx="{(r0 - l0) * 0.36:.1f}" ry="6" fill="#1C1C1C"></ellipse>
@@ -263,12 +264,65 @@ for art, (name, l0, r0, top, X, k, front) in zip(CARD_ART, CARD_GEOM):
 </g>
 </g>
 </g>
-</svg>""")
+</svg>"""
+
+
+card_svgs = [product_svg(art, geom, "card-art") for art, geom in zip(CARD_ART, CARD_GEOM)]
 
 card_re = re.compile(r'(<a class="card" [^>]*>\s*<div class="card-meta">[\s\S]*?</div>\s*)(<svg[\s\S]*?</svg>)')
 found = card_re.findall(html)
 assert len(found) == 6, len(found)
 it = iter(card_svgs)
 html = card_re.sub(lambda m: m.group(1) + next(it), html)
+
+# --- stacked timeline for phones --------------------------------------------
+# On narrow screens the wide drawing gives way to the same six products stacked
+# top to bottom along a vertical timeline. Phones can't hover, so each product
+# floats and plays its animation while it sits in the middle of the screen.
+STEPS = [("01", "Apple", "ID tools"), ("02", "Origin Labs", "hardware UI"), ("03", "MetaMask", "wallet, 30M+ MAU"),
+         ("04", "Portal", "wallet + brand"), ("05", "Intuition", "knowledge network"), ("06", "Today", "building my own apps")]
+steps = "\n".join(
+    f"""<li class="tl-step{' is-now' if i == len(STEPS) - 1 else ''}">
+<p class="tl-step-label"><span>{num}</span> [{label}]</p>
+<p class="tl-step-desc">{desc}</p>
+{product_svg(art, geom, "tl-step-art")}
+</li>"""
+    for i, ((num, label, desc), art, geom) in enumerate(zip(STEPS, items, GEOM))
+)
+stack_html = f"""<div class="tl-stack">
+<p class="tl-stack-end">earlier</p>
+<ol class="tl-steps" aria-label="Timeline, earlier to now">
+{steps}
+</ol>
+<p class="tl-stack-end">now</p>
+<script>
+  // Phones: float the product nearest the middle of the screen.
+  (() => {{
+    const steps = document.querySelectorAll(".tl-step .tl-item");
+    if (!("IntersectionObserver" in window) || !steps.length) return;
+    const io = new IntersectionObserver((entries) => {{
+      entries.forEach((e) => e.target.classList.toggle("is-focus", e.isIntersecting));
+    }}, {{ rootMargin: "-35% 0px -35% 0px" }});
+    steps.forEach((s) => io.observe(s));
+  }})();
+</script>
+</div>"""
+html = re.sub(r'\n?<div class="tl-stack">[\s\S]*?</script>\n</div>', "", html)
+html, n_stack = re.subn(r'(<svg class="timeline"[\s\S]*?</svg>)', lambda m: m.group(1) + "\n      " + stack_html, html, count=1)
+assert n_stack == 1
+
+# --- shared patterns ---------------------------------------------------------
+# The red dot fill and the slab texture are used by the hero, the work cards and
+# the phone timeline. They live in the page's always-present symbol block (next
+# to the fox and Apple logo), because phones hide the wide hero drawing and some
+# browsers stop painting patterns defined inside a hidden drawing.
+PATTERNS = ('<pattern id="tlRed" width="5" height="5" patternUnits="userSpaceOnUse"><circle cx="2.5" cy="2.5" r="1.5" fill="currentColor"></circle></pattern>\n'
+            '<pattern id="tlGray" width="6" height="6" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.2" fill="#CFCFCB"></circle></pattern>')
+html = re.sub(r'<defs>\s*<pattern id="tlRed"[\s\S]*?</defs>\n?', "", html)  # out of the hero drawing (and any earlier copy)
+sym_open = '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">'
+sym_open_new = '<svg width="0" height="0" style="position:absolute;color:var(--accent)" aria-hidden="true" focusable="false">'
+html = html.replace(sym_open, sym_open_new, 1)
+assert html.count(sym_open_new) == 1
+html = html.replace(sym_open_new, sym_open_new + "\n<defs>\n" + PATTERNS + "\n</defs>", 1)
 open(page, "w").write(html)
 print("placed:", ", ".join(f'{g["name"]} c={g["c"]:.0f}' for g in placed))
