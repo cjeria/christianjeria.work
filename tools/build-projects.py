@@ -152,13 +152,12 @@ def render(p, projects):
     )
     tags = "".join(f'<span class="tag">{t}</span>' for t in p["tags"])
     overview = "\n".join(f"          <p>{para}</p>" for para in p["overview"])
-    shots = "\n".join(
-        f'      <figure class="shot{" shot-alt" if s["alt_bg"] else ""}{" shot-pair" if s["pair"] else ""}">'
-        + "".join(clean_media(m) for m in s["media"])
-        + "</figure>"
-        for s in p["shots"]
-    )
-    gallery = f'\n    <section class="case-gallery" aria-label="Highlights">\n{shots}\n    </section>\n' if shots else ""
+    # Highlights sit straight in the body container; only a pair gets a row to sit side by side.
+    shots = []
+    for sh in p["shots"]:
+        media = "".join(clean_media(m) for m in sh["media"])
+        shots.append(f'        <div class="case-pair">{media}</div>' if sh["pair"] else f"        {media}")
+    gallery = ('\n      <div class="case-gallery">\n' + "\n".join(shots) + "\n      </div>") if shots else ""
     rows = []
     for o in projects:
         here = o["slug"] == p["slug"]
@@ -182,7 +181,8 @@ def render(p, projects):
       </figure>
     </section>
 
-    <section class="case-overview" aria-labelledby="overview-h">
+    <section class="case-body" aria-labelledby="overview-h">
+      <div class="case-overview">
       <div class="case-text">
         <h2 id="overview-h" class="case-label">[overview]</h2>
 {overview}
@@ -191,8 +191,8 @@ def render(p, projects):
 {facts}
           <div class="case-fact case-tags"><dt>Focus</dt><dd>{tags}</dd></div>
       </dl>
+      </div>{gallery}
     </section>
-{gallery}
     <section class="built case-more" aria-labelledby="more-h">
       <div class="sec-head">
         <h2 id="more-h">more <em>work</em></h2>
