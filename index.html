@@ -580,6 +580,13 @@
 <script>
   // Hero focus: the product under the pointer comes to the front and the rest
   // of the row, labels included, fades to 30%. Everything resets on the way out.
+  //
+  // SVG draws later elements on top, so bringing a product forward means moving
+  // it to the end of the row. A browser restarts an element's styles when it
+  // moves, so the move happens first, then the browser is made to register the
+  // product's resting state, and only then does the focus class go on, which
+  // lets the float and the fades transition instead of jumping. The original
+  // layering is put back only once everything has settled.
   (() => {
     const row = document.querySelector(".timeline .tl-items");
     if (!row) return;
@@ -587,17 +594,32 @@
     const colOf = (item) => item.querySelector(".tl-dot")?.getAttribute("cx");
     const cols = new Set(items.map(colOf));
     const labels = [...document.querySelectorAll(".timeline text")].filter((t) => cols.has(t.getAttribute("x")));
+    const SETTLE_MS = 800; // longer than the slowest transition (.7s)
     let current = null;
+    let restoreTimer = null;
+
     function focus(item) {
       if (item === current) return;
       current = item;
-      items.forEach((i) => row.appendChild(i)); // original stacking order
-      if (item) row.appendChild(item); // drawn last, so it sits on top
+      clearTimeout(restoreTimer);
+      if (item && row.lastElementChild !== item) {
+        row.appendChild(item);
+        getComputedStyle(item).opacity; // register its resting state before it changes
+      }
       row.classList.toggle("is-focusing", !!item);
       items.forEach((i) => i.classList.toggle("is-focus", i === item));
       const x = item && colOf(item);
       labels.forEach((t) => t.classList.toggle("tl-dim", !!item && t.getAttribute("x") !== x));
+      if (!item) restoreTimer = setTimeout(restoreOrder, SETTLE_MS);
     }
+
+    function restoreOrder() {
+      if (current) return;
+      items.forEach((i, n) => {
+        if (row.children[n] !== i) row.insertBefore(i, row.children[n]);
+      });
+    }
+
     row.addEventListener("pointerover", (e) => {
       const item = e.target.closest(".tl-item");
       if (item) focus(item);
