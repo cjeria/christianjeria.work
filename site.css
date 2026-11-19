@@ -153,3 +153,50 @@ main{display:flex;flex-direction:column;gap:20px}
 .an-progress{transform-origin:0 50%}
 :is(.tl-item:hover,.card:hover .tl-item) .an-progress{animation:an-fill 3.6s linear infinite}
 .card-art{overflow:visible}
+
+/* ---------------------------------------------------------------------------
+   Case-study pages (/apple/, /metamask/ ...): built by tools/build-projects.py
+   --------------------------------------------------------------------------- */
+.case-hero{gap:28px}
+.case-meta{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:13px;color:var(--muted)}
+.case-meta a{text-decoration:none;color:var(--muted)}
+.case-meta a:hover{color:var(--accent)}
+.case-media{margin:0;border:1px solid var(--line);border-radius:20px;background:var(--bg);overflow:hidden;
+  display:grid;place-items:center;padding:clamp(24px,4vw,56px)}
+.case-media img{display:block;max-width:100%;max-height:min(640px,72vh);width:auto;height:auto}
+.case-media-logo{padding:clamp(48px,8vw,96px)}
+.case-media-logo img{max-height:140px}
+.case-media-video{padding:0;background:#0C0920}
+.case-media-video video{display:block;width:100%;height:auto}
+
+.case-overview{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(260px,1fr);gap:40px 72px;padding:64px 8px 8px}
+.case-label{margin:0 0 20px;font-family:var(--mono);font-size:14px;font-weight:400;color:var(--muted)}
+.case-text p{margin:0 0 20px;font-size:28px;line-height:1.28;letter-spacing:-.005em}
+.case-text p:last-child{margin-bottom:0}
+.case-facts{margin:0;align-self:start;border-top:1px solid var(--ink)}
+.case-fact{display:grid;grid-template-columns:96px minmax(0,1fr);gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:14px;line-height:1.5}
+.case-fact dt{color:var(--muted)}
+.case-fact dd{margin:0}
+.case-fact a{color:var(--accent);text-decoration:none}
+.case-fact a:hover{text-decoration:underline}
+.case-tags dd{display:flex;flex-wrap:wrap;gap:6px}
+.case-tags .tag{font-size:12.5px;padding:2px 8px}
+
+.case-gallery{display:flex;flex-direction:column;gap:20px;padding-top:48px}
+.shot{margin:0;display:flex;justify-content:center;gap:24px;background:var(--panel);border:1px solid var(--line);border-radius:24px;
+  padding:clamp(24px,6vw,88px) clamp(16px,5vw,64px)}
+.shot-alt{background:#F7F7F5}
+.shot img,.shot video{display:block;width:100%;max-width:960px;height:auto;border-radius:12px}
+.shot-pair img{width:calc((50% - 12px) * .75);max-width:none}
+
+.case-more{padding-top:64px}
+.row-num{font-family:var(--mono);font-size:14px;color:var(--muted);margin-right:12px;vertical-align:.35em}
+.built-row.is-current .built-name{color:var(--accent)}
+
+@media (max-width:760px){
+  .case-overview{grid-template-columns:minmax(0,1fr);padding-top:40px}
+  .case-text p{font-size:23px}
+  .shot{border-radius:20px}
+  .shot-pair{flex-direction:column;align-items:center}
+  .shot-pair img{width:75%}
+}

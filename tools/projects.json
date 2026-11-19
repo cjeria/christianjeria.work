@@ -1,0 +1,379 @@
+[
+  {
+    "slug": "apple",
+    "num": "01",
+    "label": "internal tools",
+    "title": "Apple",
+    "page_title": "Apple — Christian Jeria",
+    "description": "Apple — case study by Christian Jeria.",
+    "summary": "Apple's Industrial Design group, led by Jony Ive, defines the physical form of every Apple product — from iPhone to MacBook to Apple Watch.",
+    "hero": {
+      "kind": "logo",
+      "html": "<img src=\"apple-logo.svg\" alt=\"Apple\" class=\"apple-hero-logo\" />"
+    },
+    "overview": [
+      "For four years, I worked as a Human Interface Designer at Apple embedded within the Industrial Design group — Jony Ive's team. My focus was not on consumer-facing software, but on the internal tools and workflows that helped one of the world's most demanding design teams do their best work.",
+      "Working at this level meant operating at the intersection of design craft and engineering, understanding deeply how industrial designers think, and translating that into software that felt invisible — tools that got out of the way and let the work speak for itself."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Human Interface Designer"
+      },
+      {
+        "label": "Platform",
+        "value": "Web, Mobile"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://apple.com\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">apple.com ↗</a>"
+      }
+    ],
+    "tags": [
+      "UI / UX",
+      "Interaction Design",
+      "Prototyping"
+    ],
+    "shots": [],
+    "nav_tag": "Web &amp; iOS"
+  },
+  {
+    "slug": "origin-labs",
+    "num": "02",
+    "label": "hardware · fleet app",
+    "title": "Origin Labs",
+    "page_title": "Origin Labs — Christian Jeria",
+    "description": "Origin Labs — case study by Christian Jeria.",
+    "summary": "A 3D printing startup that built the Origin One, a manufacturing-grade printer using Programmable PhotoPolymerization (P³) technology — later acquired by Stratasys.",
+    "hero": {
+      "kind": "image",
+      "html": "<img src=\"images/hero-decoration.png\" alt=\"\" />"
+    },
+    "overview": [
+      "Origin was a 3D printing startup that developed the Origin One, a manufacturing-grade 3D printer utilizing Programmable PhotoPolymerization (P³) technology. I was hired to design the company logo and the user interfaces for both the embedded system on the printer and the web application used to manage a fleet of printers."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Product Designer, Brand Designer"
+      },
+      {
+        "label": "Platform",
+        "value": "Embedded UI, Web"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://origin.io\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">origin.io ↗</a>"
+      }
+    ],
+    "tags": [
+      "Brand Identity",
+      "UI / UX",
+      "Embedded UI Design"
+    ],
+    "shots": [
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/3d-printers.png\" alt=\"3D printers\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/origin-hero.png\" alt=\"Origin hero\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/print-overlay.gif\" alt=\"Active print overlay animation\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/print-job-screens.png\" alt=\"Origin 3D print job screens\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/checklist-animation.gif\" alt=\"Checklist animation\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/origin-home-screen.png\" alt=\"Origin home screen\" class=\"project-highlight-img\" />"
+        ]
+      }
+    ],
+    "nav_tag": "Embedded UI, Web App"
+  },
+  {
+    "slug": "metamask",
+    "num": "03",
+    "label": "mobile · web3",
+    "title": "MetaMask",
+    "page_title": "MetaMask — Christian Jeria",
+    "description": "MetaMask — case study by Christian Jeria.",
+    "summary": "A secure, user-friendly wallet and gateway to the decentralized web, trusted by tens of millions of monthly active users worldwide.",
+    "hero": {
+      "kind": "image",
+      "html": "<img src=\"images/metamask-mobile-hero.png\" alt=\"MetaMask mobile app showing account balance and a token swap screen\" />"
+    },
+    "overview": [
+      "Over the course of several years at MetaMask, I helped shape the experience of one of the world's most widely used web3 products. My work spanned onboarding, wallet interactions, and decentralized app transactions, designing for both seasoned crypto users and those brand new to the space. I also created the now-iconic MetaMask fox logo and mascot, which has become a recognizable symbol of web3 itself.",
+      "Featured here is a selection of projects where I led product design and creative direction, with the goal of making decentralized technologies more intuitive, trustworthy, and accessible to millions of people worldwide."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Lead Product Designer"
+      },
+      {
+        "label": "Platform",
+        "value": "iOS &amp; Web"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://metamask.io\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">metamask.io ↗</a>"
+      }
+    ],
+    "tags": [
+      "UI / UX",
+      "Prototyping",
+      "Brand Identity"
+    ],
+    "shots": [
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/extension-hero.png\" alt=\"MetaMask extension\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/onboarding-flow.png\" alt=\"MetaMask onboarding flow\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/frame-9.png\" alt=\"MetaMask interface\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/frame-21.png\" alt=\"MetaMask interface\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/results.png\" alt=\"MetaMask results\" class=\"project-highlight-img\" />"
+        ]
+      }
+    ],
+    "nav_tag": "Brand, Web &amp; Mobile"
+  },
+  {
+    "slug": "portal",
+    "num": "04",
+    "label": "wallet · brand",
+    "title": "Portal",
+    "page_title": "Portal — Christian Jeria",
+    "description": "Portal — case study by Christian Jeria.",
+    "summary": "An early-stage startup building and testing wallet service concepts for web3.",
+    "hero": {
+      "kind": "image",
+      "html": "<img src=\"images/hero-decoration.png\" alt=\"\" />"
+    },
+    "overview": [
+      "At PortalHQ, I partnered with the team to bring early product concepts to life through rapid prototyping and design exploration. My contributions spanned across product, marketing, and brand presence: helping the company validate ideas for wallet services, shaping product illustrations, supporting marketing campaigns, and fully maintaining and evolving their website."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Product Designer, Illustrator, Webflow Developer"
+      },
+      {
+        "label": "Platform",
+        "value": "Mobile, Web"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://portalhq.io\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">portalhq.io ↗</a>"
+      }
+    ],
+    "tags": [
+      "Prototyping",
+      "Illustration",
+      "Front-End Development"
+    ],
+    "shots": [
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/payments-blockchain.jpg\" alt=\"Payments and blockchain\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/web-sdk.png\" alt=\"Web SDK\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": true,
+        "media": [
+          "<img src=\"images/opensea-purchase.gif\" alt=\"Opensea purchase flow\" class=\"project-highlight-img\" />",
+          "<img src=\"images/recover-face-id.gif\" alt=\"Recover with Face ID\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/portal-3d-illustrations.png\" alt=\"Portal 3D illustrations\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/portal-website-design.png\" alt=\"Portal website design\" class=\"project-highlight-img\" />"
+        ]
+      }
+    ],
+    "nav_tag": "Mobile, Web &amp; Illustration"
+  },
+  {
+    "slug": "intuition-systems",
+    "num": "05",
+    "label": "web · knowledge graph",
+    "title": "Intuition Systems",
+    "page_title": "Intuition Systems — Christian Jeria",
+    "description": "Intuition Systems — case study by Christian Jeria.",
+    "summary": "A knowledge network where people make claims about anything — ideas, facts, opinions — and the community supports or challenges them by investing in them using crypto.",
+    "hero": {
+      "kind": "image",
+      "html": "<img src=\"images/intuition-hero-burst.png\" alt=\"Intuition Systems profile card surrounded by share price, top supporters, trust market, holders, and AI chat cards\" />"
+    },
+    "overview": [
+      "At the start of 2025, I joined Intuition as Lead Product Designer to help the team unify a series of failed experiments into one flagship product. Their first attempt, Portal, had been confusing, overloaded, and lacked a clear value proposition. With no strategy or roadmap in place, my role was to bring clarity, focus, and design leadership to shape a cohesive experience. The goal was simple: turn scattered ideas into a product users could actually understand and love."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Advisor / Lead Product Designer"
+      },
+      {
+        "label": "Platform",
+        "value": "Web"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://intuition.systems\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">intuition.systems ↗</a>"
+      }
+    ],
+    "tags": [
+      "Product Strategy",
+      "UI / UX",
+      "Prototyping"
+    ],
+    "shots": [
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/the-problems.png\" alt=\"The problems with the previous product\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/create-flow.png\" alt=\"Create flow user journey\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/intuition-tabs.png\" alt=\"Intuition tabs\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": false,
+        "pair": false,
+        "media": [
+          "<img src=\"images/create-claim.png\" alt=\"Create claim screen\" class=\"project-highlight-img\" />"
+        ]
+      },
+      {
+        "alt_bg": true,
+        "pair": false,
+        "media": [
+          "<img src=\"images/flagship-profile.png\" alt=\"Flagship profile view\" class=\"project-highlight-img\" />"
+        ]
+      }
+    ],
+    "nav_tag": "Web App"
+  },
+  {
+    "slug": "mobina",
+    "num": "06",
+    "label": "motion · AI assistant",
+    "title": "Mobina",
+    "page_title": "Mobina — Christian Jeria",
+    "description": "Mobina — motion design project by Christian Jeria.",
+    "summary": "A motion design piece introducing Mobina, an AI executive assistant that handles scheduling, inboxes, and busywork so people can focus on what matters.",
+    "hero": {
+      "kind": "video",
+      "html": "<video class=\"project-hero-video\" controls playsinline preload=\"metadata\" poster=\"images/mobina-logo.png\">\n            <source src=\"mobina-product-video.mp4\" type=\"video/mp4\" />\n          </video>"
+    },
+    "overview": [
+      "Mobina is an AI executive assistant that manages the day-to-day busywork of running a calendar and inbox — scheduling, follow-ups, and coordination — so people can spend their time on higher-leverage work.",
+      "I directed and animated a product video for Mobina, translating what the assistant does into a short piece of motion design: clear, confident, and built to explain the product at a glance."
+    ],
+    "facts": [
+      {
+        "label": "Role",
+        "value": "Motion Designer"
+      },
+      {
+        "label": "Platform",
+        "value": "Video"
+      },
+      {
+        "label": "Live Site",
+        "value": "<a href=\"https://mobina.ai\" target=\"_blank\" rel=\"noopener\" class=\"project-link\">mobina.ai ↗</a>"
+      }
+    ],
+    "tags": [
+      "Motion Design",
+      "Animation",
+      "Creative Direction"
+    ],
+    "shots": [],
+    "nav_tag": "Motion Design"
+  }
+]

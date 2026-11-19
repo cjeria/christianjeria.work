@@ -1,184 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="MetaMask — case study by Christian Jeria." />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>MetaMask — Christian Jeria</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="../apple-touch-icon.png" />
-  <link rel="stylesheet" href="../styles.css" />
-  <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
+  <meta name="description" content="MetaMask — case study by Christian Jeria.">
+  <meta name="theme-color" content="#ECECEA">
+  <link rel="canonical" href="https://christianjeria.work/metamask/">
+  <meta property="og:title" content="MetaMask — Christian Jeria">
+  <meta property="og:description" content="MetaMask — case study by Christian Jeria.">
+  <meta property="og:image" content="https://christianjeria.work/og-image.png">
+  <meta property="og:url" content="https://christianjeria.work/metamask/">
+  <meta property="og:type" content="article">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
   <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<div class="page">
+  <div class="wrap">
 
-  <nav id="nav">
-    <div class="nav-inner">
-      <div class="nav-blob" id="nav-blob"></div>
-      <a href="/" class="nav-logo"><img src="/cj-logo.svg" alt="Christian Jeria" class="nav-logo-mark" /></a>
-      <span class="nav-sep" aria-hidden="true"></span>
-      <ul class="nav-links">
-        <li><a href="/work/">Work</a></li>
-        <li><a href="/services/">Services</a></li>
-        <li><a href="/about/">About</a></li>
-        <li><a href="/contact/">Contact</a></li>
-      </ul>
-    </div>
-  </nav>
+    <header class="site-head">
+      <a class="wordmark" href="/">studio <em>jeria</em></a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#work">work</a>
+        <a href="/#built">built</a>
+        <a href="/about/">about</a>
+        <a class="contact" href="/contact/">[contact]</a>
+      </nav>
+    </header>
 
-  <section class="project-hero thumbnail-2">
-    <div class="container">
-      <div class="project-hero-inner">
-        <div class="project-hero-text">
-          <h1 class="project-title fade-in-up">MetaMask</h1>
-          <p class="project-desc fade-in-up delay-1">A secure, user-friendly wallet and gateway to the decentralized web, trusted by tens of millions of monthly active users worldwide.</p>
-        </div>
-        <div class="project-hero-img-wrap fade-in-up delay-2">
-          <img src="images/metamask-mobile-hero.png" alt="MetaMask mobile app showing account balance and a token swap screen" />
-        </div>
+    <main>
+    <section class="hero case-hero">
+      <div class="case-meta"><a href="/#work">← selected work</a><span>03 / mobile · web3</span></div>
+      <div class="hero-top">
+        <h1>MetaMask</h1>
+        <p class="hero-lede">A secure, user-friendly wallet and gateway to the decentralized web, trusted by tens of millions of monthly active users worldwide.</p>
       </div>
-    </div>
-  </section>
+      <figure class="case-media case-media-image">
+        <img decoding="async" src="images/metamask-mobile-hero.png" alt="MetaMask mobile app showing account balance and a token swap screen" />
+      </figure>
+    </section>
 
-  <main class="section">
-    <div class="container">
-      <div class="project-content fade-in-up">
-
-        <div class="project-overview">
-
-          <div class="project-section">
-            <h2 class="project-section-title">Overview</h2>
-            <div class="project-overview-grid">
-              <div class="project-overview-text">
-                <p class="about-bio">Over the course of several years at MetaMask, I helped shape the experience of one of the world's most widely used web3 products. My work spanned onboarding, wallet interactions, and decentralized app transactions, designing for both seasoned crypto users and those brand new to the space. I also created the now-iconic MetaMask fox logo and mascot, which has become a recognizable symbol of web3 itself.</p>
-                <p class="about-bio">Featured here is a selection of projects where I led product design and creative direction, with the goal of making decentralized technologies more intuitive, trustworthy, and accessible to millions of people worldwide.</p>
-              </div>
-              <div class="project-role-details">
-                <div class="project-role-item">
-                  <span class="project-role-label">Role</span>
-                  <span class="project-role-value">Lead Product Designer</span>
-                </div>
-                <div class="project-role-item">
-                  <span class="project-role-label">Platform</span>
-                  <span class="project-role-value">iOS &amp; Web</span>
-                </div>
-                <div class="project-role-item">
-                  <span class="project-role-label">Live Site</span>
-                  <span class="project-role-value"><a href="https://metamask.io" target="_blank" rel="noopener" class="project-link">metamask.io ↗</a></span>
-                </div>
-                <div class="project-role-item project-role-tags">
-                  <span class="tag">UI / UX</span>
-                  <span class="tag">Prototyping</span>
-                  <span class="tag">Brand Identity</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="project-section" style="display: none;">
-            <h2 class="project-section-title">The Problem</h2>
-            <p class="about-bio">For most people, accessing decentralized technologies is confusing, risky, and fragmented. Managing crypto assets, connecting to decentralized apps, and navigating transactions often requires technical knowledge, unfamiliar concepts (like seed phrases, gas fees, or networks), and a high tolerance for potential errors. Without the right tools, everyday users struggle to engage with web3 safely and confidently.</p>
-          </div>
-
-          <div class="project-section" style="display: none;">
-            <h2 class="project-section-title">The Solution</h2>
-            <p class="about-bio">MetaMask provides a secure, user-friendly wallet and gateway to the decentralized web. It simplifies complex processes like key management, transactions, and dapp connections into clear, guided flows — empowering both newcomers and experienced users to explore, manage, and transact in web3 with confidence.</p>
-          </div>
-
-          <div class="project-section" style="display: none;">
-            <h2 class="project-section-title">The Impact</h2>
-            <p class="about-bio">MetaMask has become one of the most trusted and widely used wallets in web3, serving tens of millions of monthly active users worldwide. By lowering barriers to entry, it has accelerated adoption of decentralized apps and enabled everyday people, creators, and businesses to participate in the evolving decentralized economy.</p>
-          </div>
-
-        </div>
-
+    <section class="case-overview" aria-labelledby="overview-h">
+      <div class="case-text">
+        <h2 id="overview-h" class="case-label">[overview]</h2>
+          <p>Over the course of several years at MetaMask, I helped shape the experience of one of the world's most widely used web3 products. My work spanned onboarding, wallet interactions, and decentralized app transactions, designing for both seasoned crypto users and those brand new to the space. I also created the now-iconic MetaMask fox logo and mascot, which has become a recognizable symbol of web3 itself.</p>
+          <p>Featured here is a selection of projects where I led product design and creative direction, with the goal of making decentralized technologies more intuitive, trustworthy, and accessible to millions of people worldwide.</p>
       </div>
-    </div>
-  </main>
+      <dl class="case-facts">
+          <div class="case-fact"><dt>Role</dt><dd>Lead Product Designer</dd></div>
+          <div class="case-fact"><dt>Platform</dt><dd>iOS &amp; Web</dd></div>
+          <div class="case-fact"><dt>Live Site</dt><dd><a href="https://metamask.io" target="_blank" rel="noopener" class="project-link">metamask.io ↗</a></dd></div>
+          <div class="case-fact case-tags"><dt>Focus</dt><dd><span class="tag">UI / UX</span><span class="tag">Prototyping</span><span class="tag">Brand Identity</span></dd></div>
+      </dl>
+    </section>
 
-  <section class="project-highlights">
-    <div class="project-highlight project-highlight--dark reveal">
-      <img src="images/extension-hero.png" alt="MetaMask extension" class="project-highlight-img" />
-    </div>
-    <div class="project-highlight reveal">
-      <img src="images/onboarding-flow.png" alt="MetaMask onboarding flow" class="project-highlight-img" />
-    </div>
-    <div class="project-highlight project-highlight--dark reveal">
-      <img src="images/frame-9.png" alt="MetaMask interface" class="project-highlight-img" />
-    </div>
-    <div class="project-highlight reveal">
-      <img src="images/frame-21.png" alt="MetaMask interface" class="project-highlight-img" />
-    </div>
-    <div class="project-highlight project-highlight--dark reveal">
-      <img src="images/results.png" alt="MetaMask results" class="project-highlight-img" />
-    </div>
-  </section>
+    <section class="case-gallery" aria-label="Highlights">
+      <figure class="shot shot-alt"><img loading="lazy" decoding="async" src="images/extension-hero.png" alt="MetaMask extension" /></figure>
+      <figure class="shot"><img loading="lazy" decoding="async" src="images/onboarding-flow.png" alt="MetaMask onboarding flow" /></figure>
+      <figure class="shot shot-alt"><img loading="lazy" decoding="async" src="images/frame-9.png" alt="MetaMask interface" /></figure>
+      <figure class="shot"><img loading="lazy" decoding="async" src="images/frame-21.png" alt="MetaMask interface" /></figure>
+      <figure class="shot shot-alt"><img loading="lazy" decoding="async" src="images/results.png" alt="MetaMask results" /></figure>
+    </section>
 
-  <nav class="project-nav" aria-label="More projects">
-    <div class="container">
-      <p class="project-nav-heading">More Work</p>
-      <div class="project-nav-scroll">
-        <a href="../intuition-systems/" class="project-nav-card">
-          <div class="project-nav-thumb thumbnail-1">
-            <img src="../intuition-systems/images/hero-decoration.png" alt="Intuition Systems" />
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Web App</span>
-            <span class="project-nav-name">Intuition Systems</span>
-          </div>
-        </a>
-        <a href="../metamask/" class="project-nav-card active">
-          <div class="project-nav-thumb thumbnail-2">
-            <img src="images/hero-decoration.svg" alt="MetaMask" />
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Brand, Web &amp; Mobile</span>
-            <span class="project-nav-name">MetaMask</span>
-          </div>
-        </a>
-        <a href="../origin-labs/" class="project-nav-card">
-          <div class="project-nav-thumb thumbnail-3">
-            <img src="../origin-labs/images/hero-decoration.png" alt="Origin Labs" />
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Embedded UI, Web App</span>
-            <span class="project-nav-name">Origin Labs</span>
-          </div>
-        </a>
-        <a href="../portal/" class="project-nav-card">
-          <div class="project-nav-thumb thumbnail-4">
-            <img src="../portal/images/hero-decoration.png" alt="Portal" />
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Mobile, Web &amp; Illustration</span>
-            <span class="project-nav-name">Portal</span>
-          </div>
-        </a>
-        <a href="../apple/" class="project-nav-card">
-          <div class="project-nav-thumb thumbnail-apple">
-            <img src="../apple/apple-logo.svg" alt="Apple" style="object-fit:contain;padding:16px;" />
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Web &amp; iOS</span>
-            <span class="project-nav-name">Apple</span>
-          </div>
-        </a>
-        <a href="../mobina/" class="project-nav-card">
-          <div class="project-nav-thumb thumbnail-mobina">
-            <div class="mobina-mark"><span class="mobina-wordmark">Mobina</span></div>
-          </div>
-          <div class="project-nav-info">
-            <span class="tag">Motion Design</span>
-            <span class="project-nav-name">Mobina</span>
-          </div>
-        </a>
+    <section class="built case-more" aria-labelledby="more-h">
+      <div class="sec-head">
+        <h2 id="more-h">more <em>work</em></h2>
+        <p>[06 case studies, in order]</p>
       </div>
-    </div>
-  </nav>
+      <a class="built-row" href="/apple/"><span class="built-name"><span class="row-num">01</span> Apple</span><span class="built-desc">Web &amp; iOS →</span></a>
+      <a class="built-row" href="/origin-labs/"><span class="built-name"><span class="row-num">02</span> Origin Labs</span><span class="built-desc">Embedded UI, Web App →</span></a>
+      <a class="built-row is-current" href="/metamask/" aria-current="page"><span class="built-name"><span class="row-num">03</span> MetaMask</span><span class="built-desc">Brand, Web &amp; Mobile →</span></a>
+      <a class="built-row" href="/portal/"><span class="built-name"><span class="row-num">04</span> Portal</span><span class="built-desc">Mobile, Web &amp; Illustration →</span></a>
+      <a class="built-row" href="/intuition-systems/"><span class="built-name"><span class="row-num">05</span> Intuition Systems</span><span class="built-desc">Web App →</span></a>
+      <a class="built-row" href="/mobina/"><span class="built-name"><span class="row-num">06</span> Mobina</span><span class="built-desc">Motion Design →</span></a>
+    </section>
+    </main>
 
+    <footer class="site-foot">
+      <p>let's make something <em>inevitable</em></p>
+      <a class="cta" href="/contact/">[get in touch →]</a>
+    </footer>
 
-  <script src="../script.js"></script>
+  </div>
+</div>
 </body>
 </html>
