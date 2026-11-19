@@ -211,7 +211,7 @@ main{display:flex;flex-direction:column;gap:20px}
    --------------------------------------------------------------------------- */
 .about-grid{display:grid;grid-template-columns:minmax(260px,1fr) minmax(0,1.35fr);gap:56px 80px;align-items:center;padding:24px 0}
 .about-text h1{margin:0 0 28px;font-weight:400;font-size:clamp(48px,6.4vw,92px);line-height:.98;letter-spacing:-.02em}
-.about-text p{margin:0 0 20px;font-size:28px;line-height:1.28;letter-spacing:-.005em}
+.about-text p{margin:0 0 18px;max-width:62ch;font-family:var(--mono);font-size:16px;line-height:1.7}
 .about-text p:last-child{margin-bottom:0}
 .fan-wrap{display:flex;align-items:center;justify-content:center;padding:32px 0}
 .fan{position:relative;width:240px;height:320px;touch-action:pan-y;user-select:none;-webkit-user-select:none}
@@ -243,7 +243,7 @@ main{display:flex;flex-direction:column;gap:20px}
 
 @media (max-width:760px){
   .about-grid{grid-template-columns:minmax(0,1fr);gap:24px;padding:8px 0}
-  .about-text p{font-size:23px}
+  .about-text p{font-size:15px}
   .fan{width:200px;height:268px}
   .fan-wrap{padding:24px 0 8px}
   .contact-email{font-size:14px;padding:12px 16px;white-space:nowrap}
