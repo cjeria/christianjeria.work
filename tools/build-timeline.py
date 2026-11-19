@@ -26,6 +26,8 @@ def tag(s, old, new):
 # --- moving parts, per product -------------------------------------------
 a = items[0]  # Apple display: the selection hops across the grid, shapes bob
 a = tag(a, '<rect x="66" y="32" width="48" height="48" rx="3" fill="url(#tlRed)"></rect>',
+        '<rect x="66" y="32" width="48" height="48" rx="3"></rect>'
+        '<use href="#apple-logo" x="77.8" y="41" width="24.4" height="30" fill="#1C1C1C" stroke="none"></use>'
         '<rect class="an-tile" x="66" y="32" width="48" height="48" rx="3" fill="url(#tlRed)"></rect>')
 a = tag(a, '<path d="M130 72 L144 48 L158 72 Z M184 72 C184 52 212 52 212 72"></path>',
         '<path class="an-shapes" d="M130 72 L144 48 L158 72 Z M184 72 C184 52 212 52 212 72"></path>')
@@ -163,8 +165,7 @@ for ln in ['<line x1="70" y1="20" x2="70" y2="124"></line>',
            '<line x1="36" y1="30" x2="62" y2="30" stroke="#9A9A96"></line><line x1="36" y1="40" x2="58" y2="40" stroke="#9A9A96"></line><line x1="36" y1="50" x2="60" y2="50" stroke="#9A9A96"></line>']:
     assert mobina.count(ln) == 1, ln
     mobina = mobina.replace(ln, "")
-mobina = mobina.replace("</g>", """<circle class="an-play" cx="120" cy="58" r="20"></circle>
-<path class="an-play" d="M114 47 L130 58 L114 69 Z" fill="#1C1C1C"></path>
+mobina = mobina.replace("</g>", """<path class="an-play" d="M120 41.5 L126.5 48 L120 54.5 L113.5 48 Z M110 51.5 L116.5 58 L110 64.5 L103.5 58 Z M130 51.5 L136.5 58 L130 64.5 L123.5 58 Z M120 61.5 L126.5 68 L120 74.5 L113.5 68 Z" stroke-width="2.2" stroke-linejoin="miter"></path>
 <rect x="44" y="94" width="152" height="8" fill="#F7F7F5"></rect>
 <rect class="an-progress" x="44" y="94" width="152" height="8" fill="url(#tlRed)" stroke="none"></rect>
 <line x1="44" y1="112" x2="150" y2="112" stroke="#9A9A96"></line>

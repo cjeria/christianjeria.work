@@ -104,8 +104,9 @@ main{display:flex;flex-direction:column;gap:20px}
 /* Moving parts inside each product, played while it floats.
    Units are the drawing's own (SVG user units). */
 .tl-item [class^="an-"]{transform-box:fill-box}
-:is(.tl-item:hover,.card:hover .tl-item) .an-tile{animation:an-tile 3.2s steps(1,end) infinite}
-@keyframes an-tile{0%{transform:translate(0,0)}16.6%{transform:translate(54px,0)}33.3%{transform:translate(108px,0)}50%{transform:translate(108px,54px)}66.6%{transform:translate(54px,54px)}83.3%{transform:translate(0,54px)}}
+.an-tile{opacity:0;transform:translate(54px,0)}
+:is(.tl-item:hover,.card:hover .tl-item) .an-tile{opacity:1;animation:an-tile 3s steps(1,end) infinite}
+@keyframes an-tile{0%{transform:translate(54px,0)}20%{transform:translate(108px,0)}40%{transform:translate(108px,54px)}60%{transform:translate(54px,54px)}80%{transform:translate(0,54px)}}
 :is(.tl-item:hover,.card:hover .tl-item) .an-shapes{animation:an-bob 1.2s ease-in-out infinite alternate}
 @keyframes an-bob{to{transform:translateY(-4px)}}
 
