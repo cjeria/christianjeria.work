@@ -21,6 +21,12 @@ head, rest = src.split('<div class="page">', 1)
 header = re.search(r'\s*<header class="site-head">[\s\S]*?</header>\n', rest).group(0)
 hero = re.search(r'\s*<section class="hero">[\s\S]*?</section>\n', rest).group(0)
 timeline = re.search(r'<svg class="timeline"[\s\S]*?</svg>', hero).group(0)
+# Phones swap the wide drawing for the stacked timeline; every option needs both.
+stack = re.search(r'<div class="tl-stack">[\s\S]*?</script>\n</div>', hero).group(0)
+wide = timeline
+timeline = wide + "\n      " + stack
+# The drawing's top ~200 units are empty sky; this crop starts just above the labels.
+timeline_cropped = wide.replace('viewBox="0 0 1400 700"', 'viewBox="0 200 1400 500"', 1) + "\n      " + stack
 before_header, after_header = rest.split(header, 1)
 _, after_hero = after_header.split(hero, 1)  # keeps "<main>" placement intact
 between = after_header.split(hero, 1)[0]  # "\n    <main>"
@@ -250,6 +256,37 @@ OPTIONS = [
 }
 """,
     },
+    {
+        "slug": "option-6",
+        "name": "Hi, I’m Christian",
+        "why": "Modeled on nisaandrews.com's intro block: a left-aligned sentence introduction in the headline font with the role softly highlighted, a short paragraph beneath, and the drawing cropped to its labels so all of it sits above the fold.",
+        "header": f"""
+    <header class="site-head">
+      {WORDMARK}
+      <nav class="site-nav" aria-label="Primary">
+        {NAV}
+        <a class="contact" href="/contact/">contact</a>
+      </nav>
+    </header>
+""",
+        "hero": f"""
+    <section class="hero">
+      <div class="o-intro">
+        <h1>Hi, I’m Christian, a <mark>product &amp; brand <em>designer</em></mark>.</h1>
+        <p>I specialize in UI/UX, web design, branding and motion, with sixteen years of tools, hardware, wallets and AI products behind me, from Apple and MetaMask to the apps I build today.</p>
+      </div>
+      {timeline_cropped}
+    </section>
+""",
+        "css": """
+.hero{gap:8px}
+.o-intro{max-width:780px;display:flex;flex-direction:column;gap:20px;padding:8px 0 0}
+.o-intro h1{flex:none;margin:0;font-weight:400;font-size:clamp(40px,4.6vw,64px);line-height:1.04;letter-spacing:-.02em}
+.o-intro mark{background:linear-gradient(transparent 58%,rgba(196,50,28,.16) 58%,rgba(196,50,28,.16) 90%,transparent 90%);color:inherit;padding:0 .04em;border-radius:0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.o-intro p{margin:0;max-width:60ch;font-family:var(--mono);font-size:16px;line-height:1.7;color:#3A3A37}
+@media (max-width:760px){ .o-intro p{font-size:14.5px} }
+""",
+    },
 ]
 
 BADGE_CSS = """
@@ -330,7 +367,7 @@ def overview():
 <div class="page">
   <div class="cmp-wrap">
     <header class="cmp-intro">
-      <h1>Nav and hero, <em>five ways</em></h1>
+      <h1>Nav and hero, <em>six ways</em></h1>
       <p>Each option keeps the product drawing, its hover interactions and the rest of the homepage exactly as they are; only the nav and the text around the drawing change. Previews show the top of each page at desktop and phone size. Open one to try it for real.</p>
     </header>
 {"".join(cards)}
