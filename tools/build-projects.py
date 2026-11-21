@@ -121,7 +121,7 @@ HEAD = """<!doctype html>
         <a href="/#work">work</a>
         <a href="/#built">built</a>
         <a href="/about/">about</a>
-        <a class="contact" href="/contact/">[contact]</a>
+        <a class="contact" href="/contact/">contact</a>
       </nav>
     </header>
 """
@@ -129,7 +129,7 @@ HEAD = """<!doctype html>
 FOOT = """
     <footer class="site-foot">
       <p>let's build something great <em>together</em></p>
-      <a class="cta" href="/contact/">[get in touch →]</a>
+      <a class="cta" href="/contact/">get in touch →</a>
     </footer>
 
   </div>
@@ -183,7 +183,7 @@ def render(p, projects):
 
     <section class="case-overview" aria-labelledby="overview-h">
       <div class="case-text">
-        <h2 id="overview-h" class="case-label">[overview]</h2>
+        <h2 id="overview-h" class="case-label">overview</h2>
 {overview}
       </div>
       <dl class="case-facts">
@@ -194,7 +194,7 @@ def render(p, projects):
 {gallery}    <section class="built case-more" aria-labelledby="more-h">
       <div class="sec-head">
         <h2 id="more-h">more <em>work</em></h2>
-        <p>[06 case studies, in order]</p>
+        <p>06 case studies, in order</p>
       </div>
 {more}
     </section>
