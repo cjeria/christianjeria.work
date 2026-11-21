@@ -63,7 +63,7 @@ main{display:flex;flex-direction:column;gap:20px}
 .built-desc{font-family:var(--mono);font-size:14px;color:var(--muted)}
 
 /* Footer */
-.site-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;padding:72px 8px 32px}
+.site-foot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;padding:72px 8px 120px}
 .site-foot p{margin:0;font-size:clamp(40px,5vw,72px);line-height:1;letter-spacing:-.02em}
 .cta{font-family:var(--mono);font-size:15px;color:var(--accent);text-decoration:none;border:1px solid var(--accent);border-radius:999px;padding:14px 22px}
 
@@ -76,7 +76,7 @@ main{display:flex;flex-direction:column;gap:20px}
   .card{flex-basis:100%;padding:22px;border-radius:20px}
   .card h3{font-size:34px}
   .built-name{font-size:28px}
-  .site-foot{padding-top:56px}
+  .site-foot{padding-top:56px;padding-bottom:80px}
 }
 
 /* Timeline: each product floats up off the plane on hover and gently bobs.
