@@ -116,13 +116,15 @@ HEAD = """<!doctype html>
   <div class="wrap">
 
     <header class="site-head">
-      <a class="wordmark" href="/">christian <em>jeria</em></a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="/#work">work</a>
-        <a href="/#built">built</a>
-        <a href="/about/">about</a>
-        <a class="contact" href="/contact/">contact</a>
-      </nav>
+      <div class="pillbar">
+        <a class="wordmark" href="/">christian <em>jeria</em></a>
+        <nav class="site-nav" aria-label="Primary">
+          <a href="/#work">work</a>
+          <a href="/#built">built</a>
+          <a href="/about/">about</a>
+        </nav>
+        <a class="pill-contact" href="/contact/">contact</a>
+      </div>
     </header>
 """
 
