@@ -283,7 +283,7 @@ STEPS = [("01", "Apple", "ID Tools"), ("02", "Origin Labs", "Hardware UI"), ("03
          ("04", "Portal", "Wallet + Brand"), ("05", "Intuition", "Knowledge Network"), ("06", "Today", "Building My Own Apps")]
 steps = "\n".join(
     f"""<li class="tl-step{' is-now' if i == len(STEPS) - 1 else ''}">
-<p class="tl-step-label"><span>{num}</span> {label}</p>
+<p class="tl-step-label">{label}</p>
 <p class="tl-step-desc">{desc}</p>
 {product_svg(art, geom, "tl-step-art")}
 </li>"""

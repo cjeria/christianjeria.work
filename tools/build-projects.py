@@ -166,14 +166,14 @@ def render(p, projects):
         current = ' aria-current="page"' if here else ""
         rows.append(
             f'      <a class="built-row{" is-current" if here else ""}" href="/{o["slug"]}/"{current}>'
-            f'<span class="built-name"><span class="row-num">{o["num"]}</span> {o["title"]}</span>'
+            f'<span class="built-name">{o["title"]}</span>'
             f'<span class="built-desc">{o["nav_tag"] or o["label"]} →</span></a>'
         )
     more = "\n".join(rows)
     body = f"""
     <main>
     <section class="hero case-hero">
-      <div class="case-meta"><a href="/#work">← Selected Work</a><span>{p["num"]} / {p["label"]}</span></div>
+      <div class="case-meta"><a href="/#work">← Selected Work</a><span>{p["label"]}</span></div>
       <div class="hero-top">
         <h1>{p["title"]}</h1>
         <p class="hero-lede">{p["summary"]}</p>
@@ -196,7 +196,6 @@ def render(p, projects):
 {gallery}    <section class="built case-more" aria-labelledby="more-h">
       <div class="sec-head">
         <h2 id="more-h">More <em>Work</em></h2>
-        <p>06 Case Studies, in Order</p>
       </div>
 {more}
     </section>
