@@ -288,3 +288,9 @@ main{display:flex;flex-direction:column;gap:20px}
 .intro mark{background:linear-gradient(transparent 58%,rgba(196,50,28,.16) 58%,rgba(196,50,28,.16) 90%,transparent 90%);color:inherit;padding:0 .04em}
 .intro p{margin:0;max-width:60ch;font-family:var(--mono);font-size:16px;line-height:1.7;color:#3A3A37}
 @media (max-width:760px){ .intro p{font-size:14.5px} }
+
+/* Nav logo: the CJ mark in place of the written name */
+.wordmark{display:inline-flex;align-items:center;line-height:0}
+.wordmark-logo{display:block;height:28px;width:auto}
+.wordmark:hover .wordmark-logo{opacity:.7}
+@media (max-width:600px){ .wordmark-logo{height:24px} }
