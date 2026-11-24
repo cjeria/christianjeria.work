@@ -23,12 +23,12 @@ REF = "v1-live"
 
 # Order, number and short label match the "selected work" cards on the homepage.
 PROJECTS = [
-    ("apple", "01", "internal tools"),
-    ("origin-labs", "02", "hardware · fleet app"),
-    ("metamask", "03", "mobile · web3"),
-    ("portal", "04", "wallet · brand"),
-    ("intuition-systems", "05", "web · knowledge graph"),
-    ("mobina", "06", "motion · AI assistant"),
+    ("apple", "01", "Internal Tools"),
+    ("origin-labs", "02", "Hardware · Fleet App"),
+    ("metamask", "03", "Mobile · Web3"),
+    ("portal", "04", "Wallet · Brand"),
+    ("intuition-systems", "05", "Web · Knowledge Graph"),
+    ("mobina", "06", "Motion · AI Assistant"),
 ]
 
 
@@ -117,21 +117,21 @@ HEAD = """<!doctype html>
 
     <header class="site-head">
       <div class="pillbar">
-        <a class="wordmark" href="/">christian <em>jeria</em></a>
+        <a class="wordmark" href="/">Christian <em>Jeria</em></a>
         <nav class="site-nav" aria-label="Primary">
-          <a href="/#work">work</a>
-          <a href="/#built">built</a>
-          <a href="/about/">about</a>
+          <a href="/#work">Work</a>
+          <a href="/#built">Built</a>
+          <a href="/about/">About</a>
         </nav>
-        <a class="pill-contact" href="/contact/">contact</a>
+        <a class="pill-contact" href="/contact/">Contact</a>
       </div>
     </header>
 """
 
 FOOT = """
     <footer class="site-foot">
-      <p>100% <em>human.</em></p>
-      <a class="cta" href="/contact/">get in touch →</a>
+      <p>100% <em>Human.</em></p>
+      <a class="cta" href="/contact/">Get in Touch →</a>
     </footer>
 
   </div>
@@ -173,7 +173,7 @@ def render(p, projects):
     body = f"""
     <main>
     <section class="hero case-hero">
-      <div class="case-meta"><a href="/#work">← selected work</a><span>{p["num"]} / {p["label"]}</span></div>
+      <div class="case-meta"><a href="/#work">← Selected Work</a><span>{p["num"]} / {p["label"]}</span></div>
       <div class="hero-top">
         <h1>{p["title"]}</h1>
         <p class="hero-lede">{p["summary"]}</p>
@@ -185,7 +185,7 @@ def render(p, projects):
 
     <section class="case-overview" aria-labelledby="overview-h">
       <div class="case-text">
-        <h2 id="overview-h" class="case-label">overview</h2>
+        <h2 id="overview-h" class="case-label">Overview</h2>
 {overview}
       </div>
       <dl class="case-facts">
@@ -195,8 +195,8 @@ def render(p, projects):
     </section>
 {gallery}    <section class="built case-more" aria-labelledby="more-h">
       <div class="sec-head">
-        <h2 id="more-h">more <em>work</em></h2>
-        <p>06 case studies, in order</p>
+        <h2 id="more-h">More <em>Work</em></h2>
+        <p>06 Case Studies, in Order</p>
       </div>
 {more}
     </section>

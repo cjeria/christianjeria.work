@@ -279,8 +279,8 @@ html = card_re.sub(lambda m: m.group(1) + next(it), html)
 # On narrow screens the wide drawing gives way to the same six products stacked
 # top to bottom along a vertical timeline. Phones can't hover, so each product
 # floats and plays its animation while it sits in the middle of the screen.
-STEPS = [("01", "Apple", "ID tools"), ("02", "Origin Labs", "hardware UI"), ("03", "MetaMask", "wallet, 30M+ MAU"),
-         ("04", "Portal", "wallet + brand"), ("05", "Intuition", "knowledge network"), ("06", "Today", "building my own apps")]
+STEPS = [("01", "Apple", "ID Tools"), ("02", "Origin Labs", "Hardware UI"), ("03", "MetaMask", "Wallet, 30M+ MAU"),
+         ("04", "Portal", "Wallet + Brand"), ("05", "Intuition", "Knowledge Network"), ("06", "Today", "Building My Own Apps")]
 steps = "\n".join(
     f"""<li class="tl-step{' is-now' if i == len(STEPS) - 1 else ''}">
 <p class="tl-step-label"><span>{num}</span> {label}</p>
@@ -290,11 +290,11 @@ steps = "\n".join(
     for i, ((num, label, desc), art, geom) in enumerate(zip(STEPS, items, GEOM))
 )
 stack_html = f"""<div class="tl-stack">
-<p class="tl-stack-end">earlier</p>
+<p class="tl-stack-end">Earlier</p>
 <ol class="tl-steps" aria-label="Timeline, earlier to now">
 {steps}
 </ol>
-<p class="tl-stack-end">now</p>
+<p class="tl-stack-end">Now</p>
 <script>
   // Phones: float the product nearest the middle of the screen.
   (() => {{
