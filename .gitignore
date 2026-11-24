@@ -3,3 +3,7 @@
 .vercel
 node_modules/
 package-lock.json
+
+# PP Editorial New is licensed for personal use only: never commit or deploy it
+PPEditorialNew-Free for personal use/
+explorations/type/pp-editorial-new*/
