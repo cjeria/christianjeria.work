@@ -306,3 +306,8 @@ main{display:flex;flex-direction:column;gap:20px}
   .pillbar{flex-wrap:wrap;justify-content:space-between;gap:10px 14px;border-radius:24px;padding:10px 10px 12px 18px;width:100%}
   .pillbar .site-nav{order:3;width:100%;gap:22px}
 }
+
+/* Smooth scrolling to the homepage sections (Work, Built, See the Work), stopping
+   short of the floating nav so section titles aren't hidden under it */
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} }
