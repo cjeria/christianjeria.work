@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <base href="/about/">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>About — Christian Jeria</title>
+  <meta name="description" content="About Christian Jeria — Product Designer & Builder.">
+  <meta name="theme-color" content="#ECECEA">
+  <link rel="canonical" href="https://christianjeria.work/about/">
+  <meta property="og:title" content="About — Christian Jeria">
+  <meta property="og:description" content="About Christian Jeria — Product Designer & Builder.">
+  <meta property="og:image" content="https://christianjeria.work/og-image.png">
+  <meta property="og:url" content="https://christianjeria.work/about/">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/site.css">
+  <script defer src="/_vercel/insights/script.js"></script>
+
+  <meta name="robots" content="noindex">
+  <style>
+    /* Type preview: Noto Serif Display, Condensed (75%) Light (300) in place of Instrument Serif */
+    :root{--serif:"Noto Serif Display",Georgia,serif}
+    .page{font-stretch:75%;font-weight:300}
+    .page :is(h1,h2,h3,em){font-weight:300}
+    .type-badge{position:fixed;left:16px;bottom:16px;z-index:50;display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;
+      font:13px var(--mono);font-stretch:100%;background:#1C1C1C;color:#ECECEA;border-radius:999px;padding:8px 14px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
+    .type-badge a{color:#ECECEA}
+    .type-badge a:hover{color:#fff}
+    @media (max-width:600px){ .type-badge{right:12px;left:12px;bottom:12px;border-radius:16px;font-size:12px} }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="wrap">
+
+    <header class="site-head">
+      <a class="wordmark" href="/">christian <em>jeria</em></a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="/#work">work</a>
+        <a href="/#built">built</a>
+        <a href="/about/" aria-current="page">about</a>
+        <a class="contact" href="/contact/">contact</a>
+      </nav>
+    </header>
+
+    <main>
+    <section class="hero about-panel" aria-labelledby="about-h">
+      <div class="about-grid">
+        <div class="fan-wrap">
+          <div class="fan" id="about-fan">
+          <button class="fan-card" type="button" data-pos="0" aria-label="Bring photo 1 to front"><img src="cj-1.png" alt="Christian Jeria — photo 1" /></button>
+          <button class="fan-card" type="button" data-pos="1" aria-label="Bring photo 2 to front"><img src="cj-2.png" alt="Christian Jeria — photo 2" /></button>
+          <button class="fan-card" type="button" data-pos="2" aria-label="Bring photo 3 to front"><img src="../cjeria-portrait.png" alt="Christian Jeria — photo 3" /></button>
+          </div>
+        </div>
+        <div class="about-text">
+          <h1 id="about-h">About</h1>
+          <p>My name is Christian. I grew up in Miami, lived in San Francisco for 10 years before moving to Seattle. I'm a compulsive maker: designer, engineer, painter, and endlessly curious about how things work.</p>
+          <p>My experience in product design and years at places like Apple and MetaMask taught me that the best work happens at the intersection of craft, constraint, and human need. My approach to design is direct, intentional, and grounded in first principles. I believe in solving real problems for real people, in asking better questions before settling on answers, and in the uncompromising pursuit of clarity.</p>
+          <p>When I'm not designing or building, I'm painting, surfing, traveling, or thinking about the next thing worth making.</p>
+        </div>
+      </div>
+    </section>
+    </main>
+
+    <footer class="site-foot">
+      <p>let's build something great <em>together</em></p>
+      <a class="cta" href="/contact/">get in touch →</a>
+    </footer>
+
+  </div>
+</div>
+    <script>
+      (function () {
+        /* Photo fan — full carousel rotation on click, or on swipe
+           for touch. Bringing the right card to front rotates the
+           whole set right-to-left: right→front, front→left,
+           left→right (wraps around). Bringing the left card to
+           front rotates the opposite way. Swiping left is the same
+           gesture as tapping the right card (advance); swiping
+           right is the same as tapping the left card (go back). */
+        document.querySelectorAll(".fan").forEach((fan) => {
+          const cards = Array.from(fan.querySelectorAll(".fan-card"));
+          const byPos = (pos) => cards.find((c) => c.dataset.pos === pos);
+          let rotateTimer = null;
+
+          function triggerRotation() {
+            // Slow the transition down for the rotation itself, then
+            // drop back to the snappy hover speed once it settles
+            fan.classList.add("is-rotating");
+            clearTimeout(rotateTimer);
+            rotateTimer = setTimeout(() => fan.classList.remove("is-rotating"), 650);
+          }
+
+          function rotateLeft() {
+            const front = byPos("0");
+            const left = byPos("1");
+            const right = byPos("2");
+            triggerRotation();
+            right.dataset.pos = "0";
+            front.dataset.pos = "1";
+            left.dataset.pos = "2";
+          }
+
+          function rotateRight() {
+            const front = byPos("0");
+            const left = byPos("1");
+            const right = byPos("2");
+            triggerRotation();
+            left.dataset.pos = "0";
+            front.dataset.pos = "2";
+            right.dataset.pos = "1";
+          }
+
+          cards.forEach((card) => {
+            card.addEventListener("click", () => {
+              const pos = card.dataset.pos;
+              if (pos === "0") return;
+              if (pos === "2") rotateLeft();
+              else if (pos === "1") rotateRight();
+            });
+          });
+
+          /* Drag — touch only (mouse/desktop stays click-only, see
+             above). The front card follows the finger but is clamped
+             to a fixed maximum distance, like it's sliding along a
+             bounded carousel track rather than following the finger
+             anywhere on the page. Releasing past a distance threshold
+             rotates the set (dragging left behaves like tapping the
+             right card — advance; dragging right is like tapping the
+             left card — go back); releasing before the threshold
+             snaps back to rest. */
+          const SWIPE_THRESHOLD = 40;
+          const MAX_DRAG = 90; // px — hard boundary the card can't pass
+          const MAX_ROTATE = 8; // deg, reached at MAX_DRAG
+          let dragActive = false;
+          let dragPointerId = null;
+          let dragStartX = 0;
+          let dragStartY = 0;
+          let dragDeltaX = 0;
+          let isHorizontalDrag = false;
+          let draggedCard = null;
+
+          fan.addEventListener("pointerdown", (e) => {
+            if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
+            dragActive = true;
+            isHorizontalDrag = false;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            dragDeltaX = 0;
+            dragPointerId = e.pointerId;
+            draggedCard = byPos("0"); // the front card is what follows the drag
+            fan.setPointerCapture(e.pointerId);
+          });
+
+          fan.addEventListener("pointermove", (e) => {
+            if (!dragActive || e.pointerId !== dragPointerId) return;
+            const rawDeltaX = e.clientX - dragStartX;
+            const dy = e.clientY - dragStartY;
+
+            if (!isHorizontalDrag && Math.abs(rawDeltaX) > 6 && Math.abs(rawDeltaX) > Math.abs(dy)) {
+              isHorizontalDrag = true;
+              draggedCard.style.transition = "none";
+            }
+            if (isHorizontalDrag) {
+              // Stops the page from scrolling and the underlying
+              // card's tap from firing once it's clearly a drag
+              e.preventDefault();
+              // Clamp to a fixed range — the card stops at this
+              // boundary no matter how far the finger keeps moving
+              dragDeltaX = Math.max(-MAX_DRAG, Math.min(MAX_DRAG, rawDeltaX));
+              const rotate = (dragDeltaX / MAX_DRAG) * MAX_ROTATE;
+              draggedCard.style.transform = `translate(${dragDeltaX}px, 0) rotate(${rotate}deg)`;
+            }
+          });
+
+          function endDrag(e) {
+            if (!dragActive || e.pointerId !== dragPointerId) return;
+            dragActive = false;
+
+            if (isHorizontalDrag) {
+              const card = draggedCard;
+              if (Math.abs(dragDeltaX) > SWIPE_THRESHOLD) {
+                if (dragDeltaX < 0) rotateLeft();
+                else rotateRight();
+              }
+              // Hand back off to CSS — either to the resting front
+              // spot, or to wherever the card landed after rotating
+              requestAnimationFrame(() => {
+                card.style.transition = "";
+                card.style.transform = "";
+              });
+            }
+            draggedCard = null;
+          }
+
+          fan.addEventListener("pointerup", endDrag);
+          fan.addEventListener("pointercancel", endDrag);
+        });
+      })();
+    </script>
+
+<nav class="type-badge" aria-label="Type preview"><span>Preview: Noto Serif Display, Condensed Light</span><span><a href="/explorations/type/noto-serif-display/home/">home</a> · <a href="/explorations/type/noto-serif-display/metamask/">metamask</a> · <strong>about</strong></span><a href="/about/">see it in Instrument Serif →</a></nav>
+</body>
+</html>
