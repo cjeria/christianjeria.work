@@ -128,7 +128,7 @@ HEAD = """<!doctype html>
 
 FOOT = """
     <footer class="site-foot">
-      <p>100% human. Let's build something <em>together</em></p>
+      <p>100% <em>human.</em></p>
       <a class="cta" href="/contact/">get in touch →</a>
     </footer>
 
