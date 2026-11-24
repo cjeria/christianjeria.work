@@ -36,7 +36,7 @@ NAV = """<a href="#work">work</a>
         <a href="#built">built</a>
         <a href="/about/">about</a>"""
 WORDMARK = '<a class="wordmark" href="/">christian <em>jeria</em></a>'
-LEDE = "Specializing in UI/UX, web design, branding and motion."
+LEDE = "Specializing in UI/UX, web, branding and motion."
 PREVIOUSLY = '<p class="previously">previously <em>at</em> <span class="tag">Apple</span> <em>and</em> <span class="tag">MetaMask</span></p>'
 
 OPTIONS = [
@@ -130,7 +130,7 @@ OPTIONS = [
         <h1>Freelance product<br><em>designer</em></h1>
         <div class="o-focus">
           <p class="o-label">[specializing in]</p>
-          <p class="o-list">UI/UX, web design, branding and motion</p>
+          <p class="o-list">UI/UX, web, branding and motion</p>
         </div>
       </div>
       {timeline}
@@ -274,7 +274,7 @@ OPTIONS = [
     <section class="hero">
       <div class="o-intro">
         <h1>Hi, I’m Christian, a <mark>product &amp; brand <em>designer</em></mark>.</h1>
-        <p>I specialize in UI/UX, web design, branding and motion, with sixteen years of tools, hardware, wallets and AI products behind me, from Apple and MetaMask to the apps I build today.</p>
+        <p>I specialize in UI/UX, web, branding and motion, with sixteen years of tools, hardware, wallets and AI products behind me, from Apple and MetaMask to the apps I build today.</p>
       </div>
       {timeline_cropped}
     </section>
