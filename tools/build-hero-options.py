@@ -19,7 +19,8 @@ src = (ROOT / "index.html").read_text()
 
 head, rest = src.split('<div class="page">', 1)
 header = re.search(r'\s*<header class="site-head">[\s\S]*?</header>\n', rest).group(0)
-hero = re.search(r'\s*<section class="hero">[\s\S]*?</section>\n', rest).group(0)
+# The hero is everything between the nav and the work section (one or more sections).
+hero = re.search(r'\s*<section [^>]*>[\s\S]*?\n(?=\s*<section id="work")', rest.split("<main>", 1)[1]).group(0)
 timeline = re.search(r'<svg class="timeline"[\s\S]*?</svg>', hero).group(0)
 # Phones swap the wide drawing for the stacked timeline; every option needs both.
 stack = re.search(r'<div class="tl-stack">[\s\S]*?</script>\n</div>', hero).group(0)

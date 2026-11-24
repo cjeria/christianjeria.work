@@ -279,12 +279,18 @@ main{display:flex;flex-direction:column;gap:20px}
   .tl-step-art{display:block;width:100%;height:auto;max-height:220px;overflow:visible}
 }
 
-/* Homepage intro: a sentence introduction with the role highlighted, a short
-   paragraph, then the drawing (cropped to its labels in index.html via the
-   viewBox, so it sits above the fold) */
-.hero-home{gap:8px}
-.intro{max-width:780px;display:flex;flex-direction:column;gap:20px;padding-top:8px}
-.intro h1{flex:none;margin:0;font-weight:400;font-size:clamp(40px,4.6vw,64px);line-height:1.04;letter-spacing:-.02em}
-.intro mark{background:linear-gradient(transparent 58%,rgba(196,50,28,.16) 58%,rgba(196,50,28,.16) 90%,transparent 90%);color:inherit;padding:0 .04em}
-.intro p{margin:0;max-width:60ch;font-family:var(--mono);font-size:16px;line-height:1.7;color:#3A3A37}
-@media (max-width:760px){ .intro p{font-size:14.5px} }
+
+/* Homepage hero (from hero option 5): the title on the left; availability,
+   status and two next steps on the right; the drawing in its own panel below */
+.split{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(280px,1fr);align-items:end;gap:32px 56px;padding:28px 8px 12px}
+.split h1{margin:0;font-weight:400;font-size:clamp(56px,8.4vw,128px);line-height:.92;letter-spacing:-.03em}
+.split-lede{margin:0 0 18px;font-size:30px;line-height:1.15}
+.split .status{margin:0 0 22px;font-size:13px}
+.split-ctas{display:flex;flex-wrap:wrap;gap:12px}
+.btn-ink{font-family:var(--mono);font-size:15px;text-decoration:none;border-radius:999px;padding:14px 22px;background:var(--ink);color:var(--bg)}
+.btn-ink:hover{color:var(--bg);background:#000}
+.hero-drawing{padding-top:24px}
+@media (max-width:760px){
+  .split{grid-template-columns:minmax(0,1fr);gap:20px;padding-top:16px}
+  .split-lede{font-size:24px}
+}
