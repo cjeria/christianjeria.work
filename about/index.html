@@ -21,6 +21,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=IBM+Plex+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/site.css">
   <script defer src="/_vercel/insights/script.js"></script>
+  <script defer src="/site.js"></script>
 </head>
 <body>
 <div class="page">
@@ -29,12 +30,15 @@
     <header class="site-head">
       <div class="pillbar">
         <a class="wordmark" href="/">Christian <em>Jeria</em></a>
-        <nav class="site-nav" aria-label="Primary">
-          <a href="/#work">Work</a>
-          <a href="/#built">Built</a>
-          <a href="/about/" aria-current="page">About</a>
-        </nav>
-        <a class="pill-contact" href="/contact/">Contact</a>
+        <button class="menu-btn" type="button" aria-expanded="false" aria-controls="site-menu" aria-label="Menu"><span></span><span></span></button>
+        <div class="pill-menu" id="site-menu">
+          <nav class="site-nav" aria-label="Primary">
+            <a href="/#work">Work</a>
+            <a href="/#built">Built</a>
+            <a href="/about/" aria-current="page">About</a>
+          </nav>
+          <a class="pill-contact" href="/contact/">Contact</a>
+        </div>
       </div>
     </header>
 
