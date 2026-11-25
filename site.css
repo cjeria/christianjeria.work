@@ -317,3 +317,7 @@ html{scroll-behavior:smooth;scroll-padding-top:96px}
   .split{padding:44px 8px 32px}
   .hero-drawing{padding:44px 40px 40px}
 }
+
+/* Company names in the hero subtext: underlined links to their case studies */
+.split-lede a{color:inherit;text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:5px}
+.split-lede a:hover{color:var(--accent)}
